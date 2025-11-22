@@ -1,0 +1,133 @@
+/* Light mode (default) */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #111111;
+  --sidebar-bg: #fcfcfc;
+  --card-bg: #f8f9fa;
+  --navbar-bg: #f1f1f1;
+  --link-color: #333;
+  --link-active-color: #000000;
+}
+
+.sidebar {
+  background-color: var(--sidebar-bg) !important;
+  color: var(--text-color) !important;
+}
+
+/* Dark mode */
+body.dark {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --sidebar-bg: #1f1f1f;
+  --navbar-bg: #000000;
+  --card-bg: #2a2a2a;
+  --link-color: #eeeeee;
+  --link-active-color: #ffffff;
+}
+
+.navbar {
+  background-color: var(--navbar-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.nav-link {
+  color: var(--link-color) !important;
+  font-weight: 400;
+}
+
+.nav-link.active {
+  color: #ff3f6c !important;
+  font-weight: 600;
+}
+
+/* Use the variables */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.sidebar {
+  background-color: var(--sidebar-bg) !important;
+}
+
+.card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.navbar {
+  background-color: var(--navbar-bg) !important;
+}
+
+.app-container {
+  display: flex;
+  background-color: var(--sidebar-bg) !important;
+  color: var(--text-color) !important;
+}
+.content {
+  width: 100%;
+  margin-top: 70px;
+  margin-left: 40px;
+}
+.sidebar {
+  min-height: 800px;
+}
+.post-card {
+  margin: 20px 50px;
+  border: 1px solid black;
+  padding: 20px;
+}
+.hashtag {
+  margin: 0px 3px;
+}
+
+.carousel-caption h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.carousel-caption p {
+  font-size: 1.2rem;
+}
+
+.marketing img {
+  object-fit: cover;
+  border: 3px solid #b83280;
+}
+
+footer {
+  background: linear-gradient(90deg, #b83280, #3a0ca3);
+}
+
+.d-flex flex-column align-items-center p-2 chap {
+  display: none;
+}
+
+.mybutton {
+  position: fixed;
+}
+.card-img-top:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease;
+}
+.nav-item:hover {
+  color: #ff3f6c !important;
+  transition: 0.2s ease;
+}
+
+.nav-item.fw-semibold {
+  border-bottom: 2px solid #ff3f6c;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ff3f6c;
+}
+.icon_contain {
+  margin-left: 35px;
+}
+
+.img-thumbnail {
+  width: 20%;
+}
