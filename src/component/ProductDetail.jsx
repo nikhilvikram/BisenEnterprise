@@ -14,12 +14,7 @@ const ProductDetail = () => {
   const handleAdd = () => {
     dispatch({
       type: "ADD_TO_CART",
-      payload: {
-        id: item.id,
-        name: item.title,
-        price: item.price,
-        image: item.image,
-      },
+      payload: { productId: item.id },
     });
   };
   const dispatch1 = useDispatch();
@@ -52,7 +47,7 @@ const ProductDetail = () => {
               Add to Cart 🛒
             </button>
             <button
-              className="btn btn-outline-danger mt-3"
+              className="btn btn-outline-danger"
               onClick={() => {
                 if (isInWishlist) {
                   dispatch1(removeFromWishlist(item.id));

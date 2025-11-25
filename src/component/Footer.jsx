@@ -1,54 +1,76 @@
-const Footer = function () {
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+
+const Footer = () => {
   return (
-    <>
-      <div className="container">
-        {" "}
-        <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          {" "}
-          <p className="col-md-4 mb-0 text-body-secondary">
-            © 2025 Company, Inc
-          </p>{" "}
-          <a
-            href="/"
-            className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
-            aria-label="Bootstrap"
-          >
-            {" "}
-            <svg className="bi me-2" width="40" height="32" aria-hidden="true">
-              <use xlinkHref="#bootstrap"></use>
-            </svg>{" "}
-          </a>{" "}
-          <ul className="nav col-md-4 justify-content-end">
-            {" "}
-            <li className="nav-item">
-              <a href="#" className="nav-link px-2 text-body-secondary">
-                Home
-              </a>
-            </li>{" "}
-            <li className="nav-item">
-              <a href="#" className="nav-link px-2 text-body-secondary">
-                Features
-              </a>
-            </li>{" "}
-            <li className="nav-item">
-              <a href="#" className="nav-link px-2 text-body-secondary">
-                Pricing
-              </a>
-            </li>{" "}
-            <li className="nav-item">
-              <a href="#" className="nav-link px-2 text-body-secondary">
-                FAQs
-              </a>
-            </li>{" "}
-            <li className="nav-item">
-              <a href="#" className="nav-link px-2 text-body-secondary">
-                About
-              </a>
-            </li>{" "}
-          </ul>{" "}
-        </footer>{" "}
+    <footer className="footer-section">
+      <div className="footer-top">
+        <div className="footer-container">
+          {/* ==== COLUMN 1 ==== */}
+          <div className="footer-column">
+            <h5 className="footer-title">BisenEnterprise</h5>
+            <p className="footer-text">
+              Premium clothing sourced directly from Surat, Jaipur & Ahmedabad.
+              Quality you can trust, delivered to your doorstep.
+            </p>
+          </div>
+
+          {/* ==== COLUMN 2 ==== */}
+          <div className="footer-column">
+            <h6 className="footer-subtitle">Quick Links</h6>
+            <ul>
+              <li>
+                <a href="/Home">Home</a>
+              </li>
+              <li>
+                <a href="/SareeList">Sarees</a>
+              </li>
+              <li>
+                <a href="/KurtaList">Kurtas</a>
+              </li>
+              <li>
+                <a href="/CreatePost">Create Post</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* ==== COLUMN 3 ==== */}
+          <div className="footer-column">
+            <h6 className="footer-subtitle">Support</h6>
+            <ul>
+              <li>
+                <a href="#">FAQs</a>
+              </li>
+              <li>
+                <a href="#">Shipping</a>
+              </li>
+              <li>
+                <a href="#">Returns</a>
+              </li>
+              <li>
+                <a href="#">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* ==== COLUMN 4 ==== */}
+          <div className="footer-column">
+            <h6 className="footer-subtitle">Follow Us</h6>
+            <div className="footer-social">
+              <FaFacebook size={20} />
+              <FaInstagram size={20} />
+              <FaTwitter size={20} />
+              <FaYoutube size={20} />
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+
+      {/* ==== COPYRIGHT BAR ==== */}
+      <div className="footer-bottom">
+        © {new Date().getFullYear()} BisenEnterprise — All Rights Reserved.
+      </div>
+    </footer>
   );
 };
+
 export default Footer;

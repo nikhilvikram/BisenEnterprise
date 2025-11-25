@@ -15,6 +15,8 @@ import TextileListProvider from "./store/textile-list-store";
 import HeaderNavbar from "./component/HeaderNavbar";
 import CartPage from "./component/CartPage";
 import WishlistPage from "./component/WishlistPage";
+import MobileBottomNav from "./component/MobileBottomNav";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -58,6 +60,7 @@ function AppContent({ selectedTab, setselectedTab }) {
           <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
         <Footer />
+        <MobileBottomNav />
       </div>
     </div>
   );

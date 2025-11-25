@@ -6,9 +6,11 @@ const PostList = () => {
   const { postList } = useContext(PostListData);
   return (
     <>
-      {postList.map((post) => (
-        <Post key={post.id} post={post}/>
-      ))}
+      <div className="container mt-4 mb-5">
+        {postList.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
+      </div>
     </>
   );
 };

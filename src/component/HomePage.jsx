@@ -5,130 +5,61 @@ import saree3 from "../assets/saree3.jpg";
 const HomePage = () => {
   return (
     <>
-      {/* ===== Carousel Section ===== */}
+      {/* ===== HERO CAROUSEL ===== */}
       <div id="mainCarousel" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#mainCarousel"
-            data-bs-slide-toyeah="0"
-            className="active"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#mainCarousel"
-            data-bs-slide-to="1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#mainCarousel"
-            data-bs-slide-to="2"
-          ></button>
-        </div>
-
         <div className="carousel-inner">
           <div className="carousel-item active">
             <img src={saree1} className="d-block w-100" alt="Saree 1" />
-            <div className="carousel-caption text-start">
+            <div className="carousel-caption custom-caption">
               <h1>Festive Elegance</h1>
-              <p>Explore our Jaipur-inspired festive collection.</p>
-              <p>
-                <a className="btn btn-lg btn-primary" href="#shop">
-                  Shop Now
-                </a>
-              </p>
+              <p>Explore Jaipur-inspired festive sarees.</p>
+              <a className="btn btn-primary btn-lg">Shop Sarees</a>
             </div>
           </div>
+
           <div className="carousel-item">
             <img src={saree2} className="d-block w-100" alt="Saree 2" />
-            <div className="carousel-caption">
+            <div className="carousel-caption custom-caption">
               <h1>Handcrafted Kurtis</h1>
-              <p>Comfort and class woven together.</p>
-              <p>
-                <a className="btn btn-lg btn-primary" href="#shop">
-                  Browse Collection
-                </a>
-              </p>
+              <p>Comfort & elegance woven together.</p>
+              <a className="btn btn-primary btn-lg">Browse Kurtis</a>
             </div>
           </div>
+
           <div className="carousel-item">
             <img src={saree3} className="d-block w-100" alt="Saree 3" />
-            <div className="carousel-caption text-end">
-              <h1>Exclusive Designs</h1>
-              <p>Authentic fabrics from Surat and Ahmedabad.</p>
-              <p>
-                <a className="btn btn-lg btn-primary" href="#contact">
-                  Contact Us
-                </a>
-              </p>
+            <div className="carousel-caption custom-caption">
+              <h1>Exclusive Designer Sets</h1>
+              <p>Authentic fabrics from Surat & Ahmedabad.</p>
+              <a className="btn btn-primary btn-lg">Explore Designs</a>
             </div>
           </div>
         </div>
-
-        <button
-          className="carousel-control-prev"
-          type="button"
-          data-bs-target="#mainCarousel"
-          data-bs-slide="prev"
-        >
-          <span
-            className="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
-        </button>
-        <button
-          className="carousel-control-next"
-          type="button"
-          data-bs-target="#mainCarousel"
-          data-bs-slide="next"
-        >
-          <span
-            className="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
-        </button>
       </div>
 
-      <div className="container marketing my-5 text-center">
-        <div className="row">
-          <div className="col-lg-4">
-            <img
-              src={saree1}
-              className="bd-placeholder-img rounded-circle"
-              width="140"
-              height="140"
-              alt="Festive Wear"
-            />
-            <h2 className="fw-normal mt-3">Festive Wear</h2>
-            <p>Elegant sarees, perfect for Diwali and weddings.</p>
+      {/* ===== TRENDING CATEGORY ===== */}
+      <div className="container py-5 text-center">
+        <h2 className="fw-bold mb-4">Trending Categories</h2>
+        <div className="row g-4">
+          <div className="col-12 col-md-4">
+            <img src={saree1} className="rounded-circle shadow category-img" />
+            <h4 className="mt-3">Festive Sarees</h4>
+            <p>Perfect for weddings & festivals.</p>
           </div>
-          <div className="col-lg-4">
-            <img
-              src={saree2}
-              className="bd-placeholder-img rounded-circle"
-              width="140"
-              height="140"
-              alt="Daily Kurtis"
-            />
-            <h2 className="fw-normal mt-3">Daily Kurtis</h2>
-            <p>Soft cotton kurtis for everyday comfort.</p>
+
+          <div className="col-12 col-md-4">
+            <img src={saree2} className="rounded-circle shadow category-img" />
+            <h4 className="mt-3">Daily Wear Kurtis</h4>
+            <p>Soft cotton & rayon kurtis.</p>
           </div>
-          <div className="col-lg-4">
-            <img
-              src={saree3}
-              className="bd-placeholder-img rounded-circle"
-              width="140"
-              height="140"
-              alt="Dupatta Sets"
-            />
-            <h2 className="fw-normal mt-3">Dupatta Sets</h2>
-            <p>Vibrant combos to brighten your wardrobe.</p>
+
+          <div className="col-12 col-md-4">
+            <img src={saree3} className="rounded-circle shadow category-img" />
+            <h4 className="mt-3">Dupatta Sets</h4>
+            <p>Vibrant combos for your wardrobe.</p>
           </div>
         </div>
       </div>
-
-      {/* ===== Footer ===== */}
-      <footer className="py-4 bg-dark text-light text-center"></footer>
     </>
   );
 };
