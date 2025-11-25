@@ -1073,9 +1073,7 @@ body {
   color: var(--primary-color);
   font-weight: 600;
 }
-.content {
-  padding-bottom: 100px !important; /* avoid bottom nav overlap */
-}
+
 .tag-ribbon-box {
   position: absolute;
   top: 12px;
