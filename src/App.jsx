@@ -18,7 +18,7 @@ import WishlistPage from "./component/WishlistPage";
 import MobileBottomNav from "./component/MobileBottomNav";
 
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   useLocation,
