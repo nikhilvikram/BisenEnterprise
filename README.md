@@ -26,7 +26,7 @@ src/
 │ ├── HeaderNavbar.jsx
 │ ├── Footer.jsx
 │ ├── HomePage.jsx
-│ ├── KurtaList.jsx
+│ ├── Categories.jsx
 │ ├── SareeList.jsx
 │ ├── WishlistPage.jsx
 │ ├── CartPage.jsx
@@ -39,8 +39,10 @@ src/
 
 ## ✨ Features
 
-### ✔ Reusable Components  
+### ✔ Reusable Components
+
 Includes modular UI elements such as:
+
 - Navbar (HeaderNavbar)
 - Multi-section homepage
 - Product list cards
@@ -49,7 +51,9 @@ Includes modular UI elements such as:
 - Sidebar navigation
 
 ### ✔ Routing (React Router DOM)
+
 Modern route-based navigation:
+
 - `/` — Home
 - `/kurta-list`
 - `/saree-list`
@@ -58,13 +62,17 @@ Modern route-based navigation:
 - `/product/:id`
 
 ### ✔ Responsive UI
+
 Tested on:
-- Desktop  
-- Tablet  
-- Mobile device widths  
+
+- Desktop
+- Tablet
+- Mobile device widths
 
 ### ✔ Clean Component Architecture
+
 Designed for:
+
 - Readability
 - Scalability
 - Easy extension for real backend integration
@@ -72,6 +80,7 @@ Designed for:
 ---
 
 ## 🌐 Live Demo (Optional)
+
 Add your deployed link here once deployed:
 https://your-demo-link.vercel.app
 
@@ -83,6 +92,7 @@ Copy code
 ## 🛠 Getting Started
 
 ### 1️⃣ Clone the repository
+
 ```bash
 git clone https://github.com/nikhilvikram/BisenEnterprise.git
 cd BisenEnterprise
@@ -127,3 +137,4 @@ Upwork: Available
 Email: nikhilbisen25@gmail.com
 
 If you're looking for a developer who can build clean, fast, component-driven frontend applications — feel free to reach out!
+```

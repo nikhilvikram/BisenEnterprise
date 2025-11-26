@@ -19,7 +19,7 @@ const MobileBottomNav = () => {
         <span>Explore</span>
       </SaveNavLink>
 
-      <SaveNavLink to="/KurtaList">
+      <SaveNavLink to="/Categories">
         <FaTshirt size={20} />
         <span>Categories</span>
       </SaveNavLink>

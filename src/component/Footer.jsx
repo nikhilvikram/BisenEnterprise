@@ -25,7 +25,7 @@ const Footer = () => {
                 <a href="/SareeList">Sarees</a>
               </li>
               <li>
-                <a href="/KurtaList">Kurtas</a>
+                <a href="/Categories">Kurtas</a>
               </li>
               <li>
                 <a href="/CreatePost">Create Post</a>

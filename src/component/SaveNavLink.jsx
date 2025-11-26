@@ -11,9 +11,12 @@ export default function SaveNavLink({ to, children, ...props }) {
       to={to}
       {...props}
       onClick={(e) => {
-        saveScrollFor(pathname);   // <- VERY IMPORTANT
+        saveScrollFor(pathname); // <- VERY IMPORTANT
         if (props.onClick) props.onClick(e);
       }}
+      className={({ isActive }) =>
+        isActive ? "mb-nav-link active" : "mb-nav-link"
+      }
     >
       {children}
     </NavLink>

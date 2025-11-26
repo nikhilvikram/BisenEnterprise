@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import PostListProvider from "./store/post-list-store";
 import HomePage from "./component/HomePage";
 import SareeList from "./component/SareeList";
-import KurtaList from "./component/KurtaList";
+import Categories from "./component/Categories";
 import TextileListProvider from "./store/textile-list-store";
 import HeaderNavbar from "./component/HeaderNavbar";
 import CartPage from "./component/CartPage";
@@ -50,7 +50,7 @@ function AppContent() {
             <Route path="/HomePage" element={<HomePage />} />
             <Route path="/CreatePost" element={<CreatePost />} />
             <Route path="/SareeList" element={<SareeList />} />
-            <Route path="/KurtaList" element={<KurtaList />} />
+            <Route path="/Categories" element={<Categories />} />
             <Route path="/Cart" element={<CartPage />} />
             <Route path="/Wishlist" element={<WishlistPage />} />
             <Route path="/product/:id" element={<ProductDetail />} />

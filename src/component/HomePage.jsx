@@ -1,66 +1,104 @@
+import { useNavigate } from "react-router-dom";
 import saree1 from "../assets/saree1.jpg";
 import saree2 from "../assets/saree2.jpg";
 import saree3 from "../assets/saree3.jpg";
+import bag from "../assets/bag.jpg";
+import nightwear from "../assets/nightwear.jpeg";
+import saree10 from "../assets/saree10.jpg";
+import jwellery from "../assets/jwellery.jpg";
+import footeware from "../assets/footware.webp";
+import { useContext } from "react";
+import { TextileList } from "../store/textile-list-store";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { textileArray } = useContext(TextileList);
+  // Sort by reviews (best selling)
+  const bestSellers = [...textileArray]
+    .sort((a, b) => b.reviews - a.reviews)
+    .slice(0, 4);
+
   return (
-    <>
-      {/* ===== HERO CAROUSEL ===== */}
-      <div id="mainCarousel" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-inner">
-          <div className="carousel-item active">
-            <img src={saree1} className="d-block w-100" alt="Saree 1" />
-            <div className="carousel-caption custom-caption">
-              <h1>Festive Elegance</h1>
-              <p>Explore Jaipur-inspired festive sarees.</p>
-              <a className="btn btn-primary btn-lg">Shop Sarees</a>
-            </div>
-          </div>
+    <div className="homepage">
+      {/* ===== OFFER STRIP ===== */}
+      <div className="offer-strip">
+        <span>🔥 FLAT 50–80% OFF + FREE DELIVERY ON FIRST ORDER</span>
+      </div>
 
-          <div className="carousel-item">
-            <img src={saree2} className="d-block w-100" alt="Saree 2" />
-            <div className="carousel-caption custom-caption">
-              <h1>Handcrafted Kurtis</h1>
-              <p>Comfort & elegance woven together.</p>
-              <a className="btn btn-primary btn-lg">Browse Kurtis</a>
-            </div>
-          </div>
-
-          <div className="carousel-item">
-            <img src={saree3} className="d-block w-100" alt="Saree 3" />
-            <div className="carousel-caption custom-caption">
-              <h1>Exclusive Designer Sets</h1>
-              <p>Authentic fabrics from Surat & Ahmedabad.</p>
-              <a className="btn btn-primary btn-lg">Explore Designs</a>
-            </div>
-          </div>
+      {/* ===== HERO BANNER ===== */}
+      <div className="hero-banner">
+        <img src={saree2} alt="Hero" className="hero-img" />
+        <div className="hero-text">
+          <h1>Festive Fashion Sale</h1>
+          <p>Surat • Jaipur • Ahmedabad Collections</p>
+          <button className="hero-btn" onClick={() => navigate("/SareeList")}>
+            Shop Now
+          </button>
         </div>
       </div>
 
-      {/* ===== TRENDING CATEGORY ===== */}
-      <div className="container py-5 text-center">
-        <h2 className="fw-bold mb-4">Trending Categories</h2>
-        <div className="row g-4">
-          <div className="col-12 col-md-4">
-            <img src={saree1} className="rounded-circle shadow category-img" />
-            <h4 className="mt-3">Festive Sarees</h4>
-            <p>Perfect for weddings & festivals.</p>
-          </div>
+      {/* ===== CATEGORIES ===== */}
+      <div className="container mt-4">
+        <h2 className="section-title">Shop By Categories</h2>
 
-          <div className="col-12 col-md-4">
-            <img src={saree2} className="rounded-circle shadow category-img" />
-            <h4 className="mt-3">Daily Wear Kurtis</h4>
-            <p>Soft cotton & rayon kurtis.</p>
-          </div>
-
-          <div className="col-12 col-md-4">
-            <img src={saree3} className="rounded-circle shadow category-img" />
-            <h4 className="mt-3">Dupatta Sets</h4>
-            <p>Vibrant combos for your wardrobe.</p>
-          </div>
+        <div className="category-row">
+          {[
+            { img: saree1, title: "Sarees", path: "/SareeList" },
+            { img: saree10, title: "Kurtis", path: "/KurtaList" },
+            { img: nightwear, title: "Nightwear", path: "/SareeList" },
+            { img: jwellery, title: "Jewellery", path: "/SareeList" },
+            { img: bag, title: "Bags", path: "/SareeList" },
+            { img: footeware, title: "Footwear", path: "/SareeList" },
+          ].map((cat, i) => (
+            <div
+              key={i}
+              className="category-cardx"
+              onClick={() => navigate(cat.path)}
+            >
+              <img src={cat.img} alt={cat.title} className="category-imagex" />
+              <div className="category-titlex">{cat.title}</div>
+            </div>
+          ))}
         </div>
       </div>
-    </>
+
+      {/* ===== BEST SELLERS ===== */}
+      <div className="container mt-5">
+        <h2 className="section-title">Best Sellers</h2>
+
+        <div className="best-grid">
+          {bestSellers.map((item) => (
+            <div
+              key={item.id}
+              className="best-card"
+              onClick={() => navigate(`/product/${item.id}`)}
+            >
+              <img src={item.image} alt={item.title} className="best-img" />
+
+              <div className="best-info">
+                <p className="best-name">{item.title}</p>
+
+                <p className="best-price">₹{item.price}</p>
+
+                <p className="best-rating">
+                  ⭐ {item.rating} ({item.reviews})
+                </p>
+
+                <button
+                  className="best-btn"
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent card click
+                    navigate(`/product/${item.id}`);
+                  }}
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

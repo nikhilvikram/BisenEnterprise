@@ -84,9 +84,9 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
 
           <li>
             <NavLink
-              to="/KurtaList"
+              to="/Categories"
               className="sidebar-link"
-              onClick={() => handleMenuClick("KurtaList")}
+              onClick={() => handleMenuClick("Categories")}
             >
               👚 Kurta List
             </NavLink>
