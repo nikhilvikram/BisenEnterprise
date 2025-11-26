@@ -1,33 +1,33 @@
-import { NavLink } from "react-router-dom";
 import { FaStore, FaList, FaCompass, FaTshirt, FaUser } from "react-icons/fa";
-
+import { saveScrollFor } from "../utils/scrollStore";
+import SaveNavLink from "./SaveNavLink";
 const MobileBottomNav = () => {
   return (
     <div className="mobile-bottom-nav">
-      <NavLink to="/HomePage">
+      <SaveNavLink to="/HomePage">
         <FaStore size={20} />
         <span>Store</span>
-      </NavLink>
+      </SaveNavLink>
 
-      <NavLink to="/Home">
+      <SaveNavLink to="/Home">
         <FaList size={20} />
         <span>Feed</span>
-      </NavLink>
+      </SaveNavLink>
 
-      <NavLink to="/SareeList">
+      <SaveNavLink to="/SareeList">
         <FaCompass size={20} />
         <span>Explore</span>
-      </NavLink>
+      </SaveNavLink>
 
-      <NavLink to="/KurtaList">
+      <SaveNavLink to="/KurtaList">
         <FaTshirt size={20} />
         <span>Categories</span>
-      </NavLink>
+      </SaveNavLink>
 
-      <NavLink to="/Profile">
+      <SaveNavLink to="/Profile">
         <FaUser size={20} />
         <span>Account</span>
-      </NavLink>
+      </SaveNavLink>
     </div>
   );
 };

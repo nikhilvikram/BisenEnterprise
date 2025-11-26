@@ -20,7 +20,7 @@ const SareeList = ({ products }) => {
               <img
                 src={item.image}
                 className="card-img-top"
-                alt={item.name}
+                alt={item.title}
                 style={{ objectFit: "cover", height: "260px" }}
                 onClick={() => {
                   navigate(`/product/${item.id}`);
@@ -30,7 +30,7 @@ const SareeList = ({ products }) => {
               <div className="card-body">
                 <h6 className="mb-1">{item.category}</h6>
                 <h5 className="card-title" style={{ fontSize: "1rem" }}>
-                  {item.name}
+                  {item.title}
                 </h5>
 
                 <div className="mb-2">
