@@ -10,8 +10,12 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [animateCart, setAnimateCart] = React.useState(false);
+  const { cart } = useContext(CartContext);
 
   const item = textileArray.find((p) => p.id.toString() === id);
+  // Get this product's qty
+  const cartItem = cart.find((c) => c.productId === item.id);
+  const totalQuantityForThisItem = cartItem ? cartItem.qty : 0;
 
   const { dispatch } = useContext(CartContext);
   const handleAddToCart = () => {
@@ -62,10 +66,16 @@ const ProductDetail = () => {
           <div className="mt-3 d-flex justify-content-center gap-3">
             {/* Add to Cart Button */}
             <button
-              className={`btn-cart ${animateCart ? "cart-animate" : ""}`}
+              className={`btn-cart cart-btn-wrapper 
+             ${animateCart ? "cart-animate" : ""} 
+             ${totalQuantityForThisItem > 0 ? "cart-added" : ""}`}
               onClick={handleAddToCartAnimated}
             >
               Add to Cart 🛒
+              {/* Floating Quantity Badge */}
+              {totalQuantityForThisItem > 0 && (
+                <span className="cart-badge">{totalQuantityForThisItem}</span>
+              )}
             </button>
 
             {/* Wishlist Button */}
