@@ -2057,7 +2057,7 @@ body.dark .bisen-wishlist-btn.active {
 
 /* Make room for fixed header and bottom nav */
 .page-wrapper {
-  padding-top: 70px !important; /* header height */
+  padding-top: 54px !important; /* header height */
 }
 
 /* Prevent content from going behind */
