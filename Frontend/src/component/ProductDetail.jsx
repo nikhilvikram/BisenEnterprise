@@ -79,7 +79,7 @@ const ProductDetail = () => {
                 )
               }
             >
-              {isInWishlist ? "💗 Wishlisted" : "🤍 Wishlist"}
+              {isInWishlist ? "❤️ Wishlisted" : "🤍 Wishlist"}
             </button>
           </div>
         </div>

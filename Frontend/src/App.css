@@ -349,7 +349,6 @@ footer {
   /* Remove sidebar gap */
   .content {
     margin-left: 0 !important;
-    margin-bottom: 70px !important; /* space for bottom nav */
   }
 }
 /* ========== AJIO STYLE NAVBAR ========== */
@@ -1042,11 +1041,6 @@ footer {
   margin-right: 6px;
 }
 
-/* create space for bottom nav */
-body {
-  padding-bottom: 90px !important;
-}
-
 .mobile-bottom-nav {
   position: fixed;
   bottom: 0;
@@ -1355,7 +1349,6 @@ body.dark {
 
 /* Container */
 .product-detail-container {
-  margin-top: 90px;
   color: var(--text-color);
 }
 

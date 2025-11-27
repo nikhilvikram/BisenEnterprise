@@ -99,7 +99,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
               className="sidebar-link"
               onClick={() => handleMenuClick("BackendProducts")}
             >
-              🧲 Fetch From Backend
+              About us
             </NavLink>
           </li>
 
