@@ -4,7 +4,7 @@ import { ThemeContext } from "../store/theme-context";
 import { CartContext } from "../store/cart-context";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
 const HeaderNavbar = () => {
   const { cart } = useContext(CartContext);
   const { darkMode, toggleTheme } = useContext(ThemeContext);
@@ -15,10 +15,15 @@ const HeaderNavbar = () => {
   return (
     <nav className="bisen-header">
       {/* Left – Logo */}
-      <div className="bisen-logo">
-        <span style={{ color: "#E63946" }}>Bisen</span>
-        <span style={{ color: "gray" }}>Enterprise</span>
-      </div>
+      <Link
+        to="/HomePage"
+        style={{ textDecoration: "none" }}
+      >
+        <div className="bisen-logo">
+          <span style={{ color: "#E63946" }}>Bisen</span>
+          <span style={{ color: "gray" }}>Enterprise</span>
+        </div>
+      </Link>
 
       {/* Right Icons */}
       <div className="bisen-icons">

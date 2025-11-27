@@ -4,10 +4,10 @@ import { NavLink } from "react-router-dom";
 const Sidebar = ({ selectedTab, setselectedTab }) => {
   const [open, setOpen] = useState(false);
 
-  // Close sidebar when clicking outside
+  // ===== Close sidebar when clicking outside =====
   useEffect(() => {
     const handleOutside = (e) => {
-      if (open && !e.target.closest(".mobile-sidebar")) {
+      if (open && !e.target.closest(".mobile-sidebar") && !e.target.closest(".hamburger-btn")) {
         setOpen(false);
       }
     };
@@ -15,9 +15,9 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
     return () => document.removeEventListener("click", handleOutside);
   }, [open]);
 
-  const handleMenuClick = (tab) => {
-    setselectedTab(tab);
-    setOpen(false); // collapse on click
+  // ===== On clicking a menu item =====
+  const handleMenuClick = () => {
+    setOpen(false); // Close sidebar
   };
 
   return (
@@ -27,21 +27,22 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
         className="hamburger-btn"
         onClick={(e) => {
           e.stopPropagation();
-          setOpen(true);
+          setOpen(!open);
         }}
       >
         ☰
       </button>
 
-      {/* ===== Backdrop (Click outside to close) ===== */}
+      {/* ===== Backdrop ===== */}
       {open && <div className="sidebar-backdrop"></div>}
 
-      {/* ===== Slide Drawer ===== */}
+      {/* ===== Slide Sidebar ===== */}
       <div className={`mobile-sidebar ${open ? "open" : ""}`}>
         <h4 className="sidebar-title">BisenEnterprise</h4>
         <hr />
 
         <ul className="list-unstyled px-3">
+
           <li>
             <NavLink
               to="/Home"
@@ -84,13 +85,14 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
 
           <li>
             <NavLink
-              to="/Categories"
+              to="/KurtaList"
               className="sidebar-link"
-              onClick={() => handleMenuClick("Categories")}
+              onClick={() => handleMenuClick("KurtaList")}
             >
               👚 Kurta List
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/BackendProducts"
@@ -100,6 +102,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
               🧲 Fetch From Backend
             </NavLink>
           </li>
+
         </ul>
       </div>
     </>
