@@ -307,7 +307,7 @@ footer {
     margin-left: 0 !important;
   }
 }
-/* ====== MOBILE BOTTOM NAV (AJIO STYLE) ====== */
+/* ====== MOBILE BOTTOM NAV (bisen STYLE) ====== */
 .mobile-bottom-nav {
   position: fixed;
   bottom: 0;
@@ -319,7 +319,7 @@ footer {
   justify-content: space-around;
   align-items: center;
   border-top: 1px solid #ccc;
-  z-index: 5000;
+  z-index: 999;
 }
 
 .mobile-bottom-nav a {
@@ -351,8 +351,8 @@ footer {
     margin-left: 0 !important;
   }
 }
-/* ========== AJIO STYLE NAVBAR ========== */
-.ajio-navbar {
+/* ========== bisen STYLE NAVBAR ========== */
+.bisen-navbar {
   height: 55px;
   width: 100%;
   position: fixed;
@@ -366,14 +366,14 @@ footer {
 }
 
 /* LOGO */
-.ajio-logo {
+.bisen-logo {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
 
 /* ICONS */
-.ajio-icons {
+.bisen-icons {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -409,20 +409,20 @@ footer {
 
 /* MOBILE OPTIMIZED */
 @media (max-width: 768px) {
-  .ajio-logo {
+  .bisen-logo {
     font-size: 1.2rem;
   }
-  .ajio-icons {
+  .bisen-icons {
     gap: 16px;
   }
 }
 
 @media (max-width: 768px) {
-  .ajio-left {
+  .bisen-left {
     margin-left: 5px !important; /* Push logo right */
   }
 }
-/* ===== BISEN STYLE HEADER (AJIO-LIKE) ===== */
+/* ===== BISEN STYLE HEADER (bisen-LIKE) ===== */
 .bisen-header {
   position: fixed;
   top: 0;
@@ -443,7 +443,7 @@ footer {
   z-index: 4000;
 }
 
-/* Small AJIO-like logo */
+/* Small bisen-like logo */
 .bisen-logo {
   font-size: 1.2rem;
   font-weight: 700;
@@ -1674,4 +1674,445 @@ body.dark .cart-badge {
   color: var(--text-color) !important;
   border-color: var(--text-color) !important;
   box-shadow: none !important;
+}
+
+/* GRID LAYOUT */
+.bisen-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+  .bisen-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .bisen-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* CARD */
+.bisen-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+  transition: 0.25s ease;
+}
+
+.bisen-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.2);
+}
+
+/* IMAGE BOX */
+.bisen-img-box {
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.bisen-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.35s ease;
+}
+
+.bisen-img-box:hover img {
+  transform: scale(1.08);
+}
+
+/* TITLE */
+.bisen-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 10px;
+  color: var(--text-color);
+}
+
+/* CATEGORY */
+.bisen-category {
+  font-size: 0.85rem;
+  color: gray;
+  margin-top: -4px;
+}
+
+/* PRICE ROW */
+.bisen-price-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.new-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #e63946;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.discount {
+  color: #2ecc71;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* RATING */
+.bisen-rating {
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+.review-count {
+  margin-left: 5px;
+  color: gray;
+}
+
+/* ADD TO CART BUTTON (Small & Premium) */
+.bisen-cart-btn-small {
+  width: 100%;
+  margin-top: 10px;
+  position: relative;
+  padding: 9px 0;
+  border-radius: 10px;
+  font-weight: 600;
+  border: 2px solid var(--text-color);
+  background: transparent;
+  color: var(--text-color);
+  transition: 0.3s ease;
+}
+
+.bisen-cart-btn-small:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+
+/* When product is already in cart */
+.bisen-cart-btn-small.added {
+  border-color: #e63946;
+  background: #e63946;
+  color: white;
+}
+
+/* FLOATING QTY BADGE */
+.card-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  background: #e63946;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+body.dark .card-badge {
+  background: #ff7b8b;
+  color: #111;
+}
+
+/* ==========================================
+   BISEN PRODUCT CARD (Perfectly Aligned)
+   ========================================== */
+
+.bisen-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* button stays at bottom */
+  min-height: 480px; /* adjust up/down depending on card content */
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--card-bg);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative; /* required for badges */
+}
+
+.bisen-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* FIX image height */
+.bisen-card-img-box {
+  height: 260px;
+  overflow: hidden;
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+
+.bisen-card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Middle content area expands */
+.bisen-card-body {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+}
+
+/* Limit title lines for equal height */
+.bisen-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  max-height: 2.5em; /* 2 lines */
+  overflow: hidden;
+}
+
+/* price row etc */
+.bisen-price-row {
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.bisen-rating {
+  font-size: 0.9rem;
+  color: gold;
+}
+
+/* --- BUTTON --- */
+.bisen-card-add-btn {
+  margin-top: 12px;
+  padding: 10px 0;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid transparent;
+  background: #ff5b77;
+  color: white;
+  box-shadow: 0 3px 10px rgba(255, 91, 119, 0.35);
+  transition: 0.25s ease;
+  position: relative; /* for quantity badge */
+}
+
+.bisen-card-add-btn:hover {
+  background: #ff3e62;
+}
+
+/* Quantity badge inside button */
+.bisen-card-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e63946;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Badge animation */
+@keyframes bisenPop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bisen-card-badge {
+  animation: bisenPop 0.3s ease;
+}
+
+/* ============================================
+   BISEN WISHLIST BUTTON (Premium Red Theme)
+============================================ */
+
+.bisen-wishlist-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 12px 26px;
+  min-width: 160px;
+  font-size: 1rem;
+  font-weight: 600;
+
+  background: transparent;
+  border: 2px solid #e63946; /* red outline */
+  color: #e63946;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+  overflow: hidden;
+}
+
+/* Hover (light glow) */
+.bisen-wishlist-btn:hover {
+  background: rgba(230, 57, 70, 0.08);
+}
+
+/* ACTIVE (Wishlisted) */
+.bisen-wishlist-btn.active {
+  background: #e63946;
+  color: #fff;
+  border-color: #e63946;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.4);
+  animation: bisenPop 0.3s ease;
+}
+
+/* ======= SVG ICONS ======= */
+
+.heart {
+  width: 20px;
+  height: 20px;
+  transition: 0.25s ease;
+}
+
+.heart.outline {
+  stroke: #e63946;
+  fill: transparent;
+  stroke-width: 2.2;
+}
+
+.heart.filled {
+  fill: #fff;
+  stroke: #fff;
+  transform: scale(1.1);
+}
+
+/* Heart animation on adding */
+.bisen-wishlist-btn.active .heart.filled {
+  animation: heartPop 0.35s ease;
+}
+
+@keyframes heartPop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Button pop animation */
+@keyframes bisenPop {
+  0% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* DARK MODE SUPPORT */
+body.dark .bisen-wishlist-btn {
+  border-color: #ff7a88;
+  color: #ff7a88;
+}
+
+body.dark .bisen-wishlist-btn:hover {
+  background: rgba(255, 120, 140, 0.15);
+}
+
+body.dark .bisen-wishlist-btn.active {
+  background: #ff4d5c;
+  border-color: #ff4d5c;
+  color: #fff;
+}
+
+/* Make room for fixed header and bottom nav */
+.page-wrapper {
+  padding-top: 70px !important; /* header height */
+  padding-bottom: 80px !important; /* bottom nav height */
+}
+
+/* Prevent content from going behind */
+.product-detail-container,
+.category-container,
+.cart-wrapper,
+.wishlist-wrapper,
+.container {
+  padding-top: 70px !important;
+  padding-bottom: 80px !important;
+}
+/* FIXED BISEN ENTERPRISE BOTTOM NAV */
+.mobile-bottom-nav {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+
+  background: var(--navbar-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  z-index: 99999 !important; /* always on top */
+}
+
+/* Bottom nav links */
+.mb-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+
+  color: var(--text-color);
+  font-size: 11px;
+  opacity: 0.65;
+  transition: 0.25s ease;
+}
+
+/* On active page */
+.mb-nav-link.active {
+  opacity: 1;
+  color: #e63946;
+}
+
+.mb-nav-link.active svg {
+  color: #e63946;
+}
+
+/* Prevent screens from hiding behind nav */
+body {
+  padding-bottom: 70px !important;
 }

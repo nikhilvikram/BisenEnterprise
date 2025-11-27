@@ -17,7 +17,7 @@ import CartPage from "./component/CartPage";
 import WishlistPage from "./component/WishlistPage";
 import MobileBottomNav from "./component/MobileBottomNav";
 import ScrollRestoration from "./component/ScrollRestoration";
-import BackendProducts from "./component/BackendProducts"
+import BackendProducts from "./component/BackendProducts";
 import {
   HashRouter as Router,
   Routes,
@@ -67,19 +67,21 @@ function AppContent() {
 
 function App() {
   return (
-    <Provider store={store}>
-      <CartProvider>
-        <ThemeProvider>
-          <TextileListProvider>
-            <Router>
-              <PostListProvider>
-                <AppContent />
-              </PostListProvider>
-            </Router>
-          </TextileListProvider>
-        </ThemeProvider>
-      </CartProvider>
-    </Provider>
+    <div className="page-wrapper">
+      <Provider store={store}>
+        <CartProvider>
+          <ThemeProvider>
+            <TextileListProvider>
+              <Router>
+                <PostListProvider>
+                  <AppContent />
+                </PostListProvider>
+              </Router>
+            </TextileListProvider>
+          </ThemeProvider>
+        </CartProvider>
+      </Provider>
+    </div>
   );
 }
 

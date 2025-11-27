@@ -80,16 +80,29 @@ const ProductDetail = () => {
 
             {/* Wishlist Button */}
             <button
-              className={`btn-wishlist ${isInWishlist ? "active-heart" : ""}`}
-              onClick={() =>
+              className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
+              onClick={() => {
                 reduxDispatch(
                   isInWishlist
                     ? removeFromWishlist(item.id)
                     : addToWishlist(item)
-                )
-              }
+                );
+              }}
             >
-              {isInWishlist ? "❤️ Wishlisted" : "🤍 Wishlist"}
+              {/* Heart SVG */}
+              <span className="wishlist-icon">
+                {isInWishlist ? (
+                  <svg viewBox="0 0 24 24" className="heart filled">
+                    <path d="M12 21s-6.7-4.4-9.6-8.3C-1.2 8.7.4 4.2 4.1 2.5 6.6 1.3 9.4 2 12 4.5 14.6 2 17.4 1.3 20 2.5c3.6 1.7 5.2 6.2 1.6 10.2C18.7 16.6 12 21 12 21z" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" className="heart outline">
+                    <path d="M16.8 3.1c-1.9 0-3.6.9-4.8 2.4C10.8 4 9.1 3.1 7.2 3.1 3.8 3.1 1 5.9 1 9.3c0 4.9 5.3 8.6 10.2 12.4.5.4 1.1.4 1.6 0C17.7 17.9 23 14.2 23 9.3c0-3.4-2.8-6.2-6.2-6.2z" />
+                  </svg>
+                )}
+              </span>
+
+              {isInWishlist ? "Wishlisted" : "Wishlist"}
             </button>
           </div>
         </div>

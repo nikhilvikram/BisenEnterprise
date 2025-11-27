@@ -1,62 +1,78 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextileList } from "../store/textile-list-store";
+import { CartContext } from "../store/cart-context";
 
-const SareeList = ({ products }) => {
-  const { textileArray, deleteIteam } = useContext(TextileList);
+const SareeList = () => {
+  const { textileArray } = useContext(TextileList);
+  const { cart, dispatch } = useContext(CartContext);
   const navigate = useNavigate();
+
+  const handleAddToCart = (id) => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: { productId: id },
+    });
+  };
+
+  // Get qty for each product
+  const getQty = (id) => {
+    const item = cart.find((c) => c.productId === id);
+    return item ? item.qty : 0;
+  };
+
   return (
     <div className="container mt-4">
-      <h3 className="mb-4">Textile Collection</h3>
+      <h3 className="mb-4" style={{ color: "var(--text-color)" }}>
+        Saree Collection
+      </h3>
 
-      <div className="row g-4">
-        {textileArray.map((item) => (
-          <div
-            key={item.id}
-            className="col-12 col-sm-6 col-md-4 col-lg-3"
-            style={{ color: "var(--text-color)" }}
-          >
-            <div className="card h-100 shadow-sm">
-              <img
-                src={item.image}
-                className="card-img-top"
-                alt={item.title}
-                style={{ objectFit: "cover", height: "260px" }}
-                onClick={() => {
-                  navigate(`/product/${item.id}`);
-                }}
-              />
+      <div className="bisen-grid">
+        {textileArray.map((item) => {
+          const qty = getQty(item.id);
 
-              <div className="card-body">
-                <h6 className="mb-1">{item.category}</h6>
-                <h5 className="card-title" style={{ fontSize: "1rem" }}>
-                  {item.title}
-                </h5>
-
-                <div className="mb-2">
-                  {"⭐".repeat(item.rating)} <span>({item.reviews})</span>
-                </div>
-
-                <div className="mb-2">
-                  <span className="fw-bold fs-5">₹{item.price}</span>{" "}
-                  <span className="text-decoration-line-through">
-                    ₹{Math.round(item.price / (1 - item.discount / 100))}
-                  </span>{" "}
-                  <span className="text-success fw-semibold">
-                    ({item.discount}% off)
-                  </span>
-                </div>
-
-                <button
-                  className="btn btn-outline-danger w-100"
-                  onClick={() => deleteIteam(item.id)}
-                >
-                  Delete
-                </button>
+          return (
+            <div key={item.id} className="bisen-card">
+              {/* IMAGE */}
+              <div
+                className="bisen-img-box"
+                onClick={() => navigate(`/product/${item.id}`)}
+              >
+                <img src={item.image} alt={item.title} />
               </div>
+
+              {/* TITLE */}
+              <h5 className="bisen-title">{item.title}</h5>
+
+              {/* CATEGORY */}
+              <p className="bisen-category">{item.category}</p>
+
+              {/* PRICE ROW */}
+              <div className="bisen-price-row">
+                <span className="new-price">₹{item.price}</span>
+                <span className="old-price">
+                  ₹{Math.round(item.price / (1 - item.discount / 100))}
+                </span>
+                <span className="discount">{item.discount}% OFF</span>
+              </div>
+
+              {/* RATING */}
+              <div className="bisen-rating">
+                {"⭐".repeat(item.rating)}
+                <span className="review-count">({item.reviews})</span>
+              </div>
+
+              {/* ADD TO CART BUTTON */}
+              <button
+                className={`bisen-cart-btn-small ${qty > 0 ? "added" : ""}`}
+                onClick={() => handleAddToCart(item.id)}
+              >
+                Add to Cart 🛒
+                {qty > 0 && <span className="card-badge">{qty}</span>}
+              </button>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
