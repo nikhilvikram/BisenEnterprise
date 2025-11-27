@@ -66,7 +66,6 @@ body {
 }
 .content {
   width: 100%;
-  margin-top: 70px;
   margin-left: 40px;
 }
 .sidebar {
@@ -2059,18 +2058,17 @@ body.dark .bisen-wishlist-btn.active {
 /* Make room for fixed header and bottom nav */
 .page-wrapper {
   padding-top: 70px !important; /* header height */
-  padding-bottom: 80px !important; /* bottom nav height */
 }
 
 /* Prevent content from going behind */
-.product-detail-container,
+/* .product-detail-container,
 .category-container,
 .cart-wrapper,
 .wishlist-wrapper,
 .container {
   padding-top: 70px !important;
   padding-bottom: 80px !important;
-}
+} */
 /* FIXED BISEN ENTERPRISE BOTTOM NAV */
 .mobile-bottom-nav {
   position: fixed !important;
@@ -2110,9 +2108,4 @@ body.dark .bisen-wishlist-btn.active {
 
 .mb-nav-link.active svg {
   color: #e63946;
-}
-
-/* Prevent screens from hiding behind nav */
-body {
-  padding-bottom: 70px !important;
 }
