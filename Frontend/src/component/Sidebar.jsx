@@ -91,6 +91,15 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
               👚 Kurta List
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/BackendProducts"
+              className="sidebar-link"
+              onClick={() => handleMenuClick("BackendProducts")}
+            >
+              🧲 Fetch From Backend
+            </NavLink>
+          </li>
         </ul>
       </div>
     </>

@@ -1,0 +1,47 @@
+import React, { useEffect, useState } from "react";
+
+const BackendProducts = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const res = await fetch("http://localhost:5000/api/products");
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Error fetching API:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
+  }, []);
+
+  if (loading) return <h3 className="mt-4">Fetching Products...</h3>;
+
+  return (
+    <div className="container mt-4">
+      <h3>📦 Live Products from MongoDB</h3>
+      <div className="row gy-4">
+        {products.map((item) => (
+          <div key={item._id} className="col-6 col-md-3">
+            <div className="card shadow-sm p-2">
+              <img
+                src={`${item.image}`}
+                alt={item.title}
+                className="img-fluid rounded"
+              />
+              <h6 className="mt-2">{item.title}</h6>
+              <p className="text-danger fw-bold">₹{item.price}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default BackendProducts;

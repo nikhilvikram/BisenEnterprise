@@ -17,6 +17,7 @@ import CartPage from "./component/CartPage";
 import WishlistPage from "./component/WishlistPage";
 import MobileBottomNav from "./component/MobileBottomNav";
 import ScrollRestoration from "./component/ScrollRestoration";
+import BackendProducts from "./component/BackendProducts"
 import {
   HashRouter as Router,
   Routes,
@@ -54,6 +55,7 @@ function AppContent() {
             <Route path="/Cart" element={<CartPage />} />
             <Route path="/Wishlist" element={<WishlistPage />} />
             <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/BackendProducts" element={<BackendProducts />} />
           </Routes>
           <Footer />
           <MobileBottomNav />

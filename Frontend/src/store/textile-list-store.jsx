@@ -43,6 +43,8 @@ const TextileListProvider = ({ children }) => {
     dispatchTextileList({ type: "DELETE_ITEAM", payload: id });
   };
 
+  
+
   return (
     <TextileList.Provider value={{ textileArray, addIteam, deleteIteam }}>
       {children}
@@ -172,4 +174,5 @@ export const DEFAULT_TEXTILE_LIST = [
       "Royal premium silk saree designed for weddings. Rich golden weaving with luxurious texture.",
   },
 ];
+
 export default TextileListProvider;
