@@ -98,13 +98,6 @@ const HomePage = () => {
           ))}
         </div>
       </div>
-      {/* <NavLink
-        to="/BackendProducts"
-        className="btn btn-warning w-100 mt-3"
-        onClick={() => setselectedTab("BackendProducts")}
-      >
-        Load Products From Backend (MongoDB)
-      </NavLink> */}
     </div>
   );
 };

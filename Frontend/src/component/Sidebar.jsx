@@ -7,7 +7,11 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
   // ===== Close sidebar when clicking outside =====
   useEffect(() => {
     const handleOutside = (e) => {
-      if (open && !e.target.closest(".mobile-sidebar") && !e.target.closest(".hamburger-btn")) {
+      if (
+        open &&
+        !e.target.closest(".mobile-sidebar") &&
+        !e.target.closest(".hamburger-btn")
+      ) {
         setOpen(false);
       }
     };
@@ -42,7 +46,6 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
         <hr />
 
         <ul className="list-unstyled px-3">
-
           <li>
             <NavLink
               to="/Home"
@@ -92,17 +95,24 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
               👚 Kurta List
             </NavLink>
           </li>
-
-          <li>
+          {/* <li>
             <NavLink
               to="/BackendProducts"
               className="sidebar-link"
               onClick={() => handleMenuClick("BackendProducts")}
             >
+              BackendProducts
+            </NavLink>
+          </li> */}
+          <li>
+            <NavLink
+              to="/AboutUs"
+              className="sidebar-link"
+              onClick={() => handleMenuClick("AboutUs")}
+            >
               About us
             </NavLink>
           </li>
-
         </ul>
       </div>
     </>

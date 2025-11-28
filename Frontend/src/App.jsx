@@ -29,6 +29,7 @@ import ProductList from "./component/SareeList";
 import ProductDetail from "./component/ProductDetail";
 import { ThemeProvider, ThemeContext } from "./store/theme-context";
 import CartProvider from "./store/cart-context";
+import AboutUs from "./component/AboutUs";
 function AppContent() {
   const location = useLocation();
   const isProductPage = location.pathname.startsWith("/product");
@@ -56,7 +57,9 @@ function AppContent() {
             <Route path="/Wishlist" element={<WishlistPage />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/BackendProducts" element={<BackendProducts />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
           </Routes>
+
           <Footer />
           <MobileBottomNav />
         </div>
