@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
+import { FaBookOpenReader } from "react-icons/fa6";
+import { FaUsersLine } from "react-icons/fa6";
 
 const Sidebar = ({ selectedTab, setselectedTab }) => {
   const [open, setOpen] = useState(false);
@@ -44,76 +47,81 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
       <div className={`mobile-sidebar ${open ? "open" : ""}`}>
         <h4 className="sidebar-title">BisenEnterprise</h4>
         <hr />
+        {/* ===== USER QUICK CARD ===== */}
+        <div className="sidebar-user-card">
+          {" "}
+          <NavLink
+            to="/UserProfile"
+            className="sidebar-link"
+            onClick={() => handleMenuClick("UserProfile")}
+          >
+            <div className="sidebar-user-avatar">{/* Initials */}NB</div>
 
-        <ul className="list-unstyled px-3">
-          {/* <li>
-            <NavLink
-              to="/Home"
-              className="sidebar-link"
-              onClick={() => handleMenuClick("Home")}
-            >
-              ✍️ Home
-            </NavLink>
-          </li> */}
+            <div className="sidebar-user-info">
+              <h5 className="sidebar-user-name">Nikhil Bisen</h5>
+            </div>
+          </NavLink>
+          <div className="sidebar-user-arrow">›</div>
+        </div>
 
-          <li>
-            <NavLink
-              to="/HomePage"
-              className="sidebar-link"
-              onClick={() => handleMenuClick("HomePage")}
-            >
-              🏠 Homepage
-            </NavLink>
-          </li>
+        {/* ==== SIDEBAR MENU (Styled like Account Options) ==== */}
+        <div className="user-section">
+          <NavLink
+            to="/HomePage"
+            className="sidebar-link user-option"
+            onClick={() => handleMenuClick("HomePage")}
+          >
+            <span className="icon">
+              <FaHome className="icon" />
+            </span>
+            <span>Homepage</span>
+            <span className="arrow">›</span>
+          </NavLink>
 
-          <li>
-            <NavLink
-              to="/CreatePost"
-              className="sidebar-link"
-              onClick={() => handleMenuClick("CreatePost")}
-            >
-              👗 Create Post
-            </NavLink>
-          </li>
+          <NavLink
+            to="/CreatePost"
+            className="sidebar-link user-option"
+            onClick={() => handleMenuClick("CreatePost")}
+          >
+            <span className="icon">
+              <FaBookOpenReader className="icon" />
+            </span>
+            <span>Create Post</span>
+            <span className="arrow">›</span>
+          </NavLink>
 
-          <li>
-            <NavLink
-              to="/SareeList"
-              className="sidebar-link"
-              onClick={() => handleMenuClick("SareeList")}
-            >
-              🥻 Saree List
-            </NavLink>
-          </li>
+          <NavLink
+            to="/SareeList"
+            className="sidebar-link user-option"
+            onClick={() => handleMenuClick("SareeList")}
+          >
+            <span className="icon">🥻</span>
+            <span>Saree List</span>
+            <span className="arrow">›</span>
+          </NavLink>
 
-          <li>
-            <NavLink
-              to="/KurtaList"
-              className="sidebar-link"
-              onClick={() => handleMenuClick("KurtaList")}
-            >
-              👚 Kurta List
-            </NavLink>
-          </li>
-          {/* <li>
-            <NavLink
-              to="/BackendProducts"
-              className="sidebar-link"
-              onClick={() => handleMenuClick("BackendProducts")}
-            >
-              BackendProducts
-            </NavLink>
-          </li> */}
-          <li>
-            <NavLink
-              to="/AboutUs"
-              className="sidebar-link"
-              onClick={() => handleMenuClick("AboutUs")}
-            >
-              About us
-            </NavLink>
-          </li>
-        </ul>
+          <NavLink
+            to="/KurtaList"
+            className="sidebar-link user-option"
+            onClick={() => handleMenuClick("KurtaList")}
+          >
+            <span className="icon">👚</span>
+            <span>Kurta List</span>
+            <span className="arrow">›</span>
+          </NavLink>
+
+          <NavLink
+            to="/AboutUs"
+            className="sidebar-link user-option"
+            onClick={() => handleMenuClick("AboutUs")}
+          >
+            <span className="icon">
+              <FaUsersLine className="icon" />
+            </span>
+            <span>About Us</span>
+            <span className="arrow">›</span>
+          </NavLink>
+        </div>
       </div>
     </>
   );

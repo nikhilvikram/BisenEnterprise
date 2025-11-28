@@ -19,7 +19,7 @@ const Categories = () => {
     {
       name: "Kurtis",
       img: saree10,
-      path: "/HomePage",
+      path: "/KurtaList",
     },
     {
       name: "Nightwear",

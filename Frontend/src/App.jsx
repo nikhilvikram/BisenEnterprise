@@ -31,6 +31,7 @@ import { ThemeProvider, ThemeContext } from "./store/theme-context";
 import CartProvider from "./store/cart-context";
 import AboutUs from "./component/AboutUs";
 import UserProfile from "./component/UserProfile";
+import KurtaList from "./component/KurtaList";
 
 function AppContent() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function AppContent() {
             <Route path="/BackendProducts" element={<BackendProducts />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/UserProfile" element={<UserProfile />} />
+            <Route path="/KurtaList" element={<KurtaList />} />
           </Routes>
 
           <Footer />

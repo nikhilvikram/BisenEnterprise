@@ -433,7 +433,7 @@ footer {
   right: 0;
 
   height: 55px;
-  padding: 0 12px;
+  padding: 0 16px;
 
   display: flex;
   align-items: center;
@@ -2080,7 +2080,6 @@ body.dark .bisen-wishlist-btn.active {
   left: 0;
   width: 100%;
   height: 60px;
-
   background: var(--navbar-bg);
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 
@@ -2415,7 +2414,6 @@ html,
   justify-content: space-between;
   padding: 12px 16px;
   background: var(--bg-color);
-  border-top: 1px solid #ddd;
   z-index: 99;
 }
 
@@ -2464,7 +2462,7 @@ html,
   }
 
   .user_pd_sticky_bar {
-    padding: 10px 12px;
+    padding: 10px 26px;
   }
 }
 
@@ -2556,4 +2554,116 @@ html,
   background: rgba(255, 0, 0, 0.15);
   background: var(--back-button-bgrd) !important;
   color: var(--text-color) !important;
+}
+
+/* ============================================
+   FINAL FIX FOR BTN-CART (NO COLOR FLIP BUG)
+   ============================================ */
+
+.btn-cart {
+  background: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 2px solid var(--text-color) !important;
+
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 160px;
+
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+/* Hover (does NOT break after animation) */
+.btn-cart:hover {
+  background: var(--text-color) !important;
+  color: var(--bg-color) !important;
+}
+
+/* Animation (only temporary red, no theme flip) */
+.btn-cart.cart-animate {
+  background: #e63946 !important;
+  border-color: #e63946 !important;
+  color: #ffffff !important;
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(230, 57, 70, 0.45);
+}
+
+/* Prevent weird black/white flash */
+.btn-cart:focus,
+.btn-cart:active {
+  outline: none !important;
+  box-shadow: none !important;
+  background: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border-color: var(--text-color) !important;
+}
+
+/* When item is in cart */
+.btn-cart.cart-added {
+  border-color: #e63946 !important;
+  color: #e63946 !important;
+  background: transparent !important;
+}
+
+/* =============================
+      SIDEBAR USER CARD
+============================= */
+
+.sidebar-user-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--card-bg);
+  padding: 0;
+  border-radius: 14px;
+  margin: 0;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transition: 0.25s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.sidebar-user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+/* Avatar */
+.sidebar-user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffe5e9;
+  color: #e63946;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Info */
+.sidebar-user-info {
+  flex: 1;
+}
+
+.sidebar-user-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.sidebar-user-email {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Arrow */
+.sidebar-user-arrow {
+  font-size: 20px;
+  opacity: 0.5;
+  font-weight: 700;
 }
