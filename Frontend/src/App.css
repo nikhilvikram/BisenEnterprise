@@ -2109,3 +2109,7 @@ body.dark .bisen-wishlist-btn.active {
 .mb-nav-link.active svg {
   color: #e63946;
 }
+
+html {
+  scroll-behavior: auto !important;
+}

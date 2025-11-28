@@ -1,9 +1,10 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import React, { useContext } from "react";
 import { TextileList } from "../store/textile-list-store";
 import { CartContext } from "../store/cart-context";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "../store/wishlistSlice";
+import { saveScrollFor } from "../utils/scrollStore";
 
 const ProductDetail = () => {
   const { textileArray } = useContext(TextileList);
@@ -11,7 +12,8 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [animateCart, setAnimateCart] = React.useState(false);
   const { cart } = useContext(CartContext);
-
+  const loc = useLocation();
+  const currentKey = `${loc.pathname}${loc.hash || ""}`;
   const item = textileArray.find((p) => p.id.toString() === id);
   // Get this product's qty
   const cartItem = cart.find((c) => c.productId === item.id);
@@ -51,6 +53,17 @@ const ProductDetail = () => {
 
   return (
     <div className="container product-detail-container">
+      <button
+        className="btn btn-primary mt-3"
+        onClick={() => {
+          saveScrollFor(currentKey); // save current product page scroll
+          console.debug("GoBack: saved scroll for", currentKey, window.scrollY);
+          navigate(-1);
+        }}
+      >
+        Go Back
+      </button>
+
       <div className="row g-4">
         {/* LEFT: PRODUCT IMAGE */}
         <div className="col-md-6 text-center">

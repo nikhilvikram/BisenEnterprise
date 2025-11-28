@@ -43,7 +43,7 @@ function AppContent() {
       <div className="app-container">
         <HeaderNavbar />
         <Sidebar />
-        <div className="content">
+        <div className="content" id="scrollArea">
           <Routes>
             {/* <Route path="/" element={<SareeList />} /> */}
             <Route path="/" element={<Navigate to="/HomePage" />} />

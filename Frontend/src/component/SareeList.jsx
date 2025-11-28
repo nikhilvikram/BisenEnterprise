@@ -2,6 +2,9 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextileList } from "../store/textile-list-store";
 import { CartContext } from "../store/cart-context";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { saveScrollFor } from "../utils/scrollStore";
 
 const SareeList = () => {
   const { textileArray } = useContext(TextileList);
@@ -14,12 +17,12 @@ const SareeList = () => {
       payload: { productId: id },
     });
   };
-
   // Get qty for each product
   const getQty = (id) => {
     const item = cart.find((c) => c.productId === id);
     return item ? item.qty : 0;
   };
+  const { pathname, hash } = useLocation();
 
   return (
     <div className="container mt-4">
@@ -36,7 +39,11 @@ const SareeList = () => {
               {/* IMAGE */}
               <div
                 className="bisen-img-box"
-                onClick={() => navigate(`/product/${item.id}`)}
+                onClick={() => {
+                  const key = `${pathname}${hash || ""}`;
+                  saveScrollFor(key);
+                  navigate(`/product/${item.id}`);
+                }}
               >
                 <img src={item.image} alt={item.title} />
               </div>
