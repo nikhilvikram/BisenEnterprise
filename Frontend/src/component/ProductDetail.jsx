@@ -95,7 +95,8 @@ const ProductDetail = () => {
       </div>
 
       {/* STICKY BOTTOM BAR */}
-      <div className="user_pd_sticky_bar">
+      <div className="user_pd_sticky_bar_fixed">
+        {/* WISHLIST */}
         <button
           className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
           onClick={() =>
@@ -107,33 +108,29 @@ const ProductDetail = () => {
           {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
         </button>
 
-        <div className="user_pd_cart_controls">
-          {/* REMOVE */}
-          {qty > 0 && (
-            <button
-              className="user_cart_minus"
-              onClick={() =>
-                dispatch({
-                  type: "UPDATE_QTY",
-                  payload: { productId: item.id, qty: qty - 1 },
-                })
-              }
-            >
-              −
-            </button>
-          )}
+        {/* MINUS */}
+        <button
+          className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
+          onClick={() =>
+            dispatch({
+              type: "UPDATE_QTY",
+              payload: { productId: item.id, qty: qty - 1 },
+            })
+          }
+        >
+          −
+        </button>
 
-          {/* ADD */}
-          <button
-            className={`btn-cart cart-btn-wrapper 
-       ${animateCart ? "cart-animate" : ""} 
-       ${qty > 0 ? "cart-added" : ""}`}
-            onClick={handleAddToCartAnimated}
-          >
-            Add 🛒
-            {qty > 0 && <span className="cart-badge">{qty}</span>}
-          </button>
-        </div>
+        {/* ADD */}
+        <button
+          className={`btn-cart cart-btn-wrapper 
+      ${animateCart ? "cart-animate" : ""} 
+      ${qty > 0 ? "cart-added" : ""}`}
+          onClick={handleAddToCartAnimated}
+        >
+          Add 🛒
+          {qty > 0 && <span className="cart-badge">{qty}</span>}
+        </button>
       </div>
     </div>
   );
