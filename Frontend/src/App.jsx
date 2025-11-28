@@ -30,6 +30,8 @@ import ProductDetail from "./component/ProductDetail";
 import { ThemeProvider, ThemeContext } from "./store/theme-context";
 import CartProvider from "./store/cart-context";
 import AboutUs from "./component/AboutUs";
+import UserProfile from "./component/UserProfile";
+
 function AppContent() {
   const location = useLocation();
   const isProductPage = location.pathname.startsWith("/product");
@@ -58,6 +60,7 @@ function AppContent() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/BackendProducts" element={<BackendProducts />} />
             <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="/UserProfile" element={<UserProfile />} />
           </Routes>
 
           <Footer />

@@ -46,7 +46,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
         <hr />
 
         <ul className="list-unstyled px-3">
-          <li>
+          {/* <li>
             <NavLink
               to="/Home"
               className="sidebar-link"
@@ -54,7 +54,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
             >
               ✍️ Home
             </NavLink>
-          </li>
+          </li> */}
 
           <li>
             <NavLink

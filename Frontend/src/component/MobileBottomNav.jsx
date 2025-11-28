@@ -8,12 +8,6 @@ const MobileBottomNav = () => {
         <FaStore size={20} />
         <span>Store</span>
       </SaveNavLink>
-
-      <SaveNavLink to="/Home">
-        <FaList size={20} />
-        <span>Feed</span>
-      </SaveNavLink>
-
       <SaveNavLink to="/SareeList">
         <FaCompass size={20} />
         <span>Explore</span>
@@ -23,8 +17,11 @@ const MobileBottomNav = () => {
         <FaTshirt size={20} />
         <span>Categories</span>
       </SaveNavLink>
-
-      <SaveNavLink to="/Profile">
+      {/* <SaveNavLink to="/AboutUs">
+        <FaList size={20} />
+        <span>About Us</span>
+      </SaveNavLink> */}
+      <SaveNavLink to="/UserProfile">
         <FaUser size={20} />
         <span>Account</span>
       </SaveNavLink>

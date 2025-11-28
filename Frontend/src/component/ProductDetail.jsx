@@ -14,11 +14,14 @@ const ProductDetail = () => {
   const { cart } = useContext(CartContext);
   const loc = useLocation();
   const currentKey = `${loc.pathname}${loc.hash || ""}`;
-  const item = textileArray.find((p) => p.id.toString() === id);
-  // Get this product's qty
-  const cartItem = cart.find((c) => c.productId === item.id);
-  const totalQuantityForThisItem = cartItem ? cartItem.qty : 0;
 
+  const reduxDispatch = useDispatch();
+  const wishlistItems = useSelector((s) => s.wishlist.items);
+
+  const item = textileArray.find((p) => p.id.toString() === id);
+  const cartItem = cart.find((c) => c.productId === item?.id);
+  const qty = cartItem ? cartItem.qty : 0;
+  const isInWishlist = wishlistItems.some((i) => i.id === item?.id);
   const { dispatch } = useContext(CartContext);
   const handleAddToCart = () => {
     dispatch({
@@ -35,16 +38,12 @@ const ProductDetail = () => {
       setAnimateCart(false);
     }, 300); // animation duration
   };
-  // Wishlist
-  const reduxDispatch = useDispatch();
-  const wishlistItems = useSelector((state) => state.wishlist.items);
-  const isInWishlist = wishlistItems.some((i) => i.id === item.id);
 
   if (!item) {
     return (
-      <div className="text-center mt-5">
-        <h3>No product found 😔</h3>
-        <button className="btn btn-primary mt-3" onClick={() => navigate(-1)}>
+      <div className="user_notfound">
+        <h3>Product Not Found</h3>
+        <button className="user_btn_go" onClick={() => navigate(-1)}>
           Go Back
         </button>
       </div>
@@ -52,99 +51,88 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="container product-detail-container">
-      <button
-        className="btn btn-primary mt-3"
-        onClick={() => {
-          saveScrollFor(currentKey); // save current product page scroll
-          console.debug("GoBack: saved scroll for", currentKey, window.scrollY);
-          navigate(-1);
-        }}
-      >
-        Go Back
-      </button>
+    <div className="user_product_detail_wrapper">
+      {/* HEADER SECTION */}
+      <div className="user_pd_header">
+        <button
+          className="user_pd_backbtn"
+          onClick={() => {
+            saveScrollFor(currentKey);
+            navigate(-1);
+          }}
+        >
+          <span className="user_arrow_icon">←</span>
+        </button>
 
-      <div className="row g-4">
-        {/* LEFT: PRODUCT IMAGE */}
-        <div className="col-md-6 text-center">
-          <div className="premium-img-box">
-            <img
-              src={item.image}
-              alt={item.title}
-              className="premium-main-img"
-            />
-          </div>
-
-          {/* Buttons under image (mobile also) */}
-          <div className="mt-3 d-flex justify-content-center gap-3">
-            {/* Add to Cart Button */}
-            <button
-              className={`btn-cart cart-btn-wrapper 
-             ${animateCart ? "cart-animate" : ""} 
-             ${totalQuantityForThisItem > 0 ? "cart-added" : ""}`}
-              onClick={handleAddToCartAnimated}
-            >
-              Add to Cart 🛒
-              {/* Floating Quantity Badge */}
-              {totalQuantityForThisItem > 0 && (
-                <span className="cart-badge">{totalQuantityForThisItem}</span>
-              )}
-            </button>
-
-            {/* Wishlist Button */}
-            <button
-              className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
-              onClick={() => {
-                reduxDispatch(
-                  isInWishlist
-                    ? removeFromWishlist(item.id)
-                    : addToWishlist(item)
-                );
-              }}
-            >
-              {/* Heart SVG */}
-              <span className="wishlist-icon">
-                {isInWishlist ? (
-                  <svg viewBox="0 0 24 24" className="heart filled">
-                    <path d="M12 21s-6.7-4.4-9.6-8.3C-1.2 8.7.4 4.2 4.1 2.5 6.6 1.3 9.4 2 12 4.5 14.6 2 17.4 1.3 20 2.5c3.6 1.7 5.2 6.2 1.6 10.2C18.7 16.6 12 21 12 21z" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" className="heart outline">
-                    <path d="M16.8 3.1c-1.9 0-3.6.9-4.8 2.4C10.8 4 9.1 3.1 7.2 3.1 3.8 3.1 1 5.9 1 9.3c0 4.9 5.3 8.6 10.2 12.4.5.4 1.1.4 1.6 0C17.7 17.9 23 14.2 23 9.3c0-3.4-2.8-6.2-6.2-6.2z" />
-                  </svg>
-                )}
-              </span>
-
-              {isInWishlist ? "Wishlisted" : "Wishlist"}
-            </button>
-          </div>
+        <div className="user_pd_header_title_box">
+          <h4 className="user_pd_title_header">{item.title}</h4>
         </div>
-        {/* RIGHT: DETAILS */}
-        <div className="col-md-6 premium-details">
-          <span className="badge bg-light text-dark category-badge">
-            {item.category}
-          </span>
+      </div>
 
-          <h2 className="premium-title mt-2">{item.title}</h2>
+      {/* IMAGE */}
+      <div className="user_pd_imgbox">
+        <img src={item.image} alt={item.title} />
+      </div>
 
-          {/* Rating */}
-          <div className="premium-rating mt-2">
-            <span className="stars">
-              {"★".repeat(item.rating)}
-              {"☆".repeat(5 - item.rating)}
-            </span>
-            <span className="reviews">({item.reviews} reviews)</span>
-          </div>
+      {/* DETAILS */}
+      <div className="user_pd_content">
+        <span className="user_pd_category">{item.category}</span>
 
-          {/* Price Block */}
-          <div className="premium-price-block mt-3">
-            <h3 className="price-text">₹{item.price}</h3>
-            <p className="discount-text">{item.discount}% OFF</p>
-            <p className="delivery-text">FREE Delivery Tomorrow</p>
-          </div>
+        <h2 className="user_pd_title">{item.title}</h2>
 
-          {/* Description */}
-          <p className="premium-description mt-3">{item.description}</p>
+        <div className="user_pd_rating">
+          <span>{"★".repeat(item.rating)}</span>
+          <span className="user_pd_reviews">({item.reviews} reviews)</span>
+        </div>
+
+        <div className="user_pd_price_block">
+          <h3>₹{item.price}</h3>
+          <p className="user_pd_discount">{item.discount}% OFF</p>
+          <p className="user_pd_delivery">FREE Delivery Tomorrow</p>
+        </div>
+
+        <p className="user_pd_desc">{item.description}</p>
+      </div>
+
+      {/* STICKY BOTTOM BAR */}
+      <div className="user_pd_sticky_bar">
+        <button
+          className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
+          onClick={() =>
+            reduxDispatch(
+              isInWishlist ? removeFromWishlist(item.id) : addToWishlist(item)
+            )
+          }
+        >
+          {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
+        </button>
+
+        <div className="user_pd_cart_controls">
+          {/* REMOVE */}
+          {qty > 0 && (
+            <button
+              className="user_cart_minus"
+              onClick={() =>
+                dispatch({
+                  type: "UPDATE_QTY",
+                  payload: { productId: item.id, qty: qty - 1 },
+                })
+              }
+            >
+              −
+            </button>
+          )}
+
+          {/* ADD */}
+          <button
+            className={`btn-cart cart-btn-wrapper 
+       ${animateCart ? "cart-animate" : ""} 
+       ${qty > 0 ? "cart-added" : ""}`}
+            onClick={handleAddToCartAnimated}
+          >
+            Add 🛒
+            {qty > 0 && <span className="cart-badge">{qty}</span>}
+          </button>
         </div>
       </div>
     </div>

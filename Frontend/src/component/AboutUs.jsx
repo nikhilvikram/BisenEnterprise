@@ -1,5 +1,6 @@
 import React from "react";
 import aboutus from "../assets/aboutus.png";
+import aboutus1 from "../assets/aboutus1.png";
 export default function AboutUs() {
   return (
     <section className="bisen-about-section">
@@ -7,7 +8,7 @@ export default function AboutUs() {
         {/* LEFT — IMAGE */}
         <div className="bisen-about-image-box">
           <img
-            src={aboutus}
+            src={aboutus1}
             alt="Bhagyashri Bisen sewing in her workshop"
             className="bisen-about-image"
           />
