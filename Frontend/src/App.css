@@ -7,6 +7,7 @@
   --navbar-bg: #f1f1f1;
   --link-color: #333;
   --link-active-color: #000000;
+  --about-color:#fcf3f3;
 }
 
 .sidebar {
@@ -23,6 +24,7 @@ body.dark {
   --card-bg: #2a2a2a;
   --link-color: #eeeeee;
   --link-active-color: #ffffff;
+  --about-color:#0a0606;
 }
 
 .navbar {
@@ -2116,8 +2118,9 @@ html {
 
 .bisen-about-section {
   padding: 60px 20px;
-  background: var(--background-color, #f9f3f1);
+  background: var(--about-color, #f9f3f1);
   display: flex;
+  color: #000;
   justify-content: center;
 }
 
