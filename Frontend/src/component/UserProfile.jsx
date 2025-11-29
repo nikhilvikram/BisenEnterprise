@@ -104,7 +104,7 @@ const UserProfile = () => {
             navigate("/Login");
           }}
         >
-          <FaSignOutAlt /> Logout
+          Logout
         </button>
       ) : (
         <button className="user-logout-btn" onClick={() => navigate("/Login")}>
