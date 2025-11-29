@@ -2267,6 +2267,7 @@ html {
 
 .user-option:first-child {
   border-top: none;
+  padding-right: 48px;
 }
 
 .user-option .icon {
