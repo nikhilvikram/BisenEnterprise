@@ -4,7 +4,7 @@ import saree2 from "../assets/saree2.jpg";
 import saree10 from "../assets/saree10.jpg";
 import jwellery from "../assets/jwellery.jpg";
 import footeware from "../assets/footware.webp";
-import bag from "../assets/bag.jpg";
+import bag from "../assets/bag.webp";
 import nightwear from "../assets/nightwear.jpeg";
 
 const Categories = () => {

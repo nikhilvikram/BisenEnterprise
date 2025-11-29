@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import saree1 from "../assets/saree1.jpg";
 import saree2 from "../assets/saree2.jpg";
 import saree3 from "../assets/saree3.jpg";
-import bag from "../assets/bag.jpg";
+import bag from "../assets/bag.webp";
 import nightwear from "../assets/nightwear.jpeg";
 import saree10 from "../assets/saree10.jpg";
 import jwellery from "../assets/jwellery.jpg";
