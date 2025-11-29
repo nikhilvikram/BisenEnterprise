@@ -18,6 +18,8 @@ import WishlistPage from "./component/WishlistPage";
 import MobileBottomNav from "./component/MobileBottomNav";
 import ScrollRestoration from "./component/ScrollRestoration";
 import BackendProducts from "./component/BackendProducts";
+import Login from "./component/Login";
+import UserProvider from "./store/user-context";
 import {
   HashRouter as Router,
   Routes,
@@ -32,7 +34,7 @@ import CartProvider from "./store/cart-context";
 import AboutUs from "./component/AboutUs";
 import UserProfile from "./component/UserProfile";
 import KurtaList from "./component/KurtaList";
-
+import CheckoutPage from "./component/CheckoutPage";
 function AppContent() {
   const location = useLocation();
   const isProductPage = location.pathname.startsWith("/product");
@@ -63,6 +65,12 @@ function AppContent() {
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/UserProfile" element={<UserProfile />} />
             <Route path="/KurtaList" element={<KurtaList />} />
+            <Route path="/Checkout" element={<CheckoutPage />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Orders" element={<h2>My Orders Page</h2>} />
+            <Route path="/SavedAddresses" element={<h2>Saved Addresses</h2>} />
+            <Route path="/Support" element={<AboutUs />} />
+            <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
           </Routes>
 
           <Footer />
@@ -77,17 +85,19 @@ function App() {
   return (
     <div className="page-wrapper">
       <Provider store={store}>
-        <CartProvider>
-          <ThemeProvider>
-            <TextileListProvider>
-              <Router>
-                <PostListProvider>
-                  <AppContent />
-                </PostListProvider>
-              </Router>
-            </TextileListProvider>
-          </ThemeProvider>
-        </CartProvider>
+        <UserProvider>
+          <CartProvider>
+            <ThemeProvider>
+              <TextileListProvider>
+                <Router>
+                  <PostListProvider>
+                    <AppContent />
+                  </PostListProvider>
+                </Router>
+              </TextileListProvider>
+            </ThemeProvider>
+          </CartProvider>
+        </UserProvider>
       </Provider>
     </div>
   );

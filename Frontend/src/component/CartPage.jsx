@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { CartContext } from "../store/cart-context";
 import { TextileList } from "../store/textile-list-store";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const { cart, dispatch } = useContext(CartContext);
@@ -14,6 +15,7 @@ const CartPage = () => {
       return { ...ci, product };
     })
     .filter((item) => item.product);
+  const navigate = useNavigate();
 
   if (itemsWithProductDetails.length === 0) {
     return (
@@ -97,7 +99,9 @@ const CartPage = () => {
       {/* TOTAL SUMMARY BOX */}
       <div className="cart-summary">
         <h4>Total Amount: ₹{totalAmount}</h4>
-        <button className="checkout-btn">Proceed to Checkout</button>
+        <button className="checkout-btn" onClick={() => navigate("/Checkout")}>
+          Proceed to Checkout
+        </button>
       </div>
     </div>
   );

@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { FaBookOpenReader } from "react-icons/fa6";
 import { FaUsersLine } from "react-icons/fa6";
-
+import { UserContext } from "../store/user-context";
+import { useContext } from "react";
 const Sidebar = ({ selectedTab, setselectedTab }) => {
   const [open, setOpen] = useState(false);
 
@@ -26,7 +27,14 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
   const handleMenuClick = () => {
     setOpen(false); // Close sidebar
   };
-
+  const { user } = useContext(UserContext);
+  const initials = user
+    ? user.name
+        .split(" ")
+        .map((i) => i[0])
+        .join("")
+        .toUpperCase()
+    : "GU";
   return (
     <>
       {/* ===== Hamburger Button (Mobile) ===== */}
@@ -46,86 +54,99 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
       {/* ===== Slide Sidebar ===== */}
       <div className={`mobile-sidebar ${open ? "open" : ""}`}>
         <h4 className="sidebar-title">BisenEnterprise</h4>
+
         {/* ===== USER QUICK CARD ===== */}
         <div className="sidebar-user-card">
-          {" "}
           <NavLink
-            to="/UserProfile"
-            className="sidebar-link"
+            to={user ? "/UserProfile" : "/Login"}
+            className="sidebar-user-link"
             onClick={() => handleMenuClick("UserProfile")}
           >
-            <div className="sidebar-user-avatar">{/* Initials */}NB</div>
+            <div className="sidebar-user-avatar">{initials}</div>
 
             <div className="sidebar-user-info">
-              <h5 className="sidebar-user-name">Nikhil Bisen</h5>
+              <h5 className="sidebar-user-name">
+                {user ? user.name : "Guest User"}
+              </h5>
+              <p className="sidebar-user-email">
+                {user ? user.phone : "Login to continue"}
+              </p>
             </div>
           </NavLink>
-          <div className="sidebar-user-arrow custom_side">›</div>
+          <span className="sidebar-user-arrow">›</span>
         </div>
 
-        {/* ==== SIDEBAR MENU (Styled like Account Options) ==== */}
-        <div className="user-section">
+        {/* ==== MENU SECTION ==== */}
+        <div className="sidebar-menu-section">
+          {/* HOMEPAGE */}
           <div className="sidebar-user-card">
             <NavLink
               to="/HomePage"
-              className="sidebar-link user-option"
+              className="sidebar-user-link"
               onClick={() => handleMenuClick("HomePage")}
             >
               <span className="icon">
-                <FaHome className="icon" />
+                <FaHome />
               </span>
-              <span>Homepage</span>
+              <span className="label">Homepage</span>
             </NavLink>
-            <div className="sidebar-user-arrow arrow custom_side">›</div>
+            <span className="sidebar-user-arrow">›</span>
           </div>
+
+          {/* CREATE POST */}
           <div className="sidebar-user-card">
             <NavLink
               to="/CreatePost"
-              className="sidebar-link user-option"
+              className="sidebar-user-link"
               onClick={() => handleMenuClick("CreatePost")}
             >
               <span className="icon">
-                <FaBookOpenReader className="icon" />
+                <FaBookOpenReader />
               </span>
-              <span>Create Post</span>
+              <span className="label">Create Post</span>
             </NavLink>
-            <div className="sidebar-user-arrow arrow custom_side">›</div>
+            <span className="sidebar-user-arrow">›</span>
           </div>
+
+          {/* SAREE LIST */}
           <div className="sidebar-user-card">
             <NavLink
               to="/SareeList"
-              className="sidebar-link user-option"
+              className="sidebar-user-link"
               onClick={() => handleMenuClick("SareeList")}
             >
               <span className="icon">🥻</span>
-              <span>Saree List</span>
+              <span className="label">Saree List</span>
             </NavLink>
-            <div className="sidebar-user-arrow arrow custom_side">›</div>
+            <span className="sidebar-user-arrow">›</span>
           </div>
+
+          {/* KURTA LIST */}
           <div className="sidebar-user-card">
             <NavLink
               to="/KurtaList"
-              className="sidebar-link user-option"
+              className="sidebar-user-link"
               onClick={() => handleMenuClick("KurtaList")}
             >
               <span className="icon">👚</span>
-              <span>Kurta List</span>
+              <span className="label">Kurta List</span>
             </NavLink>
-
-            <div className="sidebar-user-arrow arrow custom_side">›</div>
+            <span className="sidebar-user-arrow">›</span>
           </div>
+
+          {/* ABOUT US */}
           <div className="sidebar-user-card">
             <NavLink
               to="/AboutUs"
-              className="sidebar-link user-option"
+              className="sidebar-user-link"
               onClick={() => handleMenuClick("AboutUs")}
             >
               <span className="icon">
-                <FaUsersLine className="icon" />
+                <FaUsersLine />
               </span>
-              <span>About Us</span>
+              <span className="label">About Us</span>
             </NavLink>
-            <div className="sidebar-user-arrow arrow custom_side">›</div>
+            <span className="sidebar-user-arrow">›</span>
           </div>
         </div>
       </div>
