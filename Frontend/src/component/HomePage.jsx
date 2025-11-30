@@ -9,11 +9,13 @@ import jwellery from "../assets/jwellery.jpg";
 import footeware from "../assets/footware.webp";
 import { useContext } from "react";
 import { TextileList } from "../store/textile-list-store";
-import { NavLink } from "react-router-dom";
+import BisenEnterprise_image from "../assets/BisenEnterprise_image.png";
+import LandingHeroDesktop from "../assets/LandingHeroDesktop.png";
+import LandingHeroMobile from "../assets/LandingHeroMobile.png";
 const HomePage = () => {
   const navigate = useNavigate();
   const { textileArray } = useContext(TextileList);
-  // Sort by reviews (best selling)
+
   const bestSellers = [...textileArray]
     .sort((a, b) => b.reviews - a.reviews)
     .slice(0, 4);
@@ -26,22 +28,28 @@ const HomePage = () => {
       </div>
 
       {/* ===== HERO BANNER ===== */}
-      <div className="hero-banner">
-        <img src={saree2} alt="Hero" className="hero-img" />
-        <div className="hero-text">
+      <div className="hero-banner redesigned-hero">
+        <div className="image-container">
+          <picture className="hero-img redesigned-hero-img">
+            <source media="(max-width: 768px)" srcSet={LandingHeroMobile} />
+            <source media="(min-width: 769px)" srcSet={LandingHeroDesktop} />
+            <img src="desktop-image.jpg" alt="Image" />
+          </picture>
+        </div>
+        <div className="hero-text redesigned-hero-text">
           <h1>Festive Fashion Sale</h1>
           <p>Surat • Jaipur • Ahmedabad Collections</p>
+
           <button className="hero-btn" onClick={() => navigate("/SareeList")}>
             Shop Now
           </button>
         </div>
       </div>
 
-      {/* ===== CATEGORIES ===== */}
+      {/* ===== CATEGORIES (Desktop Optimised) ===== */}
       <div className="container mt-4">
         <h2 className="section-title">Shop By Categories</h2>
-
-        <div className="category-row">
+        <div className="category-grid-responsive">
           {[
             { img: saree1, title: "Sarees", path: "/SareeList" },
             { img: saree10, title: "Kurtis", path: "/KurtaList" },
@@ -52,48 +60,61 @@ const HomePage = () => {
           ].map((cat, i) => (
             <div
               key={i}
-              className="category-cardx"
+              className="category-tile"
               onClick={() => navigate(cat.path)}
             >
-              <img src={cat.img} alt={cat.title} className="category-imagex" />
-              <div className="category-titlex">{cat.title}</div>
+              <img
+                src={cat.img}
+                alt={cat.title}
+                className="category-tile-img"
+              />
+              <div className="category-tile-title">{cat.title}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* ===== BEST SELLERS ===== */}
+      {/* ===== BEST SELLERS ===== */}
       <div className="container mt-5">
         <h2 className="section-title">Best Sellers</h2>
 
-        <div className="best-grid">
+        <div className="bisen-grid">
           {bestSellers.map((item) => (
             <div
               key={item.id}
-              className="best-card"
+              className="bisen-card"
               onClick={() => navigate(`/product/${item.id}`)}
             >
-              <img src={item.image} alt={item.title} className="best-img" />
-
-              <div className="best-info">
-                <p className="best-name">{item.title}</p>
-
-                <p className="best-price">₹{item.price}</p>
-
-                <p className="best-rating">
-                  ⭐ {item.rating} ({item.reviews})
-                </p>
-
-                <button
-                  className="best-btn"
-                  onClick={(e) => {
-                    e.stopPropagation(); // prevent card click
-                    navigate(`/product/${item.id}`);
-                  }}
-                >
-                  View Details
-                </button>
+              <div className="bisen-img-box">
+                <img src={item.image} alt={item.title} />
               </div>
+
+              <h5 className="bisen-title">{item.title}</h5>
+              <p className="bisen-category">{item.category}</p>
+
+              <div className="bisen-price-row">
+                <span className="new-price">₹{item.price}</span>
+                <span className="old-price">
+                  ₹{Math.round(item.price / (1 - item.discount / 100))}
+                </span>
+                <span className="discount">{item.discount}% OFF</span>
+              </div>
+
+              <div className="bisen-rating">
+                {"⭐".repeat(item.rating)}
+                <span className="review-count">({item.reviews})</span>
+              </div>
+
+              <button
+                className="bisen-cart-btn-small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/product/${item.id}`);
+                }}
+              >
+                View Details
+              </button>
             </div>
           ))}
         </div>

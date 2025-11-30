@@ -73,8 +73,8 @@ function AppContent() {
             <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
           </Routes>
 
-          <Footer />
           <MobileBottomNav />
+          <Footer />
         </div>
       </div>
     </>
