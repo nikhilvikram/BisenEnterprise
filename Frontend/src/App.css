@@ -3699,6 +3699,9 @@ html,
 
   /* Card styling */
   .bisen-card {
+    display: grid;
+    grid-template-columns: 1fr; /* One column */
+    grid-auto-rows: auto;
     padding: 8px !important;
     border-radius: 14px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
