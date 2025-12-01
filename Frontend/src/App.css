@@ -139,7 +139,7 @@ footer {
   width: 150px;
   height: 150px;
   object-fit: cover;
-  border: 4px solid #ff3f6c;
+  border: 2px solid var(--link-color);
   transition: transform 0.3s;
 }
 
@@ -495,14 +495,6 @@ footer {
   font-size: 18px;
   cursor: pointer;
   color: var(--text-color);
-}
-
-/* Desktop adjustment */
-@media (min-width: 768px) {
-  .bisen-logo {
-    font-size: 1.3rem;
-    margin-left: 10px;
-  }
 }
 
 /* Sidebar Premium Look */
