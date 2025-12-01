@@ -91,7 +91,6 @@ const HomePage = () => {
               </div>
 
               <h5 className="bisen-title">{item.title}</h5>
-              <p className="bisen-category">{item.category}</p>
 
               <div className="bisen-price-row">
                 <span className="new-price">₹{item.price}</span>

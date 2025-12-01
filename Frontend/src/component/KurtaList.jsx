@@ -48,9 +48,6 @@ const KurtaList = () => {
               {/* TITLE */}
               <h5 className="bisen-title">{item.title}</h5>
 
-              {/* CATEGORY */}
-              <p className="bisen-category">{item.category}</p>
-
               {/* PRICE ROW */}
               <div className="bisen-price-row">
                 <span className="new-price">₹{item.price}</span>
