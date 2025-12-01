@@ -38,7 +38,9 @@ const ProductDetail = () => {
       setAnimateCart(false);
     }, 300); // animation duration
   };
-
+  const bestSellers = [...textileArray]
+    .sort((a, b) => b.reviews - a.reviews)
+    .slice(0, 4);
   if (!item) {
     return (
       <div className="user_notfound">
@@ -131,6 +133,51 @@ const ProductDetail = () => {
           Add 🛒
           {qty > 0 && <span className="cart-badge">{qty}</span>}
         </button>
+      </div>
+      {/* ============== MORE PRODUCTS SECTION ============== */}
+
+      <div className="container mt-5">
+        <h2 className="section-title">Related PRODUCTS</h2>
+
+        <div className="bisen-grid">
+          {bestSellers.map((item) => (
+            <div
+              key={item.id}
+              className="bisen-card"
+              onClick={() => navigate(`/product/${item.id}`)}
+            >
+              <div className="bisen-img-box">
+                <img src={item.image} alt={item.title} />
+              </div>
+
+              <h5 className="bisen-title">{item.title}</h5>
+              <p className="bisen-category">{item.category}</p>
+
+              <div className="bisen-price-row">
+                <span className="new-price">₹{item.price}</span>
+                <span className="old-price">
+                  ₹{Math.round(item.price / (1 - item.discount / 100))}
+                </span>
+                <span className="discount">{item.discount}% OFF</span>
+              </div>
+
+              <div className="bisen-rating">
+                {"⭐".repeat(item.rating)}
+                <span className="review-count">({item.reviews})</span>
+              </div>
+
+              <button
+                className="bisen-cart-btn-small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/product/${item.id}`);
+                }}
+              >
+                View Details
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

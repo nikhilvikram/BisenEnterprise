@@ -26,9 +26,6 @@ const SareeList = () => {
 
   return (
     <div className="container mt-4">
-      <h3 className="mb-4" style={{ color: "var(--text-color)" }}>
-        Saree Collection
-      </h3>
 
       <div className="bisen-grid">
         {textileArray.map((item) => {
@@ -50,9 +47,6 @@ const SareeList = () => {
 
               {/* TITLE */}
               <h5 className="bisen-title">{item.title}</h5>
-
-              {/* CATEGORY */}
-              <p className="bisen-category">{item.category}</p>
 
               {/* PRICE ROW */}
               <div className="bisen-price-row">
