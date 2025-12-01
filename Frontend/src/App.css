@@ -3525,6 +3525,7 @@ html,
 }
 
 .category-tile {
+  max-width: 300px;
   position: relative;
   height: 260px; /* Equal tiles */
   border-radius: 18px;
@@ -3567,6 +3568,7 @@ html,
   }
 
   .category-tile {
+    max-width: 182px;
     height: 150px;
     border-radius: 12px;
   }
@@ -3590,4 +3592,110 @@ html,
   .image-container {
     background-image: url("mobile-image.jpg"); /* Mobile image */
   }
+}
+/*======================================
+   MOBILE SMALL SCREENS FIX ( <= 380px )
+   ======================================= */
+
+@media (max-width: 380px) {
+  .bisen-logo {
+    margin-left: 35px;
+  }
+  /* Reduce header icon spacing */
+  .bisen-icons {
+    gap: 12px !important;
+  }
+
+  /* ========== CATEGORY GRID FIX ========== */
+  .category-grid-responsive {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .category-tile {
+    max-width: 167px;
+    height: 120px !important;
+    border-radius: 10px !important;
+  }
+
+  .category-tile-title {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+    bottom: 8px !important;
+    left: 8px !important;
+  }
+
+  /* ========== HERO BANNER FIX ========== */
+  .hero-banner {
+    height: auto !important;
+  }
+
+  .hero-text h1 {
+    font-size: 20px !important;
+  }
+
+  .hero-text p {
+    font-size: 13px !important;
+  }
+
+  .hero-btn {
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+  }
+
+  /* ========== BEST SELLERS FIX ========== */
+  .best-seller-grid-new,
+  .best-seller-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .best-img-box {
+    height: 200px !important;
+  }
+
+  .best-info-new {
+    padding: 10px !important;
+  }
+
+  .best-name-new {
+    font-size: 14px !important;
+  }
+
+  .best-price-new {
+    font-size: 16px !important;
+  }
+
+  .best-btn-new {
+    font-size: 13px !important;
+    padding: 8px 10px !important;
+  }
+
+  /* ========== GENERAL SPACING FIX ========== */
+  .section-title {
+    font-size: 18px !important;
+    margin-left: 6px !important;
+  }
+
+  /* Remove random overflow scroll bars */
+  body,
+  html {
+    overflow-x: hidden !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .category-tile {
+    max-width: 235px;
+  }
+}
+
+.mt-4 {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+}
+.section-title {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center;
 }

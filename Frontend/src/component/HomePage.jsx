@@ -47,8 +47,8 @@ const HomePage = () => {
       </div>
 
       {/* ===== CATEGORIES (Desktop Optimised) ===== */}
+      <h2 className="section-title">Shop By Categories</h2>
       <div className="container mt-4">
-        <h2 className="section-title">Shop By Categories</h2>
         <div className="category-grid-responsive">
           {[
             { img: saree1, title: "Sarees", path: "/SareeList" },
