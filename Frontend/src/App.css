@@ -3943,3 +3943,19 @@ html,
     z-index: 9999;
   }
 }
+
+.bisen-about-image-box {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.bisen-about-video {
+  width: 60%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}

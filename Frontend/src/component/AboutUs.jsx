@@ -1,17 +1,23 @@
 import React from "react";
-import aboutus from "../assets/aboutus.png";
 import aboutus1 from "../assets/aboutus1.png";
+import aboutus from "../assets/aboutus.mp4";
 export default function AboutUs() {
   return (
     <section className="bisen-about-section">
       <div className="bisen-about-container">
         {/* LEFT — IMAGE */}
         <div className="bisen-about-image-box">
-          <img
-            src={aboutus1}
-            alt="Bhagyashri Bisen sewing in her workshop"
-            className="bisen-about-image"
-          />
+          <video
+            className="bisen-about-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          >
+            <source src={aboutus} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
 
         {/* RIGHT — TEXT */}

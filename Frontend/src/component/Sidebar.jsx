@@ -94,7 +94,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
           </div>
 
           {/* CREATE POST */}
-          <div className="sidebar-user-card">
+          {/* <div className="sidebar-user-card">
             <NavLink
               to="/CreatePost"
               className="sidebar-user-link"
@@ -106,7 +106,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
               <span className="label">Create Post</span>
             </NavLink>
             <span className="sidebar-user-arrow">›</span>
-          </div>
+          </div> */}
 
           {/* SAREE LIST */}
           <div className="sidebar-user-card">
