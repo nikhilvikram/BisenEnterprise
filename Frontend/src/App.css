@@ -1157,7 +1157,7 @@ footer {
 }
 @media (min-width: 992px) {
   .category-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1964,9 +1964,9 @@ body.dark .card-badge {
   font-size: 1rem;
   font-weight: 600;
   margin-left: 2px;
-  background: transparent;
-  border: 2px solid #e63946; /* red outline */
-  color: #e63946;
+  background: #ffffff;
+  border: 2px solid #000000; /* red outline */
+  color: #020202;
   border-radius: 10px;
 
   cursor: pointer;
@@ -2039,14 +2039,11 @@ body.dark .card-badge {
 
 /* DARK MODE SUPPORT */
 body.dark .bisen-wishlist-btn {
-  border-color: #ff7a88;
-  color: #ff7a88;
   align-content: center;
   display: block;
-}
-
-body.dark .bisen-wishlist-btn:hover {
-  background: rgba(255, 120, 140, 0.15);
+  background: #0a0707;
+  color: #ffffff;
+  border: 2px solid var(--text-color) !important;
 }
 
 body.dark .bisen-wishlist-btn.active {
@@ -2600,7 +2597,6 @@ html,
 .btn-cart.cart-added {
   border-color: #e63946 !important;
   color: #e63946 !important;
-  background: transparent !important;
 }
 
 /* =============================
@@ -2678,7 +2674,6 @@ html,
 
   gap: 10px;
   padding: 12px 6px;
-  background: var(--bg-color);
   z-index: 9999;
 }
 
@@ -3704,7 +3699,7 @@ html,
    PREMIUM PRODUCT CARD — SMALL DEVICES
    Applies ONLY to width <= 380px
    ======================================= */
-@media (max-width: 1380px) {
+@media (max-width: 550px) {
   /* Grid fix – 2 products per row cleanly */
   .bisen-grid {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -3941,5 +3936,19 @@ html,
     top: -6px !important;
     font-size: 10px !important;
     padding: 2px 4px !important;
+  }
+}
+@media (min-width: 768px) {
+  .user_pd_sticky_bar_fixed {
+    position: static;
+    left: 0;
+    width: 100%;
+    display: grid;
+    /* Wishlist | Minus | Add */
+    grid-template-columns: 1fr 36px 1fr;
+
+    gap: 10px;
+    padding: 12px 6px;
+    z-index: 9999;
   }
 }
