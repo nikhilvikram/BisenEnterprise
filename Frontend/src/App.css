@@ -2041,6 +2041,8 @@ body.dark .card-badge {
 body.dark .bisen-wishlist-btn {
   border-color: #ff7a88;
   color: #ff7a88;
+  align-content: center;
+  display: block;
 }
 
 body.dark .bisen-wishlist-btn:hover {
@@ -2051,6 +2053,7 @@ body.dark .bisen-wishlist-btn.active {
   background: #ff4d5c;
   border-color: #ff4d5c;
   color: #fff;
+  align-content: center;
 }
 
 /* Make room for fixed header and bottom nav */
@@ -2670,8 +2673,8 @@ html,
   left: 0;
   width: 100%;
   display: grid;
- /* Wishlist | Minus | Add */
-  grid-template-columns: 1fr 1fr 36px 1fr 4fr;
+  /* Wishlist | Minus | Add */
+  grid-template-columns: 1fr 36px 1fr;
 
   gap: 10px;
   padding: 12px 6px;
@@ -3797,87 +3800,11 @@ html,
   margin: 6px 0;
 }
 
-.user_pd_rating {
-  margin: 6px 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: #ffb400;
-}
-
-/* Price block */
-.user_pd_price_block {
-  margin: 10px 0;
-}
-.user_pd_price_block h3 {
-  font-size: 26px;
-  color: #e63946;
-  margin-bottom: 4px;
-}
-.user_pd_discount {
-  color: #1a7f1a;
-  font-weight: bold;
-}
-
 /* Delivery text */
 .user_pd_delivery {
   font-size: 13px;
   color: #444;
   margin-top: 5px;
-}
-
-/* Sticky Bottom Bar */
-/* .user_pd_sticky_bar_fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 16px;
-  border-top: 1px solid #ddd;
-  z-index: 999;
-} */
-
-/* Wishlist */
-.bisen-wishlist-btn {
-  flex: 1.4;
-  background: #ffe6ea;
-  border: 1px solid #ffb2c2;
-  padding: 10px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-.bisen-wishlist-btn.active {
-  background: #ffccd5;
-  color: #c81e37;
-}
-
-/* Add to cart button */
-.cart-btn-wrapper {
-  flex: 2;
-  background: #e63946;
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-weight: 700;
-  padding: 10px 0;
-  position: relative;
-  font-size: 16px;
-}
-
-/* Cart badge number */
-.cart-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #fff;
-  color: #1a7f1a;
-  border-radius: 50%;
-  padding: 3px 6px;
-  font-size: 12px;
-  font-weight: 700;
 }
 
 /* Animation */
@@ -3979,5 +3906,40 @@ html,
     gap: 10px;
     padding: 12px 16px;
     z-index: 999;
+  }
+}
+/* =============================
+   FIX: SMALLER BUTTONS ON <390px
+   ============================= */
+@media (max-width: 390px) {
+  .user_pd_sticky_bar_fixed {
+    padding: 6px 8px !important;
+    gap: 6px !important;
+  }
+
+  .bisen-wishlist-btn {
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    min-width: 70px !important;
+  }
+
+  .cart-btn-wrapper {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    min-width: 90px !important;
+  }
+
+  .user_cart_minus {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+    padding: 0 !important;
+  }
+
+  .cart-badge {
+    right: -6px !important;
+    top: -6px !important;
+    font-size: 10px !important;
+    padding: 2px 4px !important;
   }
 }

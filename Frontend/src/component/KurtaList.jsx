@@ -27,10 +27,6 @@ const KurtaList = () => {
 
   return (
     <div className="container mt-4">
-      <h3 className="mb-4" style={{ color: "var(--text-color)" }}>
-        Kurta Collection
-      </h3>
-
       <div className="bisen-grid">
         {textileArray.map((item) => {
           const qty = getQty(item.id);
