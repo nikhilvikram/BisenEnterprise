@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { UserContext } from "../store/user-context";
+import { AuthContext } from "../store/auth-context";
 import {
   FaChevronRight,
   FaUserEdit,
@@ -13,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
-  const { user, logout } = useContext(UserContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const initials = user

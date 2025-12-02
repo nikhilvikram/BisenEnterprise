@@ -1,30 +1,47 @@
 import React, { useState, useContext } from "react";
-import { UserContext } from "../store/user-context";
+import { AuthContext } from "../store/auth-context"; // ✅ Use the real Auth Context
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { login } = useContext(UserContext);
+  const { login, register } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [tab, setTab] = useState("login"); // login | signup
+  
+  // ✅ Updated state for real backend auth
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [showTerms, setShowTerms] = useState(false);
 
-  const handleSubmit = () => {
-    if (!name || !phone) {
-      alert("Please fill all fields");
+  const handleSubmit = async () => {
+    // Basic Validation
+    if (!email || !password) {
+      alert("Please fill in Email and Password");
       return;
     }
 
-    login({
-      name,
-      email: `${name.toLowerCase().replace(" ", "")}@gmail.com`,
-      phone,
-    });
+    if (tab === "signup" && !name) {
+      alert("Please enter your Name");
+      return;
+    }
 
-    navigate("/UserProfile");
+    let result;
+
+    // ✅ Call Backend API based on Tab
+    if (tab === "signup") {
+      result = await register(name, email, password);
+    } else {
+      result = await login(email, password);
+    }
+
+    // ✅ Handle Result
+    if (result.success) {
+      navigate("/"); // Redirect to Home on success
+    } else {
+      alert(result.message || "Authentication failed");
+    }
   };
 
   return (
@@ -50,20 +67,33 @@ const Login = () => {
           {tab === "login" ? "Welcome Back" : "Create Your Account"}
         </h2>
 
+        {/* ✅ NAME INPUT (Only for Signup) */}
+        {tab === "signup" && (
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="user_login_input"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        )}
+
+        {/* ✅ EMAIL INPUT (Required for Backend) */}
         <input
-          type="text"
-          placeholder="Full Name"
+          type="email"
+          placeholder="Email Address"
           className="user_login_input"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
+        {/* ✅ PASSWORD INPUT (Required for Backend) */}
         <input
-          type="text"
-          placeholder="Phone Number"
+          type="password"
+          placeholder="Password"
           className="user_login_input"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button className="user_login_btn" onClick={handleSubmit}>

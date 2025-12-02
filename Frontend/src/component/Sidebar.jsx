@@ -4,6 +4,7 @@ import { FaHome } from "react-icons/fa";
 import { FaBookOpenReader } from "react-icons/fa6";
 import { FaUsersLine } from "react-icons/fa6";
 import { UserContext } from "../store/user-context";
+import { AuthContext } from "../store/auth-context";
 import { useContext } from "react";
 const Sidebar = ({ selectedTab, setselectedTab }) => {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
   const handleMenuClick = () => {
     setOpen(false); // Close sidebar
   };
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   const initials = user
     ? user.name
         .split(" ")

@@ -35,6 +35,7 @@ import AboutUs from "./component/AboutUs";
 import UserProfile from "./component/UserProfile";
 import KurtaList from "./component/KurtaList";
 import CheckoutPage from "./component/CheckoutPage";
+import { AuthProvider } from "./store/auth-context";
 function AppContent() {
   const location = useLocation();
   const isProductPage = location.pathname.startsWith("/product");
@@ -89,11 +90,13 @@ function App() {
           <CartProvider>
             <ThemeProvider>
               <TextileListProvider>
-                <Router>
-                  <PostListProvider>
-                    <AppContent />
-                  </PostListProvider>
-                </Router>
+                <AuthProvider>
+                  <Router>
+                    <PostListProvider>
+                      <AppContent />
+                    </PostListProvider>
+                  </Router>
+                </AuthProvider>
               </TextileListProvider>
             </ThemeProvider>
           </CartProvider>
