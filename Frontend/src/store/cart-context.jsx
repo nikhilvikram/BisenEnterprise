@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "./auth-context"; // Import Auth to get token
+import { AuthContext } from "./auth-context";
 
 export const CartContext = createContext({
   cart: [],
@@ -9,68 +9,65 @@ export const CartContext = createContext({
 
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const { token } = useContext(AuthContext); // Get the JWT token
+  const { token } = useContext(AuthContext);
+
+  // ✅ HELPER: Get token from Context OR LocalStorage (Safe Fallback)
+  const getToken = () => {
+    return token || localStorage.getItem("token");
+  };
 
   // 1. FETCH CART FROM DB ON LOAD
   useEffect(() => {
-    if (token) {
+    const currentToken = getToken();
+    if (currentToken) {
       axios
         .get("https://bisen-backend.onrender.com/api/cart", {
-          headers: { "x-auth-token": token },
+          headers: { "x-auth-token": currentToken },
         })
         .then((res) => {
-          // Backend returns { items: [...] }. We just need the items array.
           setCart(res.data.items || []);
         })
         .catch((err) => console.error("Error fetching cart:", err));
     }
   }, [token]);
 
-  // 2. HANDLE ACTIONS (Add, Remove, Update)
+  // 2. HANDLE ACTIONS
   const dispatch = async (action) => {
-    console.log("Dispatching Action:", action.type, "Token:", token);
-    if (!token) {
+    // ✅ CRITICAL FIX: Always get the freshest token
+    const currentToken = getToken();
+
+    console.log("Dispatching Action:", action.type, "Token:", currentToken);
+
+    if (!currentToken) {
       alert("Please Login to use Cart");
       return;
     }
 
-    const config = { headers: { "x-auth-token": token } };
+    const config = { headers: { "x-auth-token": currentToken } };
 
     try {
       if (action.type === "ADD_TO_CART") {
-        // Optimistic UI Update (Update screen immediately)
-        // ... complex logic omitted for simplicity, let's wait for server response for accuracy
-
         const res = await axios.post(
           "https://bisen-backend.onrender.com/api/cart/add",
           action.payload,
           config
         );
-        setCart(res.data.items); // Update local state with server response
+        setCart(res.data.items);
       } else if (action.type === "REMOVE_FROM_CART") {
         const res = await axios.delete(
           `https://bisen-backend.onrender.com/api/cart/item/${action.payload}`,
           config
         );
         setCart(res.data.items);
-      }
-
-      // Note: For Update Qty, we need to create a specific route in backend or reuse ADD with logic
-      // For now, let's assume ADD handles updates (if item exists, it adds qty)
-      else if (action.type === "UPDATE_QTY") {
-        // This requires a specific backend route we might need to tweak.
-        // For now, re-using add logic or you can create a specific /update route in backend.
-        // Let's implement a simple logic:
-        // If qty is increasing, call Add. If decreasing, we need a subtract logic.
-        // payload: { productId, qty }
+      } else if (action.type === "UPDATE_QTY") {
         const res = await axios.put(
           "https://bisen-backend.onrender.com/api/cart/update",
           action.payload,
           config
         );
-        setCart(res.data.items); // Update local state with new data
+        setCart(res.data.items);
       } else if (action.type === "CLEAR_CART") {
-        setCart([]); // Instantly wipe local state
+        setCart([]);
       }
     } catch (error) {
       console.error("Cart Error:", error);
