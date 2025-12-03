@@ -51,7 +51,7 @@ const HeaderNavbar = () => {
           >
             <FaHeart size={20} className="header-icon" />
             {wishlistCount > 0 && (
-              <span className="icon-badge">{wishlistCount}</span>
+              <span className="icon-badge badgehome">{wishlistCount}</span>
             )}
           </NavLink>
 
@@ -63,7 +63,7 @@ const HeaderNavbar = () => {
           >
             <FaShoppingBag size={20} className="header-icon" />
             {totalQuantity > 0 && (
-              <span className="icon-badge">{totalQuantity}</span>
+              <span className="icon-badge badgehome">{totalQuantity}</span>
             )}
           </NavLink>
         </div>

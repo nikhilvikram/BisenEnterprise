@@ -1,26 +1,88 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+// 1. FETCH Wishlist from DB
+export const fetchWishlist = createAsyncThunk(
+  "wishlist/fetch",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return []; // If no user, return empty
+
+      const res = await axios.get("http://localhost:5000/api/wishlist", {
+        headers: { "x-auth-token": token },
+      });
+      return res.data; // Returns array of products
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+// 2. ADD Item to DB
+export const addToWishlist = createAsyncThunk(
+  "wishlist/add",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `http://localhost:5000/api/wishlist/add/${productId}`,
+        {},
+        {
+          headers: { "x-auth-token": token },
+        }
+      );
+      return res.data; // Returns updated list
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+// 3. REMOVE Item from DB
+export const removeFromWishlist = createAsyncThunk(
+  "wishlist/remove",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.delete(
+        `http://localhost:5000/api/wishlist/remove/${productId}`,
+        {
+          headers: { "x-auth-token": token },
+        }
+      );
+      return res.data; // Returns updated list
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 const wishlistSlice = createSlice({
   name: "wishlist",
-  initialState: {
-    items: [],
-  },
+  initialState: { items: [], status: "idle", error: null },
   reducers: {
-    addToWishlist: (state, action) => {
-      const item = action.payload;
-      const exists = state.items.find((p) => p.id === item.id);
-      if (!exists) {
-        state.items.push(item);
-      }
+    // Optional: clear wishlist on logout
+    clearWishlist: (state) => {
+      state.items = [];
     },
-    removeFromWishlist: (state, action) => {
-      const id = action.payload;
-      state.items = state.items.filter((p) => p.id !== id);
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Fetch
+      .addCase(fetchWishlist.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      // Add
+      .addCase(addToWishlist.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      // Remove
+      .addCase(removeFromWishlist.fulfilled, (state, action) => {
+        state.items = action.payload;
+      });
   },
 });
 
-//Exporting reducer and action separately
-
-export const { addToWishlist, removeFromWishlist } = wishlistSlice.actions;
+export const { clearWishlist } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

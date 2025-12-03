@@ -7,6 +7,7 @@ import { UserContext } from "../store/user-context";
 import { AuthContext } from "../store/auth-context";
 import { useContext } from "react";
 const Sidebar = ({ selectedTab, setselectedTab }) => {
+  const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
 
   // ===== Close sidebar when clicking outside =====
@@ -28,7 +29,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
   const handleMenuClick = () => {
     setOpen(false); // Close sidebar
   };
-  const { user } = useContext(AuthContext);
+  
   const initials = user
     ? user.name
         .split(" ")

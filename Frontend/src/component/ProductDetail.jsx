@@ -1,46 +1,82 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { TextileList } from "../store/textile-list-store";
 import { CartContext } from "../store/cart-context";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "../store/wishlistSlice";
 import { saveScrollFor } from "../utils/scrollStore";
+// Import Icons for cleaner UI (optional, if you have them set up)
+// import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 
 const ProductDetail = () => {
   const { textileArray } = useContext(TextileList);
-  const { id } = useParams();
+  const { id } = useParams(); // This is the Product ID from URL
   const navigate = useNavigate();
-  const [animateCart, setAnimateCart] = React.useState(false);
-  const { cart } = useContext(CartContext);
+  const [animateCart, setAnimateCart] = useState(false);
+
   const loc = useLocation();
   const currentKey = `${loc.pathname}${loc.hash || ""}`;
 
+  // --- 1. CART CONTEXT ---
+  const { cart, dispatch } = useContext(CartContext);
+
+  // --- 2. WISHLIST REDUX ---
   const reduxDispatch = useDispatch();
   const wishlistItems = useSelector((s) => s.wishlist.items);
 
-  const item = textileArray.find((p) => p.id.toString() === id);
-  const cartItem = cart.find((c) => c.productId === item?.id);
+  // --- 3. FIND PRODUCT ---
+  // Ensure we compare strings to avoid Type errors
+  const item = textileArray.find((p) => p._id === id || p.id === id);
+
+  // --- 4. CHECK CART QUANTITY (BACKEND COMPATIBLE) ---
+  const cartItem = cart.find((c) => {
+    // Backend populates productId as an Object { _id, title... }
+    // But sometimes it might be just an ID string. Handle both.
+    const cartProdId = c.productId._id || c.productId;
+    return cartProdId.toString() === id;
+  });
   const qty = cartItem ? cartItem.qty : 0;
-  const isInWishlist = wishlistItems.some((i) => i.id === item?.id);
-  const { dispatch } = useContext(CartContext);
+
+  // --- 5. CHECK WISHLIST STATUS ---
+  const isInWishlist = wishlistItems.some((i) => i._id === id || i.id === id);
+
+  // --- HANDLERS ---
+
   const handleAddToCart = () => {
+    // Dispatch to Context (which calls API)
     dispatch({
       type: "ADD_TO_CART",
-      payload: { productId: item.id },
+      payload: { productId: id, qty: 1 }, // Backend expects { productId, qty }
     });
   };
+
   const handleAddToCartAnimated = () => {
-    handleAddToCart(); // your existing add-to-cart logic
-
+    handleAddToCart();
     setAnimateCart(true);
-
-    setTimeout(() => {
-      setAnimateCart(false);
-    }, 300); // animation duration
+    setTimeout(() => setAnimateCart(false), 300);
   };
+
+  const handleUpdateQty = (newQty) => {
+    if (newQty < 1) {
+      dispatch({ type: "REMOVE_FROM_CART", payload: id });
+    } else {
+      // For simple update, we can reuse ADD logic or creating a specific UPDATE action
+      // Since your backend ADD logic increments, we need a specific UPDATE logic or
+      // calculate the difference.
+      // Simplest for now: Call UPDATE_QTY action if your Context handles it
+      dispatch({
+        type: "UPDATE_QTY",
+        payload: { productId: id, qty: newQty },
+      });
+    }
+  };
+
+  // Related Products (Logic remains same)
   const bestSellers = [...textileArray]
+    .filter((p) => p._id !== id && p.id !== id) // Don't show current item
     .sort((a, b) => b.reviews - a.reviews)
     .slice(0, 4);
+
   if (!item) {
     return (
       <div className="user_notfound">
@@ -83,8 +119,8 @@ const ProductDetail = () => {
         <h2 className="user_pd_title">{item.title}</h2>
 
         <div className="user_pd_rating">
-          <span>{"★".repeat(item.rating)}</span>
-          <span className="user_pd_reviews">({item.reviews} reviews)</span>
+          <span>{"★".repeat(item.rating || 4)}</span>
+          <span className="user_pd_reviews">({item.reviews || 0} reviews)</span>
         </div>
 
         <div className="user_pd_price_block">
@@ -101,50 +137,52 @@ const ProductDetail = () => {
         {/* WISHLIST */}
         <button
           className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
-          onClick={() =>
+          onClick={() => {
+            // Dispatch Async Thunk (sends API call)
             reduxDispatch(
-              isInWishlist ? removeFromWishlist(item.id) : addToWishlist(item)
-            )
-          }
+              isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
+            );
+          }}
         >
           {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
         </button>
 
-        {/* MINUS */}
+        {/* MINUS (Only show if in cart) */}
         <button
           className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
-          onClick={() =>
-            dispatch({
-              type: "UPDATE_QTY",
-              payload: { productId: item.id, qty: qty - 1 },
-            })
-          }
+          onClick={() => handleUpdateQty(qty - 1)}
         >
           −
         </button>
 
-        {/* ADD */}
+        {/* ADD BUTTON */}
         <button
           className={`btn-cart cart-btn-wrapper 
-      ${animateCart ? "cart-animate" : ""} 
-      ${qty > 0 ? "cart-added" : ""}`}
+    ${animateCart ? "cart-animate" : ""} 
+    ${qty > 0 ? "cart-added" : ""}`}
           onClick={handleAddToCartAnimated}
         >
-          Add 🛒
-          {qty > 0 && <span className="cart-badge">{qty}</span>}
-        </button>
-      </div>
-      {/* ============== MORE PRODUCTS SECTION ============== */}
+          <span className="btn-cart-content">
+            {qty > 0 ? `Added 🛒` : "Add 🛒"}
+          </span>
 
+          {qty > 0 && <span className="icon-badge">{qty}</span>}
+        </button>
+
+        {/* PLUS (Only show if in cart - optional design choice to split button) */}
+        {/* If you want a +/- counter style instead of just "Add", you can add a Plus button here too */}
+      </div>
+
+      {/* ============== MORE PRODUCTS SECTION ============== */}
       <div className="container mt-5">
         <h2 className="section-title">Related PRODUCTS</h2>
 
         <div className="bisen-grid">
           {bestSellers.map((item) => (
             <div
-              key={item.id}
+              key={item._id || item.id}
               className="bisen-card"
-              onClick={() => navigate(`/product/${item.id}`)}
+              onClick={() => navigate(`/product/${item._id || item.id}`)}
             >
               <div className="bisen-img-box">
                 <img src={item.image} alt={item.title} />
@@ -155,21 +193,21 @@ const ProductDetail = () => {
               <div className="bisen-price-row">
                 <span className="new-price">₹{item.price}</span>
                 <span className="old-price">
-                  ₹{Math.round(item.price / (1 - item.discount / 100))}
+                  ₹{Math.round(item.price / (1 - (item.discount || 10) / 100))}
                 </span>
                 <span className="discount">{item.discount}% OFF</span>
               </div>
 
               <div className="bisen-rating">
-                {"⭐".repeat(item.rating)}
-                <span className="review-count">({item.reviews})</span>
+                {"⭐".repeat(item.rating || 4)}
+                <span className="review-count">({item.reviews} reviews)</span>
               </div>
 
               <button
                 className="bisen-cart-btn-small"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigate(`/product/${item.id}`);
+                  navigate(`/product/${item._id || item.id}`);
                 }}
               >
                 View Details

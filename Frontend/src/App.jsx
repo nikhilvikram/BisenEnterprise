@@ -35,8 +35,11 @@ import AboutUs from "./component/AboutUs";
 import UserProfile from "./component/UserProfile";
 import KurtaList from "./component/KurtaList";
 import CheckoutPage from "./component/CheckoutPage";
+import { useDispatch } from "react-redux";
+import { fetchWishlist } from "./store/wishlistSlice";
 import { AuthProvider } from "./store/auth-context";
 function AppContent() {
+  const dispatch = useDispatch();
   const location = useLocation();
   const isProductPage = location.pathname.startsWith("/product");
   const { darkMode } = useContext(ThemeContext);
@@ -44,6 +47,11 @@ function AppContent() {
     if (darkMode) document.body.classList.add("dark");
     else document.body.classList.remove("dark");
   }, [darkMode]);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      dispatch(fetchWishlist());
+    }
+  }, [dispatch]);
   return (
     <>
       <ScrollRestoration />
@@ -86,21 +94,21 @@ function App() {
   return (
     <div className="page-wrapper">
       <Provider store={store}>
-        <UserProvider>
-          <CartProvider>
-            <ThemeProvider>
-              <TextileListProvider>
-                <AuthProvider>
+        <AuthProvider>
+          <UserProvider>
+            <CartProvider>
+              <ThemeProvider>
+                <TextileListProvider>
                   <Router>
                     <PostListProvider>
                       <AppContent />
                     </PostListProvider>
                   </Router>
-                </AuthProvider>
-              </TextileListProvider>
-            </ThemeProvider>
-          </CartProvider>
-        </UserProvider>
+                </TextileListProvider>
+              </ThemeProvider>
+            </CartProvider>
+          </UserProvider>
+        </AuthProvider>
       </Provider>
     </div>
   );

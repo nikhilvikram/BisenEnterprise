@@ -11,33 +11,16 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  // ✅ Lazy Initialization: Reads storage immediately on mount
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser && savedUser !== "undefined"
+      ? JSON.parse(savedUser)
+      : null;
+  });
 
-  // Inside src/store/auth-context.jsx
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-
-    console.log("Loading from LocalStorage:", { storedToken, storedUser }); // <--- ADD DEBUG LOG
-
-    if (storedToken && storedUser && storedUser !== "undefined") {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        setToken(storedToken);
-      } catch (e) {
-        console.error("Corrupt user data, clearing storage");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-      }
-    }
-  }, []);
-
-  // 2. Login Function
-  // Inside src/store/auth-context.jsx
-
+  // Login Function
   const login = async (email, password) => {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
@@ -45,32 +28,37 @@ export const AuthProvider = ({ children }) => {
         password,
       });
 
-      console.log("Login Response from Backend:", res.data); // <--- ADD THIS DEBUG LOG
+      console.log("Login Response:", res.data);
 
-      // Check the structure. It should be { token: "...", user: { ... } }
-      const { token, user } = res.data;
+      // ✅ Robust Handling: Works even if backend structure varies slightly
+      const receivedToken = res.data.token;
+      let receivedUser = res.data.user;
 
-      if (!token || !user) {
-        console.error("Invalid response structure:", res.data);
-        return { success: false, message: "Invalid server response" };
+      if (receivedToken) {
+        // If backend didn't send user object, fallback to local data
+        if (!receivedUser) {
+          receivedUser = { name: "User", email: email };
+        }
+
+        setToken(receivedToken);
+        setUser(receivedUser);
+
+        localStorage.setItem("token", receivedToken);
+        localStorage.setItem("user", JSON.stringify(receivedUser));
+
+        return { success: true };
+      } else {
+        return { success: false, message: "No token received from server" };
       }
-
-      setToken(token);
-      setUser(user);
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      return { success: true };
     } catch (error) {
-      console.error("Login Failed:", error.response?.data?.message);
+      console.error("Login Error:", error);
       return {
         success: false,
-        message: error.response?.data?.message || "Login failed",
+        message: error.response?.data?.msg || "Login failed",
       };
     }
   };
 
-  // 3. Register Function
   const register = async (name, email, password) => {
     try {
       await axios.post("http://localhost:5000/api/auth/register", {
@@ -78,7 +66,6 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      // Auto-login after register
       return await login(email, password);
     } catch (error) {
       return {
@@ -88,7 +75,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 4. Logout Function
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -96,7 +82,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  const isLoggedIn = !!token; // true if token exists
+  // Computed property for easier access
+  const isLoggedIn = !!token;
 
   return (
     <AuthContext.Provider

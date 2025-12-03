@@ -1,150 +1,214 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../store/cart-context";
 import { TextileList } from "../store/textile-list-store";
+import { AuthContext } from "../store/auth-context"; // Needed for token
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  FaMapMarkerAlt,
+  FaTag,
+  FaMoneyBillWave,
+  FaShieldAlt,
+} from "react-icons/fa";
 
 const CheckoutPage = () => {
   const { cart, dispatch } = useContext(CartContext);
   const { textileArray } = useContext(TextileList);
+  const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [address, setAddress] = useState("");
-  const [coupon, setCoupon] = useState("");
-  const [paymentMode] = useState("cod");
-  const [showPopup, setShowPopup] = useState(false);
+  const [address, setAddress] = useState({
+    line1: "",
+    city: "",
+    pincode: "",
+  });
+  const [isPlacing, setIsPlacing] = useState(false);
 
+  // ✅ ROBUST DATA MAPPING (Matches CartPage Logic)
   const items = cart
     .map((ci) => {
-      const product = textileArray.find(
-        (p) => p.id.toString() === ci.productId.toString()
-      );
-      return { ...ci, product };
+      const cartProdId = ci.productId._id || ci.productId;
+      const product = textileArray.find((p) => {
+        const prodId = p._id || p.id;
+        return prodId?.toString() === cartProdId?.toString();
+      });
+      return product ? { ...ci, product } : null;
     })
-    .filter((x) => x.product);
+    .filter((item) => item !== null);
 
   const totalAmount = items.reduce(
     (sum, item) => sum + item.qty * item.product.price,
     0
   );
 
-  // -----------------------------------
-  // PLACE ORDER FUNCTION (WORKING FIX)
-  // -----------------------------------
-  const placeOrder = () => {
-    if (!address.trim()) return;
+  const shipping = totalAmount > 500 ? 0 : 50;
+  const finalTotal = totalAmount + shipping;
 
-    setShowPopup(true);
+  // ✅ PLACE ORDER (Backend Connection)
+  const placeOrder = async () => {
+    if (!address.line1 || !address.city || !address.pincode) {
+      alert("Please fill complete address details");
+      return;
+    }
 
-    // Wait then clear cart + redirect
-    setTimeout(() => {
-      dispatch({ type: "CLEAR_CART" });
-      navigate("/HomePage");
-    }, 4000);
+    setIsPlacing(true);
+
+    try {
+      // Call Backend API
+      await axios.post(
+        "http://localhost:5000/api/orders/create",
+        {
+          address: {
+            street: address.line1,
+            city: address.city,
+            zip: address.pincode,
+          },
+        },
+        { headers: { "x-auth-token": token } }
+      );
+
+      // Success: Clear Context & Redirect
+      dispatch({ type: "CLEAR_CART" }); // Optional: backend clears it, but good for UI sync
+      alert("Order Placed Successfully! 🎉");
+      navigate("/Orders"); // Redirect to My Orders page
+    } catch (err) {
+      console.error("Order Error:", err);
+      alert("Failed to place order. Try again.");
+    } finally {
+      setIsPlacing(false);
+    }
   };
 
+  if (items.length === 0) {
+    return (
+      <div className="container mt-5 text-center">
+        <h3>Your Cart is Empty!</h3>
+      </div>
+    );
+  }
+
   return (
-    <div className="checkout-wrapper">
-      {/* BACK BUTTON (SAME AS PRODUCT DETAIL) */}
-      <div className="user_pd_header">
-        <button className="user_pd_backbtn" onClick={() => navigate(-1)}>
-          <span className="user_arrow_icon">←</span>
-        </button>
-
-        <div className="user_pd_header_title_box">
-          <h4 className="user_pd_title_header">Checkout</h4>
-        </div>
+    <div className="container checkout-page-wrapper">
+      <div className="checkout-header">
+        <h3 className="fw-bold">Checkout</h3>
+        <p className="text-muted">
+          {items.length} Items • Total ₹{finalTotal}
+        </p>
       </div>
 
-      <h3 className="checkout-title">Delivery Details</h3>
-
-      {/* ADDRESS */}
-      <div className="checkout-card">
-        <h4 className="section-title">Delivery Address</h4>
-        <textarea
-          rows="3"
-          className="checkout-input"
-          placeholder="Flat No, Street, Area, City - Pincode"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        ></textarea>
-      </div>
-
-      {/* COUPON */}
-      <div className="checkout-card">
-        <h4 className="section-title">Apply Coupon</h4>
-        <input
-          className="checkout-input"
-          placeholder="Enter coupon code"
-          value={coupon}
-          onChange={(e) => setCoupon(e.target.value)}
-        />
-      </div>
-
-      {/* ITEMS */}
-      <div className="checkout-card">
-        <h4 className="section-title">Order Summary</h4>
-
-        {items.map(({ product, qty }) => (
-          <div key={product.id} className="checkout-item">
-            <img src={product.image} alt="" className="checkout-img" />
-            <div className="checkout-info">
-              <h5>{product.title}</h5>
-              <p>Qty: {qty}</p>
-            </div>
-            <h5 className="checkout-price">₹{product.price * qty}</h5>
-          </div>
-        ))}
-
-        <div className="checkout-total">
-          <h4>Total:</h4>
-          <h4>₹{totalAmount}</h4>
-        </div>
-      </div>
-
-      {/* PAYMENT OPTIONS */}
-      <div className="checkout-card">
-        <h4 className="section-title">Payment Method</h4>
-
-        <label className="payment-option">
-          <input type="radio" checked readOnly />
-          <span>Cash on Delivery (COD)</span>
-        </label>
-
-        <label className="payment-option disabled">
-          <input type="radio" disabled />
-          <span>UPI / Cards (Coming Soon)</span>
-        </label>
-      </div>
-
-      {/* CONFIRM BUTTON */}
-      <button
-        className="place-order-btn"
-        onClick={placeOrder}
-        disabled={!address}
-      >
-        Confirm & Place Order
-      </button>
-
-      {/* SUCCESS POPUP */}
-      {showPopup && (
-        <div className="order-popup">
-          <div className="order-popup-box animate-popup">
-            <h2>🎉 Order Placed!</h2>
-            <p>Your order will be delivered to:</p>
-
-            <div className="popup-address-box">
-              <p>{address}</p>
+      <div className="row">
+        {/* LEFT SIDE: FORMS */}
+        <div className="col-md-8">
+          {/* ADDRESS SECTION */}
+          <div className="checkout-section">
+            <div className="section-header">
+              <FaMapMarkerAlt className="section-icon" />
+              <h4>Delivery Address</h4>
             </div>
 
-            <p>
-              <b>Payment:</b> Cash on Delivery
-            </p>
-            <p>
-              <b>Total:</b> ₹{totalAmount}
-            </p>
+            <div className="address-form">
+              <input
+                className="checkout-input"
+                placeholder="House No, Building, Street Area"
+                value={address.line1}
+                onChange={(e) =>
+                  setAddress({ ...address, line1: e.target.value })
+                }
+              />
+              <div className="d-flex gap-3 mt-3">
+                <input
+                  className="checkout-input"
+                  placeholder="City"
+                  value={address.city}
+                  onChange={(e) =>
+                    setAddress({ ...address, city: e.target.value })
+                  }
+                />
+                <input
+                  className="checkout-input"
+                  placeholder="Pincode"
+                  value={address.pincode}
+                  onChange={(e) =>
+                    setAddress({ ...address, pincode: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* PAYMENT SECTION */}
+          <div className="checkout-section">
+            <div className="section-header">
+              <FaMoneyBillWave className="section-icon" />
+              <h4>Payment Method</h4>
+            </div>
+
+            <label className="payment-radio selected">
+              <input type="radio" checked readOnly />
+              <div>
+                <span className="pay-title">Cash on Delivery (COD)</span>
+                <span className="pay-sub">Pay cash at your doorstep</span>
+              </div>
+            </label>
+            <label className="payment-radio disabled">
+              <input type="radio" disabled />
+              <div>
+                <span className="pay-title">Online Payment (UPI/Card)</span>
+                <span className="pay-sub">Coming Soon</span>
+              </div>
+            </label>
           </div>
         </div>
-      )}
+
+        {/* RIGHT SIDE: SUMMARY */}
+        <div className="col-md-4">
+          <div className="order-summary-card">
+            <h5 className="summary-title">ORDER SUMMARY</h5>
+            <div className="summary-items-list">
+              {items.map(({ product, qty }) => (
+                <div key={product._id || product.id} className="summary-item">
+                  <span className="item-name">
+                    {qty} x {product.title}
+                  </span>
+                  <span className="item-price">₹{product.price * qty}</span>
+                </div>
+              ))}
+            </div>
+
+            <hr />
+
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>₹{totalAmount}</span>
+            </div>
+            <div className="summary-row">
+              <span>Shipping</span>
+              <span className="text-success">
+                {shipping === 0 ? "FREE" : `₹${shipping}`}
+              </span>
+            </div>
+
+            <hr />
+
+            <div className="summary-total">
+              <span>Total Payable</span>
+              <span>₹{finalTotal}</span>
+            </div>
+
+            <button
+              className="place-order-btn"
+              onClick={placeOrder}
+              disabled={isPlacing}
+            >
+              {isPlacing ? "Processing..." : "CONFIRM ORDER"}
+            </button>
+
+            <div className="secure-msg">
+              <FaShieldAlt /> 100% Secure Payment
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
