@@ -6,13 +6,16 @@ const Product = require("../models/Product"); // Make sure Product.js model exis
 // Path becomes: /api/products/
 router.get("/", async (req, res) => {
   try {
-    const items = await Product.find();
-    res.json(items);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    // 1. Fetch all products from MongoDB
+    const products = await Product.find(); 
+    
+    // 2. Send them back to the client (Frontend)
+    res.json(products); 
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
-
 // ADD product
 router.post("/", async (req, res) => {
   try {
