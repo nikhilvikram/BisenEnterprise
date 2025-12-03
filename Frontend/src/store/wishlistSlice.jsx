@@ -9,9 +9,12 @@ export const fetchWishlist = createAsyncThunk(
       const token = localStorage.getItem("token");
       if (!token) return []; // If no user, return empty
 
-      const res = await axios.get("http://localhost:5000/api/wishlist", {
-        headers: { "x-auth-token": token },
-      });
+      const res = await axios.get(
+        "https://bisen-backend.onrender.com/api/wishlist",
+        {
+          headers: { "x-auth-token": token },
+        }
+      );
       return res.data; // Returns array of products
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -26,7 +29,7 @@ export const addToWishlist = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        `http://localhost:5000/api/wishlist/add/${productId}`,
+        `https://bisen-backend.onrender.com/api/wishlist/add/${productId}`,
         {},
         {
           headers: { "x-auth-token": token },
@@ -46,7 +49,7 @@ export const removeFromWishlist = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
       const res = await axios.delete(
-        `http://localhost:5000/api/wishlist/remove/${productId}`,
+        `https://bisen-backend.onrender.com/api/wishlist/remove/${productId}`,
         {
           headers: { "x-auth-token": token },
         }

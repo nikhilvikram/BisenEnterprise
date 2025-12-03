@@ -15,7 +15,7 @@ const CartProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:5000/api/cart", {
+        .get("https://bisen-backend.onrender.com/api/cart", {
           headers: { "x-auth-token": token },
         })
         .then((res) => {
@@ -42,14 +42,14 @@ const CartProvider = ({ children }) => {
         // ... complex logic omitted for simplicity, let's wait for server response for accuracy
 
         const res = await axios.post(
-          "http://localhost:5000/api/cart/add",
+          "https://bisen-backend.onrender.com/api/cart/add",
           action.payload,
           config
         );
         setCart(res.data.items); // Update local state with server response
       } else if (action.type === "REMOVE_FROM_CART") {
         const res = await axios.delete(
-          `http://localhost:5000/api/cart/item/${action.payload}`,
+          `https://bisen-backend.onrender.com/api/cart/item/${action.payload}`,
           config
         );
         setCart(res.data.items);
@@ -64,7 +64,7 @@ const CartProvider = ({ children }) => {
         // If qty is increasing, call Add. If decreasing, we need a subtract logic.
         // payload: { productId, qty }
         const res = await axios.put(
-          "http://localhost:5000/api/cart/update",
+          "https://bisen-backend.onrender.com/api/cart/update",
           action.payload,
           config
         );

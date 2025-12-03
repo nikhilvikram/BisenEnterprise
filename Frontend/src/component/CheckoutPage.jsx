@@ -56,7 +56,7 @@ const CheckoutPage = () => {
     try {
       // Call Backend API
       await axios.post(
-        "http://localhost:5000/api/orders/create",
+        "https://bisen-backend.onrender.com/api/orders/create",
         {
           address: {
             street: address.line1,

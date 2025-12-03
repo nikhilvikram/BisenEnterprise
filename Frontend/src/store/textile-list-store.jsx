@@ -11,7 +11,8 @@ const TextileListProvider = ({ children }) => {
 
   // FETCH REAL PRODUCTS FROM MONGODB
   useEffect(() => {
-    axios.get("http://localhost:5000/api/products")
+    axios
+      .get("https://bisen-backend.onrender.com/api/products")
       .then((res) => {
         setTextileArray(res.data); // These items have real _id like "654..."
       })
