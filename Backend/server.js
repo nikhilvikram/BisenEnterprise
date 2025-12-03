@@ -13,7 +13,12 @@ const wishlistRoutes = require("./routes/wishlist");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+// Allow your GitHub URL and Localhost (for testing)
+app.use(cors({
+  origin: ["https://nikhilvikram.github.io", "http://localhost:5173"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 // connect MongoDB
 mongoose
