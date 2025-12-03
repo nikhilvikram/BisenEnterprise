@@ -21,7 +21,7 @@ const CartProvider = ({ children }) => {
     const currentToken = getToken();
     if (currentToken) {
       axios
-        .get("https://bisen-backend.onrender.com/api/cart", {
+        .get("https://bisenenterprisebackend.onrender.com/api/cart", {
           headers: { "x-auth-token": currentToken },
         })
         .then((res) => {
@@ -48,20 +48,20 @@ const CartProvider = ({ children }) => {
     try {
       if (action.type === "ADD_TO_CART") {
         const res = await axios.post(
-          "https://bisen-backend.onrender.com/api/cart/add",
+          "https://bisenenterprisebackend.onrender.com/api/cart/add",
           action.payload,
           config
         );
         setCart(res.data.items);
       } else if (action.type === "REMOVE_FROM_CART") {
         const res = await axios.delete(
-          `https://bisen-backend.onrender.com/api/cart/item/${action.payload}`,
+          `https://bisenenterprisebackend.onrender.com/api/cart/item/${action.payload}`,
           config
         );
         setCart(res.data.items);
       } else if (action.type === "UPDATE_QTY") {
         const res = await axios.put(
-          "https://bisen-backend.onrender.com/api/cart/update",
+          "https://bisenenterprisebackend.onrender.com/api/cart/update",
           action.payload,
           config
         );

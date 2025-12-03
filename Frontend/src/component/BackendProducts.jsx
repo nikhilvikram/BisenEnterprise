@@ -8,7 +8,7 @@ const BackendProducts = () => {
     async function loadData() {
       try {
         const res = await fetch(
-          "https://bisen-backend.onrender.com/api/products"
+          "https://bisenenterprisebackend.onrender.com/api/products"
         );
         const data = await res.json();
         setProducts(data);

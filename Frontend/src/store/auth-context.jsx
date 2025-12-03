@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await axios.post(
-        "https://bisen-backend.onrender.com/api/auth/login",
+        "https://bisenenterprisebackend.onrender.com/api/auth/login",
         {
           email,
           password,
@@ -64,11 +64,14 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      await axios.post("https://bisen-backend.onrender.com/api/auth/register", {
-        name,
-        email,
-        password,
-      });
+      await axios.post(
+        "https://bisenenterprisebackend.onrender.com/api/auth/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
       return await login(email, password);
     } catch (error) {
       return {

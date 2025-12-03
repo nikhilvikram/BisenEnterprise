@@ -16,14 +16,17 @@ router.get("/", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-// ADD product
+// @route   POST /api/products
+// @desc    Add a product
+// @access  Public (for now)
 router.post("/", async (req, res) => {
   try {
     const newProduct = new Product(req.body);
     await newProduct.save();
     res.json(newProduct);
-  } catch (error) {
-    res.status(500).json({ message: "Add error" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
 
