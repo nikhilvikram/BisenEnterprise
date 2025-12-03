@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const Cart = require("../models/Cart");
-const Product = require("../models/product");
+const Product = require("../models/Product");
 
 // @route   POST api/cart/add
 // @desc    Add item to cart

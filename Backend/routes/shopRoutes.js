@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../models/product"); // Make sure Product.js model exists
+const Product = require("../models/Product"); // Make sure Product.js model exists
 
 // GET all products
 // Path becomes: /api/products/
