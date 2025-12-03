@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../middleware/auth"); // The security guard
+const auth = require("../middleware/auth");
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
 
@@ -11,8 +11,8 @@ router.post("/add", auth, async (req, res) => {
   const { productId, qty = 1 } = req.body;
 
   try {
-    // 1. Get the user ID from the token (provided by auth middleware)
-    const userId = req.user._id; // OR req.user._id depending on how you saved it
+    // 1. Get the user ID from the token (FIXED: uses _id)
+    const userId = req.user._id; 
 
     // 2. Check if product exists
     const product = await Product.findById(productId);
@@ -24,14 +24,14 @@ router.post("/add", auth, async (req, res) => {
     let cart = await Cart.findOne({ userId });
 
     if (cart) {
-      // Cart exists -> Check if product is already in it
-      const itemIndex = cart.items.findIndex(p => p.productId.toString() === productId);
+      // Cart exists -> Check if item is already in it
+      const existing = cart.items.find(p => p.productId.toString() === productId);
 
-      if (itemIndex > -1) {
-        // Product exists in cart -> Update quantity
-        cart.items[itemIndex].qty += qty;
+      if (existing) {
+        // Item exists -> Update quantity (Stock check included)
+        existing.qty = Math.min(product.stock || 100, existing.qty + qty);
       } else {
-        // Product not in cart -> Push new item
+        // Item doesn't exist -> Push new item
         cart.items.push({ productId, qty });
       }
     } else {
@@ -42,6 +42,7 @@ router.post("/add", auth, async (req, res) => {
       });
     }
 
+    cart.updatedAt = Date.now();
     await cart.save();
     res.json(cart);
 
@@ -56,10 +57,13 @@ router.post("/add", auth, async (req, res) => {
 // @access  Private
 router.get("/", auth, async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.user._id }).populate("items.productId", "title price image");
+    // Populate gives you Title/Price/Image instead of just ID
+    const cart = await Cart.findOne({ userId: req.user._id }).populate("items.productId", "title price image category");
+    
     if (!cart) {
         return res.json({ items: [] });
     }
+    
     res.json(cart);
   } catch (err) {
     console.error(err.message);
@@ -67,9 +71,8 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-
 // @route   DELETE api/cart/item/:productId
-// @desc    Remove a specific item from cart
+// @desc    Remove item from cart
 // @access  Private
 router.delete("/item/:productId", auth, async (req, res) => {
   try {
@@ -82,17 +85,55 @@ router.delete("/item/:productId", auth, async (req, res) => {
       return res.status(404).json({ msg: "Cart not found" });
     }
 
-    // Filter out the item to remove
     cart.items = cart.items.filter(
       (item) => item.productId.toString() !== productIdToRemove
     );
 
     await cart.save();
-    res.json(cart); // Send back updated cart
+    res.json(cart);
 
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
+
+// @route   PUT api/cart/update
+// @desc    Update item quantity
+// @access  Private
+router.put("/update", auth, async (req, res) => {
+  const { productId, qty } = req.body;
+  const userId = req.user._id;
+
+  try {
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ msg: "Cart not found" });
+    }
+
+    const itemIndex = cart.items.findIndex(p => p.productId.toString() === productId);
+
+    if (itemIndex > -1) {
+      if (qty > 0) {
+        cart.items[itemIndex].qty = qty; // Update to exact number
+      } else {
+        cart.items.splice(itemIndex, 1); // Remove if 0
+      }
+      
+      await cart.save();
+      
+      // Populate to return full data
+      const updatedCart = await Cart.findOne({ userId }).populate("items.productId", "title price image category");
+      res.json(updatedCart);
+    } else {
+      return res.status(404).json({ msg: "Item not found in cart" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
 module.exports = router;

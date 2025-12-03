@@ -8,6 +8,8 @@ const authRoutes = require("./routes/auth");
 const cartRoutes = require("./routes/cart"); // Assuming you put the cart logic in routes/cart.js
 const orderRoutes = require("./routes/orders");
 
+const wishlistRoutes = require("./routes/wishlist");
+
 const app = express();
 
 app.use(express.json());
@@ -25,5 +27,6 @@ app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 const PORT = 5000;
 app.listen(PORT, () => console.log(`✔ Server running on port ${PORT}`));
