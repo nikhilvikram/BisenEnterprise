@@ -21,4 +21,4 @@ ProductSchema.pre("save", function(next) {
   this.updatedAt = Date.now();
   next();
 });
-module.exports = mongoose.model("product", ProductSchema);
+module.exports = mongoose.model("Product", ProductSchema);
