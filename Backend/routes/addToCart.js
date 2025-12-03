@@ -1,7 +1,7 @@
 // route: POST /api/cart/add
 // body: { productId, qty = 1 }
 const Cart = require("../models/Cart");
-const Product = require("../models/Product");
+const Product = require("../models/product");
 // 1. Define the route and middleware
 router.post("/add", authMiddleware, async (req, res) => {
   // 2. Destructuring input
