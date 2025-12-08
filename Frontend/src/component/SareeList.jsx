@@ -3,34 +3,35 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { TextileList } from "../store/textile-list-store";
 import { CartContext } from "../store/cart-context";
 import { saveScrollFor } from "../utils/scrollStore";
-
+import { addToCart, updateQty, removeFromCart } from "../store/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 const SareeList = () => {
   const { textileArray } = useContext(TextileList);
-  const { cart, dispatch } = useContext(CartContext);
+  // const { cart, dispatch } = useContext(CartContext);
   const navigate = useNavigate();
   const { pathname, hash } = useLocation();
 
-  // --- DEBUG LOGS START ---
-  useEffect(() => {
-    console.log("🔹 SareeList Rendered");
-    console.log("📦 Products from Context (textileArray):", textileArray);
-    console.log("🛒 Cart from Context:", cart);
-  }, [textileArray, cart]);
-  // --- DEBUG LOGS END ---
+  // --- 3. REDUX SETUP ---
+  const dispatch = useDispatch();
+
+  // Read Cart from Redux Store
+  const cartItems = useSelector((state) => state.cart.items);
 
   const handleAddToCart = (id) => {
-    console.log("➕ Adding to cart, Product ID:", id);
-    dispatch({
-      type: "ADD_TO_CART",
-      payload: { productId: id },
-    });
+    // Dispatch to Context (which calls API)
+    // dispatch({
+    //   type: "ADD_TO_CART",
+    //   payload: { productId: id, qty: 1 }, // Backend expects { productId, qty }
+    // });
+    // 4. Dispatch to Redux Thunk
+    dispatch(addToCart({ productId: id, qty: 1 }));
   };
 
   // ✅ Robust Quantity Check with Logging
   const getQty = (itemId) => {
-    if (!cart || cart.length === 0) return 0;
+    if (!cartItems || cartItems.length === 0) return 0;
 
-    const item = cart.find((c) => {
+    const item = cartItems.find((c) => {
       // Backend sends productId as an OBJECT (populated), Static sends STRING.
       // Safely handle null/undefined
       const pId = c.productId;
@@ -48,6 +49,17 @@ const SareeList = () => {
     return item ? item.qty : 0;
   };
 
+  const removeWholeQty = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  // --- DEBUG LOGS START ---
+  useEffect(() => {
+    console.log("🔹 SareeList Rendered");
+    console.log("📦 Products from Context (textileArray):", textileArray);
+    console.log("🛒 Cart from Context:", cartItems);
+  }, [textileArray, cartItems]);
+
   // Safety Check: If data isn't loaded yet, show loading
   if (!textileArray) {
     return <div className="container mt-4">Loading Products...</div>;
@@ -55,7 +67,6 @@ const SareeList = () => {
 
   return (
     <div className="container mt-4">
-
       {/* Check if CSS class exists */}
       <div className="bisen-grid">
         {textileArray.map((item) => {
@@ -104,15 +115,28 @@ const SareeList = () => {
               </div>
 
               {/* ADD TO CART BUTTON */}
+              {/* MINUS (Only show if in cart) */}
               <button
-                className={`bisen-cart-btn-small ${qty > 0 ? "added" : ""}`}
+                className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
+                onClick={() => removeWholeQty(itemId)}
+              >
+                Remove from cart
+              </button>
+              <button
+                className={`bisen-cart-btn-small ${
+                  getQty(item._id || item.id) > 0 ? "added" : ""
+                }`}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleAddToCart(itemId);
+                  handleAddToCart(item._id || item.id);
                 }}
               >
-                {qty > 0 ? "Added" : "Add to Cart 🛒"}
-                {qty > 0 && <span className="card-badge">{qty}</span>}
+                {getQty(item._id || item.id) > 0 ? "Added" : "Add to Cart 🛒"}
+                {getQty(item._id || item.id) > 0 && (
+                  <span className="card-badge">
+                    {getQty(item._id || item.id)}
+                  </span>
+                )}
               </button>
             </div>
           );

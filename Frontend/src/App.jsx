@@ -38,6 +38,7 @@ import CheckoutPage from "./component/CheckoutPage";
 import { useDispatch } from "react-redux";
 import { fetchWishlist } from "./store/wishlistSlice";
 import { AuthProvider } from "./store/auth-context";
+import { fetchCart } from "./store/cartSlice";
 function AppContent() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -47,9 +48,12 @@ function AppContent() {
     if (darkMode) document.body.classList.add("dark");
     else document.body.classList.remove("dark");
   }, [darkMode]);
+    // ✅ LOAD INITIAL DATA
   useEffect(() => {
+    // Only fetch if user is logged in
     if (localStorage.getItem("token")) {
       dispatch(fetchWishlist());
+      dispatch(fetchCart()); // <--- Fetch cart from MongoDB
     }
   }, [dispatch]);
   return (

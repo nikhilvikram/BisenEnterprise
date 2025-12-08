@@ -1144,9 +1144,12 @@ body.dark .bisen-wishlist-btn.active {
   left: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 36px 1fr;
+  /* grid-template-columns: 1fr 36px 1fr;
   gap: 12px;
-  padding: 12px 10px;
+  padding: 12px 10px; */
+  grid-template-columns: 3fr 1fr 3fr;
+  gap: 8px;
+  padding: 10px;
   z-index: 9999;
   background: var(--bg-color);
   border-top: 1px solid rgba(0, 0, 0, 0.05);
@@ -1542,12 +1545,41 @@ body.dark .bisen-wishlist-btn.active {
     min-width: 90px !important;
   }
   .user_cart_minus {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 18px !important;
-    padding: 0 !important;
+    margin: 3px;
+    width: 44px !important;
+    height: 23px !important;
+    font-size: 10px !important;
+    padding: 2px !important;
+  }
+  .stack-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    align-items: stretch; /* both buttons same width */
   }
 
+  /* Remove button */
+  .stack-buttons .remove-btn {
+    background: #ffe8e8;
+    color: #d63a3a;
+    border: 1px solid #ffcccc;
+    padding: 8px 0;
+    font-size: 13px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  /* Minus button */
+  .stack-buttons .minus-btn {
+    background: #fff;
+    color: #d63a3a;
+    border: 1px solid #ffb6b6;
+    padding: 6px 0;
+    font-size: 18px;
+    border-radius: 8px;
+    font-weight: 700;
+  }
   /* Fix floating badge cutting */
   /* .cart-badge { right: -2px !important; top: -6px !important; font-size: 10px !important; padding: 2px 4px !important; } */
 }

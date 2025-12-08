@@ -9,14 +9,10 @@ import { Link } from "react-router-dom";
 import SearchOverlay from "./SearchOverlay"; // IMPORTANT: new import
 
 const HeaderNavbar = () => {
-  const { cart } = useContext(CartContext);
   const { darkMode, toggleTheme } = useContext(ThemeContext);
-
   const [openSearch, setOpenSearch] = useState(false);
-
-  const totalQuantity = cart.reduce((sum, item) => sum + item.qty, 0);
   const wishlistCount = useSelector((state) => state.wishlist.items.length);
-
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   return (
     <>
       {/* SEARCH OVERLAY (AJIO STYLE) */}
