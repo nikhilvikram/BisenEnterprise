@@ -116,7 +116,7 @@ const SareeList = () => {
 
               {/* ADD TO CART BUTTON */}
               {/* MINUS (Only show if in cart) */}
-              <button
+              {/* <button
                 className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
                 onClick={() => removeWholeQty(itemId)}
               >
@@ -137,7 +137,7 @@ const SareeList = () => {
                     {getQty(item._id || item.id)}
                   </span>
                 )}
-              </button>
+              </button> */}
             </div>
           );
         })}

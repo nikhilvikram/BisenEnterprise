@@ -39,6 +39,7 @@ import { useDispatch } from "react-redux";
 import { fetchWishlist } from "./store/wishlistSlice";
 import { AuthProvider } from "./store/auth-context";
 import { fetchCart } from "./store/cartSlice";
+import MyOrdersPage from "./component/MyOrdersPage"; // Import
 function AppContent() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -48,7 +49,7 @@ function AppContent() {
     if (darkMode) document.body.classList.add("dark");
     else document.body.classList.remove("dark");
   }, [darkMode]);
-    // ✅ LOAD INITIAL DATA
+  // ✅ LOAD INITIAL DATA
   useEffect(() => {
     // Only fetch if user is logged in
     if (localStorage.getItem("token")) {
@@ -84,6 +85,7 @@ function AppContent() {
             <Route path="/SavedAddresses" element={<h2>Saved Addresses</h2>} />
             <Route path="/Support" element={<AboutUs />} />
             <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
+            <Route path="/my-orders" element={<MyOrdersPage />} />
           </Routes>
 
           <MobileBottomNav />

@@ -4,6 +4,21 @@ const auth = require("../middleware/auth");
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 
+// @route   GET /api/orders
+// @desc    Get all orders for the logged-in user
+// @access  Private
+router.get("/", auth, async (req, res) => {
+  try {
+    // Find orders where 'user' matches the logged-in ID
+    // .sort({ date: -1 }) means newest first
+    const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   POST api/orders/create
 // @desc    Checkout (Convert Cart to Order)
 // @access  Private

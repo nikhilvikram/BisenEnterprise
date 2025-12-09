@@ -62,7 +62,7 @@ const UserProfile = () => {
       <div className="user-section">
         <h5 className="user-section-title">Account Options</h5>
 
-        <div className="user-option" onClick={() => navigate("/Orders")}>
+        <div className="user-option" onClick={() => navigate("/my-orders")}>
           <FaBox className="icon" /> <span>My Orders</span>
           <FaChevronRight className="arrow" />
         </div>

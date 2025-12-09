@@ -1,4 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux"; // <--- 1. Import Redux Hooks
+
+// Assets
 import saree1 from "../assets/saree1.jpg";
 import saree2 from "../assets/saree2.jpg";
 import saree3 from "../assets/saree3.jpg";
@@ -7,15 +11,21 @@ import nightwear from "../assets/nightwear.jpeg";
 import saree10 from "../assets/saree10.jpg";
 import jwellery from "../assets/jwellery.jpg";
 import footeware from "../assets/footware.webp";
-import { useContext } from "react";
-import { TextileList } from "../store/textile-list-store";
-import BisenEnterprise_image from "../assets/BisenEnterprise_image.png";
 import LandingHeroDesktop from "../assets/LandingHeroDesktop.png";
 import LandingHeroMobile from "../assets/LandingHeroMobile.png";
+
+// Stores & Utils
+import { TextileList } from "../store/textile-list-store";
+import { saveScrollFor } from "../utils/scrollStore";
+
 const HomePage = () => {
   const navigate = useNavigate();
+  const { pathname, hash } = useLocation();
+  
+  // Get Products
   const { textileArray } = useContext(TextileList);
 
+  // Sort Best Sellers
   const bestSellers = [...textileArray]
     .sort((a, b) => b.reviews - a.reviews)
     .slice(0, 4);
@@ -39,14 +49,13 @@ const HomePage = () => {
         <div className="hero-text redesigned-hero-text">
           <h1>Festive Fashion Sale</h1>
           <p>Surat • Jaipur • Ahmedabad Collections</p>
-
           <button className="hero-btn" onClick={() => navigate("/SareeList")}>
             Shop Now
           </button>
         </div>
       </div>
 
-      {/* ===== CATEGORIES (Desktop Optimised) ===== */}
+      {/* ===== CATEGORIES ===== */}
       <h2 className="section-title">Shop By Categories</h2>
       <div className="container mt-4">
         <div className="category-grid-responsive">
@@ -74,48 +83,55 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* ===== BEST SELLERS ===== */}
-      {/* ===== BEST SELLERS ===== */}
-      <div className="container mt-5">
+      {/* ===== BEST SELLERS (With SareeList Logic) ===== */}
         <h2 className="section-title">Best Sellers</h2>
-
+      <div className="container mt-4 mb-5">
         <div className="bisen-grid">
-          {bestSellers.map((item) => (
-            <div
-              key={item.id}
-              className="bisen-card"
-              onClick={() => navigate(`/product/${item.id}`)}
+          {bestSellers.map((item) => {
+            const itemId = item._id || item.id;
+
+            if (!itemId) {
+              console.error("❌ Item missing ID:", item);
+              return null;
+            }
+
+            // ✅ FIX: Explicit Return Statement
+            return (
+              <div key={itemId} className="bisen-card">
+                {/* IMAGE */}
+                <div
+                  className="bisen-img-box"
+                  onClick={() => {
+                    const key = `${pathname}${hash || ""}`;
+                    saveScrollFor(key);
+                    navigate(`/product/${itemId}`);
+                  }}
             >
-              <div className="bisen-img-box">
                 <img src={item.image} alt={item.title} />
               </div>
 
+                {/* TITLE */}
               <h5 className="bisen-title">{item.title}</h5>
 
+                {/* PRICE ROW */}
               <div className="bisen-price-row">
                 <span className="new-price">₹{item.price}</span>
                 <span className="old-price">
-                  ₹{Math.round(item.price / (1 - item.discount / 100))}
+                    ₹{Math.round(item.price / (1 - (item.discount || 10) / 100))}
                 </span>
-                <span className="discount">{item.discount}% OFF</span>
+                  <span className="discount">{item.discount || 10}% OFF</span>
               </div>
 
+                {/* RATING */}
               <div className="bisen-rating">
-                {"⭐".repeat(item.rating)}
-                <span className="review-count">({item.reviews})</span>
+                  {"⭐".repeat(item.rating || 4)}
+                  <span className="review-count">
+                    ({item.reviews || 0} reviews)
+                  </span>
+                </div>
               </div>
-
-              <button
-                className="bisen-cart-btn-small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/product/${item.id}`);
-                }}
-              >
-                View Details
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

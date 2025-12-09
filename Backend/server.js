@@ -8,8 +8,7 @@ const authRoutes = require("./routes/auth");
 const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/orders");
 const wishlistRoutes = require("./routes/wishlist");
-const shopRoutes = require("./routes/shopRoutes"); // <--- NEW NAME
-
+const shopRoutes = require("./routes/shopRoutes");
 const app = express();
 
 app.use(express.json());
