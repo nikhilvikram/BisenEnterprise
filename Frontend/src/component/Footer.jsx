@@ -17,7 +17,7 @@ const Footer = () => {
           {/* ==== COLUMN 2 ==== */}
           <div className="footer-column">
             <h6 className="footer-subtitle">Quick Links</h6>
-            <ul>
+            <ul class="no-style">
               <li>
                 <a href="/Home">Home</a>
               </li>
@@ -36,7 +36,7 @@ const Footer = () => {
           {/* ==== COLUMN 3 ==== */}
           <div className="footer-column">
             <h6 className="footer-subtitle">Support</h6>
-            <ul>
+            <ul class="no-style">
               <li>
                 <a href="#">FAQs</a>
               </li>

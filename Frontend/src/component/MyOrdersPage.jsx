@@ -42,7 +42,7 @@ const MyOrdersPage = () => {
       <h2 className="mb-4">My Orders 📦</h2>
 
       {orders.length === 0 ? (
-        <div className="text-center p-5 bg-light rounded">
+        <div className="text-center p-5 rounded">
           <h4>You haven't placed any orders yet.</h4>
           <button className="btn btn-primary mt-3" onClick={() => navigate("/SareeList")}>
             Start Shopping

@@ -1118,7 +1118,7 @@ body.dark .bisen-wishlist-btn.active {
 .user_pd_imgbox img {
   width: 100%;
   max-height: 520px;
-  object-fit: scale-down;
+  object-fit: top;
   border-radius: 12px;
 }
 .user_pd_content {
@@ -1429,6 +1429,7 @@ body.dark .bisen-wishlist-btn.active {
 .bisen-about-content {
   flex: 1.2;
   min-width: 320px;
+  color: var(--text-color);
 }
 
 /* =========================================
@@ -1444,18 +1445,6 @@ body.dark .bisen-wishlist-btn.active {
     gap: 10px;
     padding: 12px 6px;
     z-index: 9999;
-  }
-  .icon-badge {
-    top: -6px !important; /* Move Up */
-    right: -8px !important; /* Move OUT to the right corner */
-
-    /* Optional: Make it look sharper on big screens */
-    width: 18px;
-    height: 18px;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
 
@@ -2087,4 +2076,348 @@ body.dark .wishlist-close-btn {
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 10;
+}
+
+ul.no-style {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.footer-text {
+  max-width: 340px;
+}
+
+/* ... [PREVIOUS CSS REMAINS THE SAME UNTIL DESKTOP SECTION] ... */
+
+/* =========================================
+   12. DESKTOP PRODUCT DETAIL (AJIO STYLE - THEME SYNCED)
+   ========================================= */
+/* =================================================================
+   PRODUCT DETAIL DESKTOP OVERHAUL (AJIO STYLE)
+   ================================================================= */
+
+/* --- 1. DEFAULT / MOBILE (Base Styles Fixes) --- */
+/* Ensure Back Button looks good in Dark/Light mode */
+.user_pd_backbtn {
+  background: var(--back-button-bgrd);
+  color: var(--text-color);
+  border: 1px solid var(--divider);
+  transition: 0.2s;
+}
+.user_pd_backbtn:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+
+/* --- 2. DESKTOP LAYOUT (Min-Width 1024px) --- */
+@media (min-width: 1024px) {
+  /* A. THE GRID LAYOUT 
+     Rearranging the flat DOM structure into a 2-Column Layout */
+.user_product_detail_wrapper {
+    /* 1. Limit width so it doesn't touch screen edges */
+    max-width: 1200px; 
+    width: 95%; /* Ensures a small gap on left/right edges of screen */
+    margin: 40px auto;
+    
+    /* 2. Grid Fix: Use 'fr' instead of '%' to handle the gap automatically */
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* Image gets slightly more space */
+    grid-template-rows: auto auto auto;
+    column-gap: 50px; /* The gap will now fit perfectly */
+    
+    grid-template-areas: 
+      "header  header"
+      "image   content"
+      "image   buttons";
+    align-items: start;
+    
+    /* 3. Ensure padding doesn't add to width */
+    box-sizing: border-box;
+    padding: 0; 
+  }
+
+  /* B. HEADER AREA (Back Button & Title) */
+  .user_pd_header {
+    grid-area: header;
+    position: static; /* Remove sticky on desktop */
+    background: transparent;
+    border: none;
+    padding: 0 0 20px 0;
+    margin-bottom: 20px;
+    backdrop-filter: none;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .user_pd_title_header {
+    font-size: 1.2rem;
+    opacity: 0.7; /* Subtler title on desktop */
+  }
+
+  /* C. IMAGE AREA (Left Column) */
+  .user_pd_imgbox {
+    grid-area: image;
+    height: auto;
+    max-height: 750px; /* Tall AJIO style */
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 0;
+    box-shadow: none; /* AJIO is flat */
+    display: flex;
+    justify-content: center;
+    background: transparent;
+  }
+
+  .user_pd_imgbox img {
+    width: 100%;
+    height: 100%;
+    max-height: 700px;
+    object-fit: cover; /* Fill the area nicely */
+    object-position: top;
+
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+  }
+
+  /* Hover Zoom Effect like AJIO */
+  .user_pd_imgbox:hover img {
+    transform: scale(1.02);
+  }
+
+  /* D. CONTENT AREA (Right Column - Top) */
+  .user_pd_content {
+    grid-area: content;
+    padding: 0;
+    margin-top: 20px;
+    text-align: center; /* AJIO centers text on desktop */
+  }
+
+  .user_pd_title {
+    font-size: 1.8rem;
+    font-weight: 400; /* AJIO uses lighter font weights for class */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+
+  .user_pd_category {
+    font-size: 1rem;
+    color: #999; /* Gold/Brown for Brand */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .user_pd_price_block {
+    margin: 20px 0;
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .user_pd_price_block h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-color);
+  }
+
+  .user_pd_discount {
+    font-size: 1.1rem;
+    color: #bf9158; /* AJIO Gold */
+    font-weight: 600;
+  }
+
+  .user_pd_delivery {
+    font-size: 0.9rem;
+    color: #03a685;
+  }
+
+  .user_pd_desc {
+    text-align: left; /* Keep description readable */
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-top: 20px;
+  }
+
+  /* E. BUTTONS AREA (Right Column - Bottom) 
+     Transforming sticky bar into static block */
+  .user_pd_sticky_bar_fixed {
+    grid-area: buttons;
+    position: static; /* No longer fixed at bottom */
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically like AJIO */
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  /* "ADD TO BAG" Button - The Gold Block */
+  .btn-cart {
+    width: 100%;
+    height: 55px;
+    background: #333333 !important; /* Dark Grey/Black */
+    color: white !important;
+    border: none !important;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 0px; /* Sharp edges or slight radius */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 1; /* Ensure it is top */
+    transition: 0.3s;
+  }
+
+  .btn-cart:hover {
+    background: #000000 !important;
+  }
+
+  /* Cart Added State */
+  .btn-cart.cart-added {
+    background: #232323 !important;
+  }
+
+  /* "SAVE TO WISHLIST" Button - The Outline */
+  .bisen-wishlist-btn {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: 1px solid var(--divider);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    border-radius: 0px;
+    order: 2; /* Below Add to Cart */
+    justify-content: center;
+  }
+
+  .bisen-wishlist-btn:hover {
+    border-color: var(--text-color);
+  }
+
+  .bisen-wishlist-btn.active {
+    border-color: #e63946;
+    color: #e63946;
+    background: transparent; /* Keep outlined style but colored */
+  }
+
+  /* Remove / Update Stack (If item in cart) */
+  .remove_stack {
+    order: 3;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .user_cart_minus {
+    background: white;
+    border: 1px solid var(--divider);
+    font-size: 1rem;
+    text-transform: uppercase;
+    height: 40px;
+    border-radius: 0;
+  }
+
+  .user_cart_minus.removebtn {
+    color: #d90429;
+    font-weight: 600;
+  }
+
+  /* Hide the Plus button if you had one, layout is cleaner without */
+}
+
+/* --- 3. DARK MODE ADJUSTMENTS FOR DESKTOP --- */
+@media (min-width: 1024px) {
+  body.dark .user_pd_imgbox {
+    background: #1e1e1e; /* Slight bg for transparent images */
+  }
+
+  body.dark .btn-cart {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  body.dark .btn-cart:hover {
+    background: #e0e0e0 !important;
+  }
+
+  body.dark .bisen-wishlist-btn {
+    border-color: #444;
+  }
+  body.dark .bisen-wishlist-btn:hover {
+    border-color: #fff;
+  }
+
+  body.dark .user_cart_minus {
+    background: #1e1e1e;
+    border-color: #444;
+  }
+}
+
+/* =========================================
+   FIX: FLOATING CART BADGE
+   ========================================= */
+
+/* 1. Make the parent button a reference point */
+.btn-cart {
+  position: relative !important; /* Crucial for absolute child positioning */
+  overflow: visible !important; /* Allow badge to hang outside the button */
+}
+
+/* 2. Position the badge on the top-right corner */
+.icon-badge {
+  position: absolute !important;
+  top: -8px !important; /* Move UP outside the button */
+  right: -8px !important; /* Move RIGHT outside the button */
+
+  /* Styling */
+  background: #ff3f6c; /* Brand Pink/Red */
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+
+  /* Perfect Circle */
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  /* Centering the number */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Polish */
+  border: 2px solid var(--bg-color); /* Creates a 'cutout' effect against the button */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+
+  /* Animation when it appears */
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Animation Keyframes */
+@keyframes popIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
