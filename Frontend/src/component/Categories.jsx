@@ -21,7 +21,7 @@ const Categories = () => {
   // --- ROBUST CATEGORY DATA STRUCTURE ---
   const sections = [
     {
-      title: "🌟 Bisen Exclusive (Trending)",
+      title: "Bisen Exclusive",
       items: [
         {
           name: "Signature Sarees",
@@ -42,7 +42,7 @@ const Categories = () => {
       ],
     },
     {
-      title: "👗 Ethnic Suits & Sets",
+      title: "Ethnic Suits & Sets",
       items: [
         {
           name: "Kurti Sets",
@@ -75,7 +75,7 @@ const Categories = () => {
       ],
     },
     {
-      title: "👚 Saree Essentials (Must Haves)",
+      title: "Saree Essentials",
       items: [
         {
           name: "Readymade Blouses",
@@ -108,7 +108,7 @@ const Categories = () => {
       ],
     },
     {
-      title: "👜 Accessories & Lifestyle",
+      title: "Accessories & Lifestyle",
       items: [
         {
           name: "Designer Nightwear",
