@@ -1068,7 +1068,6 @@ body.dark .bisen-wishlist-btn.active {
 
 /* Product Detail Page */
 .user_product_detail_wrapper {
-  padding-bottom: 120px;
   max-width: 1050px;
   margin: auto;
   overflow-x: hidden;
@@ -1118,7 +1117,8 @@ body.dark .bisen-wishlist-btn.active {
 .user_pd_imgbox img {
   width: 100%;
   max-height: 520px;
-  object-fit: top;
+  object-fit: cover;
+  object-position: top;
   border-radius: 12px;
 }
 .user_pd_content {
@@ -1531,13 +1531,6 @@ body.dark .bisen-wishlist-btn.active {
     padding: 6px 10px !important;
     font-size: 12px !important;
     min-width: 90px !important;
-  }
-  .user_cart_minus {
-    margin: 3px;
-    width: 44px !important;
-    height: 23px !important;
-    font-size: 10px !important;
-    padding: 2px !important;
   }
   .stack-buttons {
     display: flex;
@@ -2448,7 +2441,7 @@ ul.no-style {
    ========================================= */
 
 .user_pd_sticky_bar_fixed {
-  position: fixed;
+  position: relative;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -2508,6 +2501,51 @@ ul.no-style {
   gap: 10px;
   width: 100%;
 }
+@media (max-width: 1024px) {
+  body.dark .user_cart_minus {
+    background: #1e1e1e;
+    border-color: #444;
+  }
+  .user_cart_minus {
+    /* margin: 3px;
+    width: 146px !important;
+    height: 43px !important;
+    font-size: 10px !important;
+    padding: 2px !important; */
+    background: white;
+    border: 1px solid var(--divider);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    /* justify-self: center; */
+    height: 40px;
+    border-radius: 8px;
+  }
+  .minusbutton {
+    width: 154px !important;
+  }
+  .btn-go-bag {
+    border-radius: 8px;
+  }
+  /* 1. "Delete" the wrapper div, but keep children */
+  .remove_stack {
+    display: contents !important;
+  }
+
+  /* 2. Update Parent Grid to handle 4 items now */
+  /* Before: [Wishlist] [Stack] [Add] (3 cols) */
+  /* Now:    [Wishlist] [Remove] [Minus] [Add] (4 cols) */
+  .sticky-bottom-grid {
+    /* Adjusted ratios: Wishlist(2) | Remove(1) | Minus(0.5) | Add(2) */
+    grid-template-columns: 2fr 1fr 0.6fr 2fr !important;
+    gap: 6px;
+  }
+
+  /* 3. Optional: Style the un-wrapped buttons to fit nicely */
+  .user_cart_minus {
+    height: 48px !important; /* Make them full height now that they are unstacked */
+    width: 100%;
+  }
+}
 
 .bisen-wishlist-btn,
 .btn-cart {
@@ -2519,9 +2557,9 @@ ul.no-style {
 /* --- DESKTOP ADJUSTMENT --- */
 @media (min-width: 1024px) {
   .user_pd_sticky_bar_fixed {
+    width: 99%;
     position: static;
     box-shadow: none;
-    padding: 20px 0;
   }
 
   /* On Desktop, hide the vacant space to keep it clean */
@@ -2547,4 +2585,512 @@ ul.no-style {
     height: 50px;
     margin-bottom: 20px;
   }
+}
+
+/* =========================================
+   ROBUST CATEGORY PAGE DESIGN
+   ========================================= */
+
+.category-page-wrapper {
+  padding-bottom: 80px;
+}
+
+.category-section {
+  margin-bottom: 50px;
+}
+
+.category-section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-color);;
+  margin-bottom: 20px;
+  border-left: 5px solid #ff3f6c; /* Brand Accent */
+  padding-left: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- THE GRID --- */
+.category-grid-robust {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 Cards per row on mobile */
+  gap: 15px;
+}
+
+/* --- THE CARD --- */
+.category-card-robust {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.category-card-robust:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* --- SPLIT IMAGES (The Magic) --- */
+.cat-img-split {
+  display: flex;
+  height: 220px; /* Fixed height for consistency */
+  width: 100%;
+}
+
+.cat-img-half {
+  flex: 1; /* Takes 50% width */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Add a tiny separator line between images */
+.cat-img-half:first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.cat-img-half img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s ease;
+}
+
+/* Hover Effect: Zoom both images slightly */
+.category-card-robust:hover .cat-img-half img {
+  transform: scale(1.1);
+}
+
+/* --- TEXT OVERLAY --- */
+.cat-info-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 60%,
+    transparent 100%
+  );
+  padding: 40px 12px 12px; /* Top padding is for gradient fade */
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cat-name {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cat-desc {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 400;
+  margin-top: 2px;
+  display: none; /* Hidden on tiny screens, shown on hover/desktop */
+}
+
+.cat-arrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 6px;
+  background: white;
+  color: black;
+  padding: 4px 10px;
+  border-radius: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+/* Show arrow on hover */
+.category-card-robust:hover .cat-arrow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- RESPONSIVE TWEAKS --- */
+
+/* Desktop: 4 Cards per row */
+@media (min-width: 992px) {
+  .category-grid-robust {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+  }
+
+  /* Span 2 columns for "Hero" items (Like Sarees) */
+  .category-card-robust.span-2 {
+    grid-column: span 2;
+  }
+
+  .category-card-robust.span-2 .cat-img-split {
+    height: 300px; /* Taller for hero */
+  }
+
+  .cat-desc {
+    display: block; /* Show description on desktop */
+  }
+}
+
+/* Tablet: 3 Cards per row */
+@media (min-width: 600px) and (max-width: 991px) {
+  .category-grid-robust {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .cat-img-split {
+    height: 180px;
+  }
+}
+
+/* Mobile: Adjust height */
+@media (max-width: 599px) {
+  .cat-img-split {
+    height: 160px;
+  }
+  .cat-name {
+    font-size: 0.9rem;
+  }
+  /* On mobile, span-2 still takes full width */
+  .category-card-robust.span-2 {
+    grid-column: span 2;
+  }
+}
+
+/* =========================================
+   PREMIUM HERO SLIDER STYLES
+   ========================================= */
+
+.hero-slider-container {
+  position: relative;
+  width: 95%;
+  max-width: 1400px;
+  height: 250px; /* Mobile Height */
+  margin: 20px auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  /* Touch action for smooth swiping */
+  touch-action: pan-y;
+}
+
+/* Slide Item */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 20px;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slide-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  gap: 20px;
+}
+
+.slide-text {
+  flex: 1;
+  z-index: 3;
+}
+
+.slide-text h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.slide-text p {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  opacity: 0.9;
+}
+
+.slide-text button {
+  padding: 8px 24px;
+  background: white;
+  color: #333;
+  border: none;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.slide-text button:hover {
+  transform: scale(1.05);
+}
+
+.slide-image-box {
+  width: 140px;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: none; /* Hide image on small mobile to save space */
+}
+.slide-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Progress Bar */
+.slider-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 5;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #ff3f6c; /* Brand color */
+  width: 0%;
+  animation-name: progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.progress-fill.paused {
+  animation-play-state: paused;
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Controls (PC) */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  opacity: 0; /* Hidden on mobile by default */
+}
+
+.slider-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.slider-btn.left {
+  left: 15px;
+}
+.slider-btn.right {
+  right: 15px;
+}
+
+.hero-slider-container:hover .slider-btn {
+  opacity: 1; /* Show on hover (PC) */
+}
+
+/* Dots */
+.slider-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+  .hero-slider-container {
+    height: 400px;
+  }
+  .slide-text h2 {
+    font-size: 3.5rem;
+  }
+  .slide-text p {
+    font-size: 1.4rem;
+  }
+  .slide-image-box {
+    display: block; /* Show image on desktop */
+    width: 250px;
+    height: 250px;
+  }
+  .slider-btn {
+    opacity: 0.5; /* Always visible slightly on desktop */
+  }
+}
+
+/* =========================================
+   PREMIUM CATEGORY GRID (Simple & Clean)
+   ========================================= */
+
+/* The Grid Container */
+.category-grid-simple {
+  display: grid;
+  /* Mobile: 2 Columns | Tablet: 3 Columns | Desktop: 6 Columns */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+@media (min-width: 600px) {
+  .category-grid-simple {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-grid-simple {
+    grid-template-columns: repeat(
+      6,
+      1fr
+    ); /* All 6 in one row on large screens */
+    gap: 25px;
+  }
+}
+
+/* The Tile */
+.category-tile-premium {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.category-tile-premium:hover {
+  transform: translateY(-5px);
+}
+
+/* Image Circle/Rounded Square */
+.cat-premium-img {
+  width: 100%;
+  aspect-ratio: 1 / 1.1; /* Slightly taller than square */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.cat-premium-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Zoom Effect */
+.category-tile-premium:hover .cat-premium-img img {
+  transform: scale(1.1);
+}
+
+/* Label */
+.cat-premium-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- EXPLORE ALL BUTTON --- */
+.explore-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.btn-explore-all {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #ff3f6c;
+  border: 1px solid #ff3f6c;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-explore-all:hover {
+  background: #ff3f6c;
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 63, 108, 0.3);
+}
+
+.btn-explore-all svg {
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+}
+
+.btn-explore-all:hover svg {
+  transform: translateX(4px);
+}
+
+.category-box {
+  display: grid;
 }

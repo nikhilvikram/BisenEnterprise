@@ -107,7 +107,7 @@ const ProductDetail = () => {
   const bestSellers = [...textileArray]
     .filter((p) => p._id !== id && p.id !== id) // Don't show current item
     .sort((a, b) => b.reviews - a.reviews)
-    .slice(0, 4);
+    .slice(0, 8);
   if (!item) {
     return (
       <div className="user_notfound">
@@ -120,111 +120,114 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="user_product_detail_wrapper">
-      {/* HEADER SECTION */}
-      <div className="user_pd_header">
-        <button
-          className="user_pd_backbtn"
-          onClick={() => {
-            saveScrollFor(currentKey);
-            navigate(-1);
-          }}
-        >
-          <span className="user_arrow_icon">←</span>
-        </button>
-
-        <div className="user_pd_header_title_box">
-          <h4 className="user_pd_title_header">{item.title}</h4>
-        </div>
-      </div>
-
-      {/* IMAGE */}
-      <div className="user_pd_imgbox">
-        <img src={item.image} alt={item.title} />
-      </div>
-
-      {/* DETAILS */}
-      <div className="user_pd_content">
-        <span className="user_pd_category">{item.category}</span>
-
-        <h2 className="user_pd_title">{item.title}</h2>
-
-        <div className="user_pd_rating">
-          <span>{"★".repeat(item.rating || 4)}</span>
-          <span className="user_pd_reviews">({item.reviews || 0} reviews)</span>
-        </div>
-
-        <div className="user_pd_price_block">
-          <h3>₹{item.price}</h3>
-          <p className="user_pd_discount">{item.discount}% OFF</p>
-          <p className="user_pd_delivery">FREE Delivery Tomorrow</p>
-        </div>
-
-        <p className="user_pd_desc">{item.description}</p>
-      </div>
-
-      {/* STICKY BOTTOM BAR */}
-      <div
-        className={`user_pd_sticky_bar_fixed ${qty > 0 ? "three-btns" : ""}`}
-      >
-        <div className="sticky-row-top">
-          {/* 3. GO TO BAG BUTTON (Visible ONLY if Qty > 0) */}
-          {qty > 0 && (
-            <button className="btn-go-bag" onClick={() => navigate("/cart")}>
-              GO TO BAG <span style={{ marginLeft: "5px" }}>→</span>
-            </button>
-          )}
-        </div>
-        <div className="sticky-row-bottom">
-          {/* WISHLIST */}
+    <>
+      <div className="user_product_detail_wrapper">
+        {/* HEADER SECTION */}
+        <div className="user_pd_header">
           <button
-            className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
+            className="user_pd_backbtn"
             onClick={() => {
-              // Dispatch Async Thunk (sends API call)
-              reduxDispatch(
-                isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
-              );
+              saveScrollFor(currentKey);
+              navigate(-1);
             }}
           >
-            {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
-          </button>
-          {/* ADD BUTTON */}
-          <button
-            className={`btn-cart cart-btn-wrapper 
-    ${animateCart ? "cart-animate" : ""} 
-    ${qty > 0 ? "cart-added" : ""}`}
-            onClick={handleAddToCartAnimated}
-          >
-            <span className="btn-cart-content">
-              {qty > 0 ? `Add again 🛒` : "Add 🛒"}
-            </span>
-
-            {qty > 0 && <span className="icon-badge">{qty}</span>}
+            <span className="user_arrow_icon">←</span>
           </button>
 
-          {/* REMOVE + MINUS STACK */}
-          <div className="remove_stack">
-            <button
-              className={`user_cart_minus removebtn ${
-                qty > 0 ? "show" : "hide"
-              }`}
-              onClick={() => removeWholeQty(item._id || item.id)}
-            >
-              Remove
-            </button>
-
-            <button
-              className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
-              onClick={() => handleUpdateQty(qty - 1)}
-            >
-              −
-            </button>
+          <div className="user_pd_header_title_box">
+            <h4 className="user_pd_title_header">{item.title}</h4>
           </div>
         </div>
-        {/* PLUS (Only show if in cart - optional design choice to split button) */}
-        {/* If you want a +/- counter style instead of just "Add", you can add a Plus button here too */}
-      </div>
 
+        {/* IMAGE */}
+        <div className="user_pd_imgbox">
+          <img src={item.image} alt={item.title} />
+        </div>
+
+        {/* DETAILS */}
+        <div className="user_pd_content">
+          <span className="user_pd_category">{item.category}</span>
+
+          <h2 className="user_pd_title">{item.title}</h2>
+
+          <div className="user_pd_rating">
+            <span>{"★".repeat(item.rating || 4)}</span>
+            <span className="user_pd_reviews">
+              ({item.reviews || 0} reviews)
+            </span>
+          </div>
+
+          <div className="user_pd_price_block">
+            <h3>₹{item.price}</h3>
+            <p className="user_pd_discount">{item.discount}% OFF</p>
+            <p className="user_pd_delivery">FREE Delivery Tomorrow</p>
+          </div>
+
+          <p className="user_pd_desc">{item.description}</p>
+        </div>
+
+        {/* STICKY BOTTOM BAR */}
+        <div
+          className={`user_pd_sticky_bar_fixed ${qty > 0 ? "three-btns" : ""}`}
+        >
+          <div className="sticky-row-top">
+            {/* 3. GO TO BAG BUTTON (Visible ONLY if Qty > 0) */}
+            {qty > 0 && (
+              <button className="btn-go-bag" onClick={() => navigate("/cart")}>
+                GO TO BAG <span style={{ marginLeft: "5px" }}>→</span>
+              </button>
+            )}
+          </div>
+          <div className="sticky-row-bottom">
+            {/* WISHLIST */}
+            <button
+              className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
+              onClick={() => {
+                // Dispatch Async Thunk (sends API call)
+                reduxDispatch(
+                  isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
+                );
+              }}
+            >
+              {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
+            </button>
+            {/* ADD BUTTON */}
+            <button
+              className={`btn-cart cart-btn-wrapper 
+    ${animateCart ? "cart-animate" : ""} 
+    ${qty > 0 ? "cart-added" : ""}`}
+              onClick={handleAddToCartAnimated}
+            >
+              <span className="btn-cart-content">
+                {qty > 0 ? `Add again 🛒` : "Add 🛒"}
+              </span>
+
+              {qty > 0 && <span className="icon-badge">{qty}</span>}
+            </button>
+
+            {/* REMOVE + MINUS STACK */}
+          <div className="remove_stack">
+              <button
+                className={`user_cart_minus removebtn ${
+                  qty > 0 ? "show" : "hide"
+                }`}
+                onClick={() => removeWholeQty(item._id || item.id)}
+              >
+                Remove
+              </button>
+
+              <button
+                className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
+                onClick={() => handleUpdateQty(qty - 1)}
+              >
+                −
+              </button>
+              </div>
+          </div>
+          {/* PLUS (Only show if in cart - optional design choice to split button) */}
+          {/* If you want a +/- counter style instead of just "Add", you can add a Plus button here too */}
+        </div>
+      </div>
       {/* ============== MORE PRODUCTS SECTION ============== */}
       <div className="container mt-5">
         <h2 className="section-title">Related PRODUCTS</h2>
@@ -268,7 +271,7 @@ const ProductDetail = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
