@@ -164,49 +164,63 @@ const ProductDetail = () => {
       </div>
 
       {/* STICKY BOTTOM BAR */}
-      <div className="user_pd_sticky_bar_fixed">
-        {/* WISHLIST */}
-        <button
-          className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
-          onClick={() => {
-            // Dispatch Async Thunk (sends API call)
-            reduxDispatch(
-              isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
-            );
-          }}
-        >
-          {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
-        </button>
-        {/* REMOVE + MINUS STACK */}
-        <div className="remove_stack">
-          <button
-            className={`user_cart_minus removebtn ${qty > 0 ? "show" : "hide"}`}
-            onClick={() => removeWholeQty(item._id || item.id)}
-          >
-            Remove
-          </button>
-
-          <button
-            className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
-            onClick={() => handleUpdateQty(qty - 1)}
-          >
-            −
-          </button>
+      <div
+        className={`user_pd_sticky_bar_fixed ${qty > 0 ? "three-btns" : ""}`}
+      >
+        <div className="sticky-row-top">
+          {/* 3. GO TO BAG BUTTON (Visible ONLY if Qty > 0) */}
+          {qty > 0 && (
+            <button className="btn-go-bag" onClick={() => navigate("/cart")}>
+              GO TO BAG <span style={{ marginLeft: "5px" }}>→</span>
+            </button>
+          )}
         </div>
-        {/* ADD BUTTON */}
-        <button
-          className={`btn-cart cart-btn-wrapper 
+        <div className="sticky-row-bottom">
+          {/* WISHLIST */}
+          <button
+            className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
+            onClick={() => {
+              // Dispatch Async Thunk (sends API call)
+              reduxDispatch(
+                isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
+              );
+            }}
+          >
+            {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
+          </button>
+          {/* ADD BUTTON */}
+          <button
+            className={`btn-cart cart-btn-wrapper 
     ${animateCart ? "cart-animate" : ""} 
     ${qty > 0 ? "cart-added" : ""}`}
-          onClick={handleAddToCartAnimated}
-        >
-          <span className="btn-cart-content">
-            {qty > 0 ? `Added 🛒` : "Add 🛒"}
-          </span>
+            onClick={handleAddToCartAnimated}
+          >
+            <span className="btn-cart-content">
+              {qty > 0 ? `Add again 🛒` : "Add 🛒"}
+            </span>
 
-          {qty > 0 && <span className="icon-badge">{qty}</span>}
-        </button>
+            {qty > 0 && <span className="icon-badge">{qty}</span>}
+          </button>
 
+          {/* REMOVE + MINUS STACK */}
+          <div className="remove_stack">
+            <button
+              className={`user_cart_minus removebtn ${
+                qty > 0 ? "show" : "hide"
+              }`}
+              onClick={() => removeWholeQty(item._id || item.id)}
+            >
+              Remove
+            </button>
+
+            <button
+              className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
+              onClick={() => handleUpdateQty(qty - 1)}
+            >
+              −
+            </button>
+          </div>
+        </div>
         {/* PLUS (Only show if in cart - optional design choice to split button) */}
         {/* If you want a +/- counter style instead of just "Add", you can add a Plus button here too */}
       </div>

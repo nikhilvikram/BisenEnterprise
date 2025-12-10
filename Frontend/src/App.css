@@ -2113,27 +2113,27 @@ ul.no-style {
 @media (min-width: 1024px) {
   /* A. THE GRID LAYOUT 
      Rearranging the flat DOM structure into a 2-Column Layout */
-.user_product_detail_wrapper {
+  .user_product_detail_wrapper {
     /* 1. Limit width so it doesn't touch screen edges */
-    max-width: 1200px; 
+    max-width: 1200px;
     width: 95%; /* Ensures a small gap on left/right edges of screen */
     margin: 40px auto;
-    
+
     /* 2. Grid Fix: Use 'fr' instead of '%' to handle the gap automatically */
     display: grid;
     grid-template-columns: 1.2fr 0.8fr; /* Image gets slightly more space */
     grid-template-rows: auto auto auto;
     column-gap: 50px; /* The gap will now fit perfectly */
-    
-    grid-template-areas: 
+
+    grid-template-areas:
       "header  header"
       "image   content"
       "image   buttons";
     align-items: start;
-    
+
     /* 3. Ensure padding doesn't add to width */
     box-sizing: border-box;
-    padding: 0; 
+    padding: 0;
   }
 
   /* B. HEADER AREA (Back Button & Title) */
@@ -2382,8 +2382,8 @@ ul.no-style {
 /* 2. Position the badge on the top-right corner */
 .icon-badge {
   position: absolute !important;
-  top: -8px !important; /* Move UP outside the button */
-  right: -8px !important; /* Move RIGHT outside the button */
+  top: -15px !important; /* Move UP outside the button */
+  right: -15px !important; /* Move RIGHT outside the button */
 
   /* Styling */
   background: #ff3f6c; /* Brand Pink/Red */
@@ -2402,8 +2402,8 @@ ul.no-style {
   justify-content: center;
 
   /* Polish */
-  border: 2px solid var(--bg-color); /* Creates a 'cutout' effect against the button */
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--navbar-bg); /* Creates a 'cutout' effect against the button */
+  /* box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); */
   z-index: 10;
 
   /* Animation when it appears */
@@ -2419,5 +2419,132 @@ ul.no-style {
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+/* --- GO TO BAG BUTTON (Light Blue) --- */
+.btn-go-bag {
+  background-color: #e3f2fd; /* Light Blue Background */
+  color: #1976d2; /* Darker Blue Text for contrast */
+  border: 1px solid #90caf9;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+  height: 50px; /* Match height of other buttons */
+}
+
+.btn-go-bag:hover {
+  background-color: #bbdefb;
+  border-color: #64b5f6;
+}
+
+/* =========================================
+   PERMANENT SPACE STICKY BAR
+   ========================================= */
+
+.user_pd_sticky_bar_fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ROW 1: THE RESERVED SLOT */
+.sticky-row-top {
+  width: 100%;
+  height: 42px; /* FIXED HEIGHT: Keeps layout rigid */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* When empty, this keeps the slot valid */
+.vacant-space {
+  width: 100%;
+  height: 100%;
+  background: transparent; /* Invisible */
+}
+
+/* The Blue Button Styles */
+.btn-go-bag {
+  width: 100%;
+  height: 100%; /* Fill the fixed slot */
+  background-color: #e3f2fd;
+  color: #1565c0;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ROW 2: MAIN BUTTONS (Locked) */
+.sticky-row-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.bisen-wishlist-btn,
+.btn-cart {
+  width: 100%;
+  height: 50px;
+  margin: 0;
+}
+
+/* --- DESKTOP ADJUSTMENT --- */
+@media (min-width: 1024px) {
+  .user_pd_sticky_bar_fixed {
+    position: static;
+    box-shadow: none;
+    padding: 20px 0;
+  }
+
+  /* On Desktop, hide the vacant space to keep it clean */
+  .sticky-row-top {
+    width: 100%;
+    height: 42px; /* FIXED HEIGHT: Keeps layout rigid */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vacant-space {
+    display: none;
+  }
+
+  .sticky-row-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-go-bag {
+    height: 50px;
+    margin-bottom: 20px;
   }
 }
