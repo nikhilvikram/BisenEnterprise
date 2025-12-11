@@ -3,8 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const authMiddleware = require("../middleware/auth");
-
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 // ROUTE 1: Register User (POST /api/auth/register)
 router.post("/register", async (req, res) => {
   // 1. Destructure "name" (Make sure your frontend sends 'name', not 'username')
@@ -110,7 +110,7 @@ router.post("/login", async (req, res) => {
 });
 
 // ROUTE 3: Get Logged In User Data (GET /api/auth/me)
-router.get("/me", authMiddleware, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   try {
     // req.user comes from the middleware decoding the token
     // We use .select("-password") so we don't send the password hash back
@@ -118,6 +118,48 @@ router.get("/me", authMiddleware, async (req, res) => {
     res.json(user);
   } catch (err) {
     console.error("Auth Me Error:", err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET /api/auth/users
+// @desc    Get All Users (CRM)
+// @access  Admin/Superadmin
+router.get("/users", [auth, admin], async (req, res) => {
+  try {
+    const users = await User.find().select("-password").sort({ date: -1 });
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   PUT /api/auth/promote/:id
+// @desc    Promote User Role
+// @access  Superadmin Only (Ideally)
+router.put("/promote/:id", [auth, admin], async (req, res) => {
+  try {
+    const { role } = req.body; // e.g. "admin"
+    let user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    user.role = role;
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET /api/auth/me
+// @desc    Get Current User Info (For AdminRoute check)
+router.get("/me", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    res.json(user);
+  } catch (err) {
     res.status(500).send("Server Error");
   }
 });

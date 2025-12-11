@@ -87,8 +87,10 @@ function AppContent() {
             <Route path="/Support" element={<AboutUs />} />
             <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
             <Route path="/my-orders" element={<MyOrdersPage />} />
-            <Route path="/crm" element={<CRMPage />} />
-            <Route path="/crm" element={<AdminRoute />} />
+
+            <Route path="/crm" element={<AdminRoute />}>
+              <Route path="/crm" element={<CRMPage />} />
+            </Route>
           </Routes>
           <MobileBottomNav />
           <Footer />
