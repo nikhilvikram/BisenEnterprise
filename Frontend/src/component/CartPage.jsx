@@ -3,11 +3,18 @@ import { CartContext } from "../store/cart-context";
 import { TextileList } from "../store/textile-list-store";
 import { useNavigate } from "react-router-dom";
 import { FaTrash, FaArrowLeft, FaShieldAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart, updateQty } from "../store/cartSlice";
 
 const CartPage = () => {
-  const { cart, dispatch } = useContext(CartContext);
   const { textileArray } = useContext(TextileList);
   const navigate = useNavigate();
+
+  // --- 3. REDUX SETUP ---
+  const dispatch = useDispatch();
+  // Read Cart from Redux Store
+  const cart = useSelector((state) => state.cart.items);
+  ``;
 
   // ✅ FIX: Robust Logic to Match Cart Items with Product Details
   const cartItems = cart
@@ -24,7 +31,7 @@ const CartPage = () => {
       return product ? { ...cartItem, product } : null;
     })
     .filter((item) => item !== null); // Remove any nulls if product not found
-
+  const qty = cartItems ? cartItems.qty : 0;
   // --- CALCULATIONS ---
   const totalMRP = cartItems.reduce(
     (acc, item) => acc + item.product.price * item.qty,
@@ -36,15 +43,15 @@ const CartPage = () => {
 
   // --- HANDLERS ---
   const updateQty = (id, newQty) => {
-    if (newQty < 1) return;
-    dispatch({
-      type: "UPDATE_QTY",
-      payload: { productId: id, qty: newQty },
-    });
+    if (newQty < 1) {
+      dispatch(removeFromCart(id));
+    } else {
+      dispatch(updateQty({ productId: id, qty: newQty }));
+    }
   };
 
   const removeItem = (id) => {
-    dispatch({ type: "REMOVE_FROM_CART", payload: id });
+    dispatch(removeFromCart(id));
   };
 
   // --- EMPTY STATE ---

@@ -47,7 +47,8 @@ router.post("/create", auth, async (req, res) => {
         productId: item.productId._id,
         title: item.productId.title, // Save title in case it changes later
         price: item.productId.price, // Save price (Snapshot)
-        qty: item.qty
+        qty: item.qty,
+        image: item.productId.image
       };
 
       orderItems.push(productDetails);
@@ -92,4 +93,43 @@ router.get("/history", auth, async (req, res) => {
   }
 });
 
+
+// @route   PUT /api/orders/:id/status
+// @desc    Update Order Status (For Admin/CRM)
+// @access  Private (Should be Admin Only in future)
+router.put("/:id/status", auth, async (req, res) => {
+  try {
+    const { status } = req.body; // e.g., "Shipped", "Delivered"
+
+    // Find order by ID
+    let order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ msg: "Order not found" });
+
+    // Update the status
+    order.status = status;
+    await order.save();
+
+    res.json(order);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET /api/orders/all
+// @desc    Get ALL orders (for CRM/Admin)
+// @access  Private (Ideally Admin only)
+router.get("/all", auth, async (req, res) => {
+  try {
+    // Fetch all orders, sorted by newest
+    // .populate("userId") pulls the user's name/email so you know who bought it
+    const orders = await Order.find()
+      .populate("userId", "name email") 
+      .sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;

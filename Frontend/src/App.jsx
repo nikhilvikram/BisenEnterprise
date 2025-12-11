@@ -40,6 +40,7 @@ import { fetchWishlist } from "./store/wishlistSlice";
 import { AuthProvider } from "./store/auth-context";
 import { fetchCart } from "./store/cartSlice";
 import MyOrdersPage from "./component/MyOrdersPage"; // Import
+import CRMPage from "./component/CRMPage";
 function AppContent() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -81,13 +82,12 @@ function AppContent() {
             <Route path="/KurtaList" element={<KurtaList />} />
             <Route path="/Checkout" element={<CheckoutPage />} />
             <Route path="/Login" element={<Login />} />
-            <Route path="/Orders" element={<h2>My Orders Page</h2>} />
             <Route path="/SavedAddresses" element={<h2>Saved Addresses</h2>} />
             <Route path="/Support" element={<AboutUs />} />
             <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
             <Route path="/my-orders" element={<MyOrdersPage />} />
+            <Route path="/crm" element={<CRMPage />} />
           </Routes>
-
           <MobileBottomNav />
           <Footer />
         </div>
