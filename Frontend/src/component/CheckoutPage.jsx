@@ -1,7 +1,5 @@
-import React, { useContext, useState } from "react";
-import { CartContext } from "../store/cart-context";
-import { TextileList } from "../store/textile-list-store";
-import { AuthContext } from "../store/auth-context"; // Needed for token
+import React, { useContext, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"; // 1. Use Redux
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -11,12 +9,19 @@ import {
   FaShieldAlt,
 } from "react-icons/fa";
 
+import { TextileList } from "../store/textile-list-store"; // Keep for product details if needed
+import { clearCartServer } from "../store/cartSlice"; // Import the clear action
+import { API_BASE_URL } from "../config"; // Or use your URL string
+import { clearCartLocal } from "../store/cartSlice";
 const CheckoutPage = () => {
-  const { cart, dispatch } = useContext(CartContext);
-  const { textileArray } = useContext(TextileList);
-  const { token } = useContext(AuthContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  // 2. Redux State
+  const cartItems = useSelector((state) => state.cart.items);
+  const { textileArray } = useContext(TextileList);
+
+  // 3. Local State
   const [address, setAddress] = useState({
     line1: "",
     city: "",
@@ -24,56 +29,69 @@ const CheckoutPage = () => {
   });
   const [isPlacing, setIsPlacing] = useState(false);
 
-  // ✅ ROBUST DATA MAPPING (Matches CartPage Logic)
-  const items = cart
+  // 4. Robust Data Mapping (Redux + Catalogue)
+  const items = cartItems
     .map((ci) => {
+      // Handle MongoDB populated object OR string ID
       const cartProdId = ci.productId._id || ci.productId;
+
+      // Find full details in catalogue
       const product = textileArray.find((p) => {
         const prodId = p._id || p.id;
         return prodId?.toString() === cartProdId?.toString();
       });
+
       return product ? { ...ci, product } : null;
     })
     .filter((item) => item !== null);
 
+  // Calculations
   const totalAmount = items.reduce(
     (sum, item) => sum + item.qty * item.product.price,
     0
   );
-
   const shipping = totalAmount > 500 ? 0 : 50;
   const finalTotal = totalAmount + shipping;
 
-  // ✅ PLACE ORDER (Backend Connection)
+  // 5. Place Order Function
+  // ... imports and setup ...
+
   const placeOrder = async () => {
+    // 1. Validation
     if (!address.line1 || !address.city || !address.pincode) {
       alert("Please fill complete address details");
       return;
     }
 
     setIsPlacing(true);
+    const token = localStorage.getItem("token");
 
     try {
-      // Call Backend API
-      await axios.post(
-        "https://bisenenterprisebackend.onrender.com/api/orders/create",
+      // 2. Call Backend API
+      // 🛑 NOTICE: We only send 'address'. The backend grabs items from the DB itself.
+      const response = await axios.post(
+        "https://bisenenterprisebackend.onrender.com/api/orders/create", // <--- Updated URL
         {
           address: {
             street: address.line1,
             city: address.city,
-            zip: address.pincode,
+            zip: address.pincode, // Backend expects 'zip', frontend state is 'pincode'
           },
         },
         { headers: { "x-auth-token": token } }
       );
 
-      // Success: Clear Context & Redirect
-      dispatch({ type: "CLEAR_CART" }); // Optional: backend clears it, but good for UI sync
+      // 3. Success Handling
+      // Since backend wiped the DB cart, we must wipe the Redux/Frontend cart to match.
+      dispatch(clearCartLocal()); // Use the synchronous clear action we made earlier
+
       alert("Order Placed Successfully! 🎉");
-      navigate("/Orders"); // Redirect to My Orders page
+      navigate("/my-orders"); // Redirect to history
     } catch (err) {
       console.error("Order Error:", err);
-      alert("Failed to place order. Try again.");
+      // specific error message from backend (e.g. "Cart is empty")
+      const errMsg = err.response?.data?.msg || "Failed to place order.";
+      alert(errMsg);
     } finally {
       setIsPlacing(false);
     }
@@ -81,8 +99,14 @@ const CheckoutPage = () => {
 
   if (items.length === 0) {
     return (
-      <div className="container mt-5 text-center">
+      <div className="container mt-5 text-center empty-cart-container">
         <h3>Your Cart is Empty!</h3>
+        <button
+          className="btn-primary mt-3"
+          onClick={() => navigate("/SareeList")}
+        >
+          Start Shopping
+        </button>
       </div>
     );
   }
@@ -96,9 +120,9 @@ const CheckoutPage = () => {
         </p>
       </div>
 
-      <div className="row">
+      <div className="checkout-grid">
         {/* LEFT SIDE: FORMS */}
-        <div className="col-md-8">
+        <div className="checkout-left">
           {/* ADDRESS SECTION */}
           <div className="checkout-section">
             <div className="section-header">
@@ -115,7 +139,7 @@ const CheckoutPage = () => {
                   setAddress({ ...address, line1: e.target.value })
                 }
               />
-              <div className="d-flex gap-3 mt-3">
+              <div className="form-row">
                 <input
                   className="checkout-input"
                   placeholder="City"
@@ -145,15 +169,15 @@ const CheckoutPage = () => {
 
             <label className="payment-radio selected">
               <input type="radio" checked readOnly />
-              <div>
+              <div className="radio-content">
                 <span className="pay-title">Cash on Delivery (COD)</span>
                 <span className="pay-sub">Pay cash at your doorstep</span>
               </div>
             </label>
             <label className="payment-radio disabled">
               <input type="radio" disabled />
-              <div>
-                <span className="pay-title">Online Payment (UPI/Card)</span>
+              <div className="radio-content">
+                <span className="pay-title">Online Payment</span>
                 <span className="pay-sub">Coming Soon</span>
               </div>
             </label>
@@ -161,7 +185,7 @@ const CheckoutPage = () => {
         </div>
 
         {/* RIGHT SIDE: SUMMARY */}
-        <div className="col-md-4">
+        <div className="checkout-right">
           <div className="order-summary-card">
             <h5 className="summary-title">ORDER SUMMARY</h5>
             <div className="summary-items-list">
@@ -175,7 +199,7 @@ const CheckoutPage = () => {
               ))}
             </div>
 
-            <hr />
+            <hr className="dashed-line" />
 
             <div className="summary-row">
               <span>Subtotal</span>
@@ -188,7 +212,7 @@ const CheckoutPage = () => {
               </span>
             </div>
 
-            <hr />
+            <hr className="dashed-line" />
 
             <div className="summary-total">
               <span>Total Payable</span>

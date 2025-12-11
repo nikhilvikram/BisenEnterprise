@@ -9,9 +9,8 @@ const Cart = require("../models/Cart");
 // @access  Private
 router.get("/", auth, async (req, res) => {
   try {
-    // Find orders where 'user' matches the logged-in ID
-    // .sort({ date: -1 }) means newest first
-    const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
+    // 🛑 FIX: Changed 'user' to 'userId' to match your POST route
+    const orders = await Order.find({ userId: req.user._id }).sort({ createdAt: -1 });
     res.json(orders);
   } catch (err) {
     console.error(err.message);

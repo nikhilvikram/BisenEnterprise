@@ -3282,3 +3282,232 @@ body.dark .search-card:hover {
   color: var(--text-color);
   margin-top: 4px;
 }
+
+/* =========================================
+   CHECKOUT PAGE STYLES
+   ========================================= */
+
+.checkout-page-wrapper {
+  padding-top: 20px;
+  padding-bottom: 80px;
+  max-width: 1100px;
+}
+
+.checkout-header {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile: Stacked */
+  gap: 20px;
+}
+
+@media (min-width: 992px) {
+  .checkout-grid {
+    grid-template-columns: 1.8fr 1.2fr; /* Desktop: 60% - 40% split */
+    align-items: start;
+  }
+}
+
+/* --- SECTIONS --- */
+.checkout-section {
+  background: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--divider);
+  padding-bottom: 10px;
+}
+
+.section-icon {
+  color: #ff3f6c;
+  font-size: 1.2rem;
+}
+
+.section-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* --- FORMS --- */
+.address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.checkout-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  transition: 0.2s;
+}
+
+.checkout-input:focus {
+  border-color: #ff3f6c;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 63, 108, 0.1);
+}
+
+/* --- PAYMENT OPTIONS --- */
+.payment-radio {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.payment-radio.selected {
+  border-color: #ff3f6c;
+  background: rgba(255, 63, 108, 0.04);
+}
+
+.payment-radio.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(0,0,0,0.02);
+}
+
+.radio-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.pay-title {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.pay-sub {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* --- SUMMARY CARD --- */
+.order-summary-card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.08);
+  position: sticky;
+  top: 80px;
+}
+
+.summary-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #777;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.summary-items-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding-right: 5px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.item-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.dashed-line {
+  border: none;
+  border-top: 1px dashed #ccc;
+  margin: 15px 0;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+.place-order-btn {
+  width: 100%;
+  padding: 15px;
+  background: #ff3f6c;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: 0.2s;
+}
+
+.place-order-btn:hover {
+  background: #e03560;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 63, 108, 0.3);
+}
+
+.place-order-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secure-msg {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #28a745;
+  font-weight: 600;
+}
