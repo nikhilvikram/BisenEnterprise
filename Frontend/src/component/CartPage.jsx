@@ -42,7 +42,7 @@ const CartPage = () => {
   const finalAmount = totalMRP - discount + shipping;
 
   // --- HANDLERS ---
-  const updateQty = (id, newQty) => {
+  const handleUpdateQty = (id, newQty) => {
     if (newQty < 1) {
       dispatch(removeFromCart(id));
     } else {
@@ -126,13 +126,13 @@ const CartPage = () => {
                     <div className="cart-actions">
                       <div className="qty-selector">
                         <button
-                          onClick={() => updateQty(pid, qty - 1)}
+                          onClick={() => handleUpdateQty(pid, qty - 1)}
                           disabled={qty <= 1}
                         >
                           −
                         </button>
                         <span>{qty}</span>
-                        <button onClick={() => updateQty(pid, qty + 1)}>
+                        <button onClick={() => handleUpdateQty(pid, qty + 1)}>
                           +
                         </button>
                       </div>

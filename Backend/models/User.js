@@ -22,8 +22,16 @@ const UserSchema = new mongoose.Schema({
   password: { type: String }, // hashed password (bcrypt)
   phone: { type: String, index: true, sparse: true }, // phone login optional
   addresses: [AddressSchema],
-  role: { type: String, enum: ["user", "admin"], default: "user" },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+
+  // 🆕 ADD THIS FIELD:
+  role: { 
+    type: String, 
+    enum: ["user", "admin", "superadmin"], 
+    default: "user" // Everyone starts as a normal user
+  },
+  
+  date: { type: Date, default: Date.now },
 });
 
 // export model

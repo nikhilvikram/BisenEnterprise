@@ -41,6 +41,7 @@ import { AuthProvider } from "./store/auth-context";
 import { fetchCart } from "./store/cartSlice";
 import MyOrdersPage from "./component/MyOrdersPage"; // Import
 import CRMPage from "./component/CRMPage";
+import AdminRoute from "./component/AdminRoute";
 function AppContent() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -87,6 +88,7 @@ function AppContent() {
             <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
             <Route path="/my-orders" element={<MyOrdersPage />} />
             <Route path="/crm" element={<CRMPage />} />
+            <Route path="/crm" element={<AdminRoute />} />
           </Routes>
           <MobileBottomNav />
           <Footer />

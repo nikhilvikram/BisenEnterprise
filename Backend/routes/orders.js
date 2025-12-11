@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
-
+const admin = require("../middleware/admin");
 // @route   GET /api/orders
 // @desc    Get all orders for the logged-in user
 // @access  Private
@@ -97,7 +97,7 @@ router.get("/history", auth, async (req, res) => {
 // @route   PUT /api/orders/:id/status
 // @desc    Update Order Status (For Admin/CRM)
 // @access  Private (Should be Admin Only in future)
-router.put("/:id/status", auth, async (req, res) => {
+router.put("/:id/status", [auth, admin], async (req, res) => {
   try {
     const { status } = req.body; // e.g., "Shipped", "Delivered"
 
@@ -119,7 +119,7 @@ router.put("/:id/status", auth, async (req, res) => {
 // @route   GET /api/orders/all
 // @desc    Get ALL orders (for CRM/Admin)
 // @access  Private (Ideally Admin only)
-router.get("/all", auth, async (req, res) => {
+router.get("/all", [auth, admin], async (req, res) => {
   try {
     // Fetch all orders, sorted by newest
     // .populate("userId") pulls the user's name/email so you know who bought it
