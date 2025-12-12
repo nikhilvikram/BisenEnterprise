@@ -3,7 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllOrders, updateOrderStatus } from "../store/orderSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaBox, FaUsers, FaPlus, FaEdit, FaCheck } from "react-icons/fa";
+import {
+  FaBox,
+  FaUsers,
+  FaPlus,
+  FaEdit,
+  FaUserShield,
+  FaCrown,
+} from "react-icons/fa";
 
 const CRMPage = () => {
   const dispatch = useDispatch();
@@ -11,23 +18,64 @@ const CRMPage = () => {
   const { orders } = useSelector((state) => state.orders);
 
   const [activeTab, setActiveTab] = useState("orders");
-  const [editingOrder, setEditingOrder] = useState(null); // ID of order being edited
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [editingOrder, setEditingOrder] = useState(null);
   const token = localStorage.getItem("token");
 
+  // Fetch Orders on Mount
   useEffect(() => {
     dispatch(fetchAllOrders());
   }, [dispatch]);
 
-  // --- HANDLER: Update Item Qty ---
+  // Fetch Users when switching tabs
+  useEffect(() => {
+    if (activeTab === "users") {
+      fetchUsers();
+    }
+  }, [activeTab]);
+
+  const fetchUsers = async () => {
+    setLoadingUsers(true);
+    try {
+      const res = await axios.get(
+        "https://bisenenterprisebackend.onrender.com/api/auth/users",
+        {
+          headers: { "x-auth-token": token },
+        }
+      );
+      setUsers(res.data);
+    } catch (err) {
+      alert("Failed to load users");
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
+  const handlePromote = async (userId, newRole) => {
+    if (!window.confirm(`Promote user to ${newRole}?`)) return;
+    try {
+      await axios.put(
+        `https://bisenenterprisebackend.onrender.com/api/auth/promote/${userId}`,
+        { role: newRole },
+        { headers: { "x-auth-token": token } }
+      );
+      alert("User Updated!");
+      fetchUsers();
+    } catch (err) {
+      alert("Update Failed");
+    }
+  };
+
   const handleQtyChange = async (orderId, productId, newQty) => {
     try {
-      const res = await axios.put(
+      await axios.put(
         `https://bisenenterprisebackend.onrender.com/api/orders/${orderId}/item/${productId}`,
         { qty: newQty },
         { headers: { "x-auth-token": token } }
       );
       alert("Order Updated!");
-      dispatch(fetchAllOrders()); // Refresh UI
+      dispatch(fetchAllOrders());
     } catch (err) {
       alert("Failed to update quantity");
     }
@@ -39,7 +87,7 @@ const CRMPage = () => {
 
   return (
     <div className="container mt-5 mb-5" style={{ minHeight: "80vh" }}>
-      {/* HEADER WITH ADD BUTTON */}
+      {/* HEADER */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Bisen Admin Portal 🛡️</h2>
         <button
@@ -50,19 +98,31 @@ const CRMPage = () => {
         </button>
       </div>
 
+      {/* TABS */}
       <ul className="nav nav-tabs mb-4">
         <li className="nav-item">
           <button
-            className={`nav-link ${activeTab === "orders" ? "active" : ""}`}
+            className={`nav-link ${
+              activeTab === "orders" ? "active fw-bold" : ""
+            }`}
             onClick={() => setActiveTab("orders")}
           >
-            <FaBox /> Order Management
+            <FaBox className="me-2" /> Order Management
           </button>
         </li>
-        {/* User tab code remains same... */}
+        <li className="nav-item">
+          <button
+            className={`nav-link ${
+              activeTab === "users" ? "active fw-bold" : ""
+            }`}
+            onClick={() => setActiveTab("users")}
+          >
+            <FaUsers className="me-2" /> User Accounts
+          </button>
+        </li>
       </ul>
 
-      {/* ORDER MANAGEMENT TAB */}
+      {/* TAB 1: ORDERS */}
       {activeTab === "orders" && (
         <div className="table-responsive shadow-sm rounded bg-white p-3">
           <table className="table table-hover align-middle">
@@ -85,9 +145,8 @@ const CRMPage = () => {
                     <div className="fw-bold">
                       {order.userId?.name || "Guest"}
                     </div>
+                    <small className="text-muted">{order.userId?.email}</small>
                   </td>
-
-                  {/* Status Dropdown */}
                   <td>
                     <select
                       className="form-select form-select-sm"
@@ -100,10 +159,9 @@ const CRMPage = () => {
                       <option value="Processing">Processing</option>
                       <option value="Shipped">Shipped</option>
                       <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
                     </select>
                   </td>
-
-                  {/* ITEM MANAGEMENT */}
                   <td>
                     <button
                       className="btn btn-sm btn-outline-dark"
@@ -113,13 +171,9 @@ const CRMPage = () => {
                         )
                       }
                     >
-                      {editingOrder === order._id
-                        ? "Close Items"
-                        : `View ${order.products.length} Items`}{" "}
+                      {editingOrder === order._id ? "Close" : "Edit Qty"}{" "}
                       <FaEdit />
                     </button>
-
-                    {/* EXPANDED VIEW */}
                     {editingOrder === order._id && (
                       <div className="mt-2 p-2 bg-light rounded border">
                         {order.products.map((item) => (
@@ -130,8 +184,7 @@ const CRMPage = () => {
                             <small>{item.title}</small>
                             <div className="d-flex align-items-center gap-2">
                               <button
-                                className="btn btn-xs btn-danger"
-                                style={{ padding: "0px 6px" }}
+                                className="btn btn-xs btn-danger p-0 px-2"
                                 onClick={() =>
                                   handleQtyChange(
                                     order._id,
@@ -144,8 +197,7 @@ const CRMPage = () => {
                               </button>
                               <span className="fw-bold">{item.qty}</span>
                               <button
-                                className="btn btn-xs btn-success"
-                                style={{ padding: "0px 6px" }}
+                                className="btn btn-xs btn-success p-0 px-2"
                                 onClick={() =>
                                   handleQtyChange(
                                     order._id,
@@ -162,12 +214,78 @@ const CRMPage = () => {
                       </div>
                     )}
                   </td>
-
-                  <td className="fw-bold">₹{order.amount}</td>
+                  <td className="fw-bold">
+                    ₹{order.amount || order.totalAmount}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* TAB 2: USERS (Restored) */}
+      {activeTab === "users" && (
+        <div className="table-responsive shadow-sm rounded bg-white p-3">
+          {loadingUsers ? (
+            <p>Loading...</p>
+          ) : (
+            <table className="table table-hover align-middle">
+              <thead className="bg-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td className="fw-bold">{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      {user.role === "superadmin" ? (
+                        <span className="badge bg-warning text-dark">
+                          <FaCrown /> Super Admin
+                        </span>
+                      ) : user.role === "admin" ? (
+                        <span className="badge bg-primary">
+                          <FaUserShield /> Admin
+                        </span>
+                      ) : (
+                        <span className="badge bg-secondary">User</span>
+                      )}
+                    </td>
+                    <td>
+                      {user.role === "superadmin" ? (
+                        <span className="text-muted small fst-italic">
+                          Master
+                        </span>
+                      ) : (
+                        <div className="btn-group btn-group-sm">
+                          <button
+                            className="btn btn-outline-primary"
+                            disabled={user.role === "admin"}
+                            onClick={() => handlePromote(user._id, "admin")}
+                          >
+                            Make Admin
+                          </button>
+                          <button
+                            className="btn btn-outline-secondary"
+                            disabled={user.role === "user"}
+                            onClick={() => handlePromote(user._id, "user")}
+                          >
+                            Demote
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
     </div>
