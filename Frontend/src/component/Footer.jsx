@@ -1,5 +1,5 @@
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="footer-section">
@@ -64,7 +64,26 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
+      <div className="footer-column">
+        <h4>Legal</h4>
+        <ul className="no-style">
+          <li>
+            <Link to="/policy/privacy-policy">Privacy Policy</Link>
+          </li>
+          <li>
+            <Link to="/policy/terms-conditions">Terms & Conditions</Link>
+          </li>
+          <li>
+            <Link to="/policy/refund-policy">Cancellation & Refund</Link>
+          </li>
+          <li>
+            <Link to="/policy/shipping-policy">Shipping Policy</Link>
+          </li>
+          <li>
+            <Link to="/policy/contact-us">Contact Us</Link>
+          </li>
+        </ul>
+      </div>
       {/* ==== COPYRIGHT BAR ==== */}
       <div className="footer-bottom">
         © {new Date().getFullYear()} BisenEnterprise — All Rights Reserved.
