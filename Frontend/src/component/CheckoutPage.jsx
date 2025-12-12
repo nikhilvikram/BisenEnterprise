@@ -261,31 +261,40 @@ const CheckoutPage = () => {
           </div>
 
           {/* PAYMENT SECTION */}
+          {/* PAYMENT SECTION */}
           <div className="checkout-section">
             <div className="section-header">
               <FaMoneyBillWave className="section-icon" />
               <h4>Payment Method</h4>
             </div>
 
-            <label className="payment-radio selected">
-              <input type="radio" checked readOnly />
+            {/* OPTION 1: CASH ON DELIVERY */}
+            <label 
+              className={`payment-radio ${paymentMethod === "COD" ? "selected" : ""}`}
+              onClick={() => setPaymentMethod("COD")}
+            >
+              <input 
+                type="radio" 
+                name="payment" 
+                checked={paymentMethod === "COD"} 
+                onChange={() => setPaymentMethod("COD")}
+              />
               <div className="radio-content">
                 <span className="pay-title">Cash on Delivery (COD)</span>
                 <span className="pay-sub">Pay cash at your doorstep</span>
               </div>
             </label>
-            {/* ONLINE PAYMENT OPTION */}
-            <label
-              className={`payment-radio ${
-                paymentMethod === "ONLINE" ? "selected" : ""
-              }`}
-              onClick={() => setPaymentMethod("ONLINE")} // Click handler on the box
+
+            {/* OPTION 2: ONLINE PAYMENT */}
+            <label 
+              className={`payment-radio ${paymentMethod === "ONLINE" ? "selected" : ""}`}
+              onClick={() => setPaymentMethod("ONLINE")}
             >
-              <input
-                type="radio"
-                name="payment"
-                checked={paymentMethod === "ONLINE"}
-                onChange={() => setPaymentMethod("ONLINE")} // Click handler on the radio
+              <input 
+                type="radio" 
+                name="payment" 
+                checked={paymentMethod === "ONLINE"} 
+                onChange={() => setPaymentMethod("ONLINE")}
               />
               <div className="radio-content">
                 <span className="pay-title">Online Payment (Razorpay)</span>
