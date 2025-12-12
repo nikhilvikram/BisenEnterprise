@@ -132,4 +132,39 @@ router.get("/all", [auth, admin], async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// @route   PUT /api/orders/:orderId/item/:itemId
+// @desc    Update Item Quantity in Order (Admin)
+router.put("/:orderId/item/:productId", [auth, admin], async (req, res) => {
+  try {
+    const { qty } = req.body; // New Quantity
+    const order = await Order.findById(req.params.orderId);
+
+    if (!order) return res.status(404).json({ msg: "Order not found" });
+
+    // 1. Find the item inside the order
+    const itemIndex = order.products.findIndex(
+      (p) => p.productId.toString() === req.params.productId
+    );
+
+    if (itemIndex === -1) return res.status(404).json({ msg: "Item not in order" });
+
+    if (qty <= 0) {
+      // Remove item if qty is 0
+      order.products.splice(itemIndex, 1);
+    } else {
+      // Update qty
+      order.products[itemIndex].qty = qty;
+    }
+
+    // 2. Recalculate Total Price
+    order.amount = order.products.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    await order.save();
+    res.json(order);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;

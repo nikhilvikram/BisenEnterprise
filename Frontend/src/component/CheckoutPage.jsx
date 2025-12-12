@@ -13,7 +13,19 @@ import { TextileList } from "../store/textile-list-store"; // Keep for product d
 import { clearCartServer } from "../store/cartSlice"; // Import the clear action
 import { API_BASE_URL } from "../config"; // Or use your URL string
 import { clearCartLocal } from "../store/cartSlice";
+
+// Add a script loader function at the top (outside component)
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 const CheckoutPage = () => {
+  const [paymentMethod, setPaymentMethod] = useState("COD"); // Default COD
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -67,6 +79,94 @@ const CheckoutPage = () => {
     const token = localStorage.getItem("token");
 
     try {
+      // ---------------------------------------------
+      // OPTION A: CASH ON DELIVERY
+      // ---------------------------------------------
+      if (paymentMethod === "COD") {
+        await axios.post(
+          "https://bisenenterprisebackend.onrender.com/api/orders/create",
+          {
+            address: { ...address, zip: address.pincode }, // Backend needs 'zip'
+            paymentMethod: "COD",
+          },
+          { headers: { "x-auth-token": token } }
+        );
+
+        dispatch(clearCartLocal());
+        alert("Order Placed Successfully! 🎉");
+        navigate("/my-orders");
+      }
+      // ---------------------------------------------
+      // OPTION B: ONLINE PAYMENT (RAZORPAY)
+      // ---------------------------------------------
+      else if (paymentMethod === "ONLINE") {
+        // 1. Load Script
+        const res = await loadRazorpayScript();
+        if (!res) {
+          alert("Razorpay SDK failed to load. Check connection.");
+          return;
+        }
+
+        // 2. Create Order on Backend
+        const orderData = await axios.post(
+          "https://bisenenterprisebackend.onrender.com/api/payment/create-order",
+          {
+            amount: finalTotal, // Send amount from frontend state
+          }
+        );
+
+        // 3. Configure Options
+        const options = {
+          key: "rzp_test_RqpgHSApEpR2oR", // 🔴 REPLACE WITH YOUR KEY ID
+          amount: orderData.data.amount,
+          currency: "INR",
+          name: "Bisen Enterprise",
+          description: "Payment for Order",
+          image: "https://your-logo-url.com/logo.png",
+          order_id: orderData.data.id, // Order ID from backend
+
+          handler: async function (response) {
+            // 4. Verify Payment on Backend
+            const verifyRes = await axios.post(
+              "https://bisenenterprisebackend.onrender.com/api/payment/verify",
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }
+            );
+
+            if (verifyRes.data.success) {
+              // 5. IF VERIFIED -> SAVE ORDER TO DB
+              await axios.post(
+                "https://bisenenterprisebackend.onrender.com/api/orders/create",
+                {
+                  address: { ...address, zip: address.pincode },
+                  paymentMethod: "ONLINE",
+                  paymentId: response.razorpay_payment_id, // Save this reference!
+                },
+                { headers: { "x-auth-token": token } }
+              );
+
+              dispatch(clearCartLocal());
+              alert("Payment Successful! Order Placed 🎉");
+              navigate("/my-orders");
+            }
+          },
+          prefill: {
+            name: "User Name", // You can pull from AuthContext
+            email: "user@example.com",
+            contact: "9999999999",
+          },
+          theme: {
+            color: "#ff3f6c", // Bisen Brand Color
+          },
+        };
+
+        // 4. Open Popup
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+      }
       // 2. Call Backend API
       // 🛑 NOTICE: We only send 'address'. The backend grabs items from the DB itself.
       const response = await axios.post(
@@ -174,11 +274,22 @@ const CheckoutPage = () => {
                 <span className="pay-sub">Pay cash at your doorstep</span>
               </div>
             </label>
-            <label className="payment-radio disabled">
-              <input type="radio" disabled />
+            {/* ONLINE PAYMENT OPTION */}
+            <label
+              className={`payment-radio ${
+                paymentMethod === "ONLINE" ? "selected" : ""
+              }`}
+              onClick={() => setPaymentMethod("ONLINE")} // Click handler on the box
+            >
+              <input
+                type="radio"
+                name="payment"
+                checked={paymentMethod === "ONLINE"}
+                onChange={() => setPaymentMethod("ONLINE")} // Click handler on the radio
+              />
               <div className="radio-content">
-                <span className="pay-title">Online Payment</span>
-                <span className="pay-sub">Coming Soon</span>
+                <span className="pay-title">Online Payment (Razorpay)</span>
+                <span className="pay-sub">UPI, Cards, Netbanking</span>
               </div>
             </label>
           </div>

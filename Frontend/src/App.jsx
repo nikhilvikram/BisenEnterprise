@@ -43,6 +43,7 @@ import MyOrdersPage from "./component/MyOrdersPage"; // Import
 import CRMPage from "./component/CRMPage";
 import AdminRoute from "./component/AdminRoute";
 import Policies from "./component/Policies";
+import AddProductPage from "./component/AddProductPage";
 function AppContent() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -89,8 +90,9 @@ function AppContent() {
             <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
             <Route path="/my-orders" element={<MyOrdersPage />} />
 
-            <Route path="/crm" element={<AdminRoute />}>
+            <Route  element={<AdminRoute />}>
               <Route path="/crm" element={<CRMPage />} />
+              <Route path="/admin/add-product" element={<AddProductPage />} />
             </Route>
             <Route path="/policy/:type" element={<Policies />} />
           </Routes>

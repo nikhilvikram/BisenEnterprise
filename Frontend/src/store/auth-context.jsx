@@ -11,7 +11,7 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  // ✅ Lazy Initialization: Reads storage immediately on mount
+  // ✅ Lazy Initialization
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
@@ -25,31 +25,29 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post(
         "https://bisenenterprisebackend.onrender.com/api/auth/login",
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
 
       console.log("Login Response:", res.data);
 
-      // ✅ Robust Handling: Works even if backend structure varies slightly
       const receivedToken = res.data.token;
       let receivedUser = res.data.user;
 
       if (receivedToken) {
-        // If backend didn't send user object, fallback to local data
         if (!receivedUser) {
-          receivedUser = { name: "User", email: email };
+          receivedUser = { name: "User", email: email, role: "user" };
         }
 
+        // 1. Update State
         setToken(receivedToken);
         setUser(receivedUser);
 
+        // 2. Persist to LocalStorage
         localStorage.setItem("token", receivedToken);
         localStorage.setItem("user", JSON.stringify(receivedUser));
 
-        return { success: true };
+        // 3. Return Success + Role (So LoginPage knows where to go)
+        return { success: true, role: receivedUser.role };
       } else {
         return { success: false, message: "No token received from server" };
       }
@@ -66,11 +64,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.post(
         "https://bisenenterprisebackend.onrender.com/api/auth/register",
-        {
-          name,
-          email,
-          password,
-        }
+        { name, email, password }
       );
       return await login(email, password);
     } catch (error) {
@@ -88,7 +82,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  // Computed property for easier access
   const isLoggedIn = !!token;
 
   return (

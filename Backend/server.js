@@ -9,6 +9,7 @@ const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/orders");
 const wishlistRoutes = require("./routes/wishlist");
 const shopRoutes = require("./routes/shopRoutes");
+const products = require("./routes/products");
 const app = express();
 
 app.use(express.json());
@@ -37,6 +38,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/wishlist", wishlistRoutes);
-
+app.use("/api/products", products);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✔ Server running on port ${PORT}`));
