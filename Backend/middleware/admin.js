@@ -2,10 +2,17 @@ const User = require("../models/User");
 
 module.exports = async function (req, res, next) {
   try {
-    // Debug Log 1: Did we get a user ID?
-    console.log("🛡️ Admin Middleware Check: User ID =", req.user?.id);
 
-    const user = await User.findById(req.user._id);
+    // 1. Get User ID safely (Check both .id and ._id)
+    // The auth middleware usually attaches the payload to req.user
+    const userId = req.user?.id || req.user?._id;
+    // Debug Log 1: Did we get a user ID?
+if (!userId) {
+      console.log("❌ Admin Middleware: No User ID found in request");
+      return res.status(401).json({ msg: "Unauthorized" });
+    }
+
+    const user = await User.findById(userId);
 
     // Debug Log 2: Did we find the user?
     if (!user) {
