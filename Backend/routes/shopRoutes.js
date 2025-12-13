@@ -111,4 +111,32 @@ router.put("/:id", [auth, admin], async (req, res) => {
   }
 });
 
+// ==================================================
+// 🛠️ MIGRATION TOOL: Run this ONCE to fix old products
+// URL: POST http://localhost:5000/api/products/fix-stock
+// ==================================================
+router.post("/fix-stock", async (req, res) => {
+  try {
+    // 1. Find all products where stock does not exist
+    const result = await Product.updateMany(
+      { stock: { $exists: false } }, // Condition
+      { $set: { stock: 0 } }         // Action: Set stock to 0
+    );
+
+    // 2. Also fix any that are null
+    await Product.updateMany(
+      { stock: null },
+      { $set: { stock: 0 } }
+    );
+
+    // 3. Clear Cache so frontend sees the fix
+    if (redisClient.isOpen) await redisClient.del("active_products");
+
+    res.json({ msg: "Migration Complete", updatedCount: result.modifiedCount });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Migration Failed");
+  }
+});
+
 module.exports = router;

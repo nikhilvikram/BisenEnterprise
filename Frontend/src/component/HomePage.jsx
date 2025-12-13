@@ -150,9 +150,10 @@ const HomePage = () => {
   // Redux Logic
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-
-  const bestSellers = [...textileArray]
-    .sort((a, b) => b.reviews - a.reviews)
+  // If textileArray is null/undefined, use empty array []
+  const safeProducts = textileArray || [];
+  const bestSellers = [...safeProducts]
+    .sort((a, b) => (b.reviews || 0) - (a.reviews || 0))
     .slice(0, 4);
 
   const getQty = (itemId) => {
