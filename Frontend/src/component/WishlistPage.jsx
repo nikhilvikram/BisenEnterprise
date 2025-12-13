@@ -78,7 +78,10 @@ const WishlistPage = () => {
               </button>
 
               <div className="wishlist-img-box">
-                <img src={item.image} alt={safeTitle} />
+                <img
+                  src={item.images?.length > 0 ? item.images[0] : item.image}
+                  alt={safeTitle}
+                />
               </div>
 
               <div className="wishlist-details">

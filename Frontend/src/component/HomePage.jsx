@@ -238,7 +238,10 @@ const HomePage = () => {
                     navigate(`/product/${itemId}`);
                   }}
                 >
-                  <img src={item.image} alt={item.title} />
+                  <img
+                    src={item.images?.length > 0 ? item.images[0] : item.image}
+                    alt={item.title}
+                  />
                 </div>
 
                 <h5 className="bisen-title">{item.title}</h5>

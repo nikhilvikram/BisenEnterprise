@@ -141,7 +141,10 @@ const ProductDetail = () => {
 
         {/* IMAGE */}
         <div className="user_pd_imgbox">
-          <img src={item.image} alt={item.title} />
+          <img
+            src={item.images?.length > 0 ? item.images[0] : item.image}
+            alt={item.title}
+          />
         </div>
 
         {/* DETAILS */}
@@ -206,7 +209,7 @@ const ProductDetail = () => {
             </button>
 
             {/* REMOVE + MINUS STACK */}
-          <div className="remove_stack">
+            <div className="remove_stack">
               <button
                 className={`user_cart_minus removebtn ${
                   qty > 0 ? "show" : "hide"
@@ -222,7 +225,7 @@ const ProductDetail = () => {
               >
                 −
               </button>
-              </div>
+            </div>
           </div>
           {/* PLUS (Only show if in cart - optional design choice to split button) */}
           {/* If you want a +/- counter style instead of just "Add", you can add a Plus button here too */}
@@ -240,7 +243,10 @@ const ProductDetail = () => {
               onClick={() => navigate(`/product/${item._id || item.id}`)}
             >
               <div className="bisen-img-box">
-                <img src={item.image} alt={item.title} />
+                <img
+                  src={item.images?.length > 0 ? item.images[0] : item.image}
+                  alt={item.title}
+                />
               </div>
 
               <h5 className="bisen-title">{item.title}</h5>

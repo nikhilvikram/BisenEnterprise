@@ -91,7 +91,10 @@ const SareeList = () => {
                   navigate(`/product/${itemId}`);
                 }}
               >
-                <img src={item.image} alt={item.title} />
+                <img
+                  src={item.images?.length > 0 ? item.images[0] : item.image}
+                  alt={item.title}
+                />
               </div>
 
               {/* TITLE */}
