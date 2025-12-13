@@ -16,37 +16,31 @@ const createSlug = (text) => {
     .replace(/-+$/, '');      // Trim - from end of text
 };
 
-// ==================================================
-// @route   GET /api/products
-// @desc    Get all products (Public)
-// ==================================================
+// 1. PUBLIC ROUTE (Customer View) - Only Stock > 0
 router.get("/", async (req, res) => {
   try {
-    const cacheKey = "all_products"; // The label for our "photocopy"
-    // 1. Ask the Receptionist (Check Redis)
-    const cachedData = await redisClient.get(cacheKey);
+    const cacheKey = "active_products";
 
-    if (cachedData) {
-      // ⚡ HIT: Found in Cache! Return instantly.
-      console.log("⚡ Serving Products from Redis Cache");
-      return res.json(JSON.parse(cachedData));
+    // Safety check for Redis connection
+    if (redisClient.isOpen) {
+      const cachedData = await redisClient.get(cacheKey);
+      if (cachedData) console.log("⚡ Serving Products from Redis Cache"); return res.json(JSON.parse(cachedData));
     }
     // 2. MISS: Not in Cache. Ask the CEO (MongoDB).
     console.log("🐌 Serving Products from MongoDB");
-    // const products = await Product.find().sort({ createdAt: -1 }); // Sort by newest
-    // 🛑 FILTER: Only show items with stock >= 1
     const products = await Product.find({ stock: { $gte: 1 } }).sort({ createdAt: -1 });
-    // 3. Give a copy to Receptionist (Save to Redis)
-    // 'EX', 3600 means "Expire in 1 hour" (Auto-refresh)
-    await redisClient.set(cacheKey, JSON.stringify(products), {
-      EX: 3600
-    });
+
+    if (redisClient.isOpen) {
+      await redisClient.set(cacheKey, JSON.stringify(products), { EX: 3600 });
+    }
+
     res.json(products);
   } catch (err) {
-    console.error(err.message);
+    console.error("GET Products Error:", err);
     res.status(500).send("Server Error");
   }
 });
+
 // 2. ADMIN ROUTE (CRM View) - Show EVERYTHING
 router.get("/admin/all", [auth, admin], async (req, res) => {
   try {
@@ -57,59 +51,64 @@ router.get("/admin/all", [auth, admin], async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-// ==================================================
-// @route   POST /api/products
-// @desc    Add a new product (Admin Only)
-// @access  Protected
-// ==================================================
+
+// 3. CREATE PRODUCT (Add Stock Support)
 router.post("/", [auth, admin], async (req, res) => {
   try {
-    const { title, price, description, category, image, rating } = req.body;
-
-    // 1. Generate Unique Slug
+    // 🆕 Accept 'stock' from frontend
+    const { title, price, description, category, image, rating, stock } = req.body;
     const slug = createSlug(title) + "-" + Date.now();
 
-    // 2. Create Object (Matching your Mongoose Schema)
     const newProduct = new Product({
-      title,
-      slug,                // Required by Schema
-      price,
-      description,
-      category,
-      images: [image],     // Schema expects Array: ['url']
+      title, slug, price, description, category,
+      images: [image],
       rating: rating || 4,
-      reviewsCount: 0      // Initialize reviews
+      reviewsCount: 0,
+      stock: Number(stock) || 0 // 👈 Save the stock!
     });
 
-    // 3. Save to DB
     const savedProduct = await newProduct.save();
-    // 🧹 CACHE INVALIDATION
-    // The list changed! Tear up the old photocopy.
-    await redisClient.del("all_products");
-    console.log("🧹 Redis Cache Cleared (New Product Added)");
-    res.json(savedProduct);
 
+    // Clear Cache
+    if (redisClient.isOpen) await redisClient.del("active_products");
+
+    res.json(savedProduct);
   } catch (err) {
-    console.error("❌ Add Product Error:", err.message);
+    console.error("Add Product Error:", err.message);
     res.status(500).send("Server Error");
   }
 });
-// 3. UPDATE STOCK ROUTE
+
+// 4. UPDATE STOCK ROUTE (The one causing 500 error)
 router.put("/:id", [auth, admin], async (req, res) => {
   try {
     const { stock } = req.body;
     const product = await Product.findById(req.params.id);
 
-    if (stock !== undefined) product.stock = stock;
+    if (!product) return res.status(404).json({ msg: "Product not found" });
+
+    // Update stock if provided
+    if (stock !== undefined) {
+      product.stock = Number(stock);
+    }
 
     await product.save();
 
-    // 🧹 Clear Cache so customers see changes immediately
-    await redisClient.del("active_products");
+    // 🛡️ SAFE REDIS CLEARING (Prevents crash if Redis is down)
+    try {
+      if (redisClient.isOpen) {
+        await redisClient.del("active_products");
+        console.log("🧹 Cache Cleared");
+      }
+    } catch (redisErr) {
+      console.error("Redis Clear Failed (ignoring):", redisErr.message);
+    }
 
     res.json(product);
   } catch (err) {
+    console.error("Update Stock Error:", err.message); // 👈 Log the real error
     res.status(500).send("Server Error");
   }
 });
+
 module.exports = router;
