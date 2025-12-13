@@ -6,14 +6,19 @@ const OrderSchema = new mongoose.Schema(
     products: [
       {
         productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
-        title: String,  // Snapshot: Title at time of purchase
-        price: Number,  // Snapshot: Price at time of purchase
-        qty: Number
+        title: String,  // Snapshot
+        price: Number,  // Snapshot
+        qty: Number,
+        image: String   // Helpful for UI
       }
     ],
     amount: { type: Number, required: true },
-    address: { type: Object, required: true }, // Simple object for now
-    status: { type: String, default: "pending" }, // pending, shipped
+    address: { type: Object, required: true }, // Stores { line1, city, zip }
+    status: { type: String, default: "Processing" }, // Processing, Shipped, Delivered, Cancelled
+    
+    // 🆕 NEW FIELDS FOR PAYMENT
+    paymentMethod: { type: String, default: "COD" }, // "COD" or "ONLINE"
+    paymentId: { type: String } // Razorpay Payment ID (if online)
   },
   { timestamps: true }
 );

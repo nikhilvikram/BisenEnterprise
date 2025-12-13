@@ -4,12 +4,12 @@ const auth = require("../middleware/auth");
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const admin = require("../middleware/admin");
+
 // @route   GET /api/orders
 // @desc    Get all orders for the logged-in user
 // @access  Private
 router.get("/", auth, async (req, res) => {
   try {
-    // 🛑 FIX: Changed 'user' to 'userId' to match your POST route
     const orders = await Order.find({ userId: req.user._id }).sort({ createdAt: -1 });
     res.json(orders);
   } catch (err) {
@@ -24,7 +24,8 @@ router.get("/", auth, async (req, res) => {
 router.post("/create", auth, async (req, res) => {
   try {
     const userId = req.user._id;
-    const { address } = req.body; // User sends their address
+    // 🆕 Extract Payment Details from Frontend
+    const { address, paymentMethod, paymentId } = req.body; 
 
     // 1. Find the user's cart
     // CRITICAL: We use .populate() because the Cart only has IDs.
@@ -35,38 +36,40 @@ router.post("/create", auth, async (req, res) => {
       return res.status(400).json({ msg: "Cart is empty" });
     }
 
-    // 2. Calculate Total & Create Order Items Snapshot
+    // 2. Calculate Total & Snapshot Items
     let totalAmount = 0;
     const orderItems = [];
 
     for (const item of cart.items) {
-      // Logic: If product was deleted from DB but still in cart, skip it
       if (!item.productId) continue;
 
       const productDetails = {
         productId: item.productId._id,
-        title: item.productId.title, // Save title in case it changes later
-        price: item.productId.price, // Save price (Snapshot)
+        title: item.productId.title,
+        price: item.productId.price,
         qty: item.qty,
-        image: item.productId.image
+        image: item.productId.image || item.productId.images?.[0] // Handle both schema styles
       };
 
       orderItems.push(productDetails);
       totalAmount += item.productId.price * item.qty;
     }
 
-    // 3. Create the Order
+    // 3. Create Order
     const newOrder = new Order({
       userId,
       products: orderItems,
       amount: totalAmount,
-      address: address || { street: "Default St", city: "Pune" }, // Fallback if no address sent
-      status: "Processing"
+      address: address || { street: "Unknown", city: "Unknown" },
+      status: "Processing",
+      // 🆕 Save Payment Info
+      paymentMethod: paymentMethod || "COD",
+      paymentId: paymentId || null
     });
 
     await newOrder.save();
 
-    // 4. CLEAR THE CART (Checkout complete)
+    // 4. Clear Cart
     cart.items = [];
     await cart.save();
 
