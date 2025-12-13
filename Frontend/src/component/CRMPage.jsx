@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllOrders, updateOrderStatus } from "../store/orderSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaBox, FaUsers, FaPlus, FaEdit, FaUserShield, FaCrown, FaMoneyBillWave } from "react-icons/fa";
+import { 
+  FaBox, FaUsers, FaPlus, FaEdit, FaUserShield, FaCrown, 
+  FaMoneyBillWave, FaBoxes, FaSave, FaExclamationTriangle 
+} from "react-icons/fa";
 
 const CRMPage = () => {
   const dispatch = useDispatch();
@@ -12,58 +15,69 @@ const CRMPage = () => {
 
   const [activeTab, setActiveTab] = useState("orders");
   const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [products, setProducts] = useState([]); // 📦 New State for Products
+  const [loading, setLoading] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null); 
+  
+  // Local state to track stock input changes before saving
+  const [stockUpdates, setStockUpdates] = useState({}); 
+
   const token = localStorage.getItem("token");
 
-  // Fetch Orders on Mount
-  useEffect(() => {
-    dispatch(fetchAllOrders());
-  }, [dispatch]);
+  useEffect(() => { dispatch(fetchAllOrders()); }, [dispatch]);
 
-  // Fetch Users when switching tabs
+  // Fetch Data based on Tab
   useEffect(() => {
     if (activeTab === "users") fetchUsers();
+    if (activeTab === "inventory") fetchInventory(); // 📦 Fetch on tab switch
   }, [activeTab]);
 
+  // --- API CALLS ---
   const fetchUsers = async () => {
-    setLoadingUsers(true);
+    setLoading(true);
     try {
       const res = await axios.get("https://bisenenterprisebackend.onrender.com/api/auth/users", {
         headers: { "x-auth-token": token },
       });
       setUsers(res.data);
-    } catch (err) { alert("Failed to load users"); } finally { setLoadingUsers(false); }
+    } catch (err) { alert("Failed to load users"); } finally { setLoading(false); }
   };
 
-  const handlePromote = async (userId, newRole) => {
-    if (!window.confirm(`Promote user to ${newRole}?`)) return;
+  const fetchInventory = async () => {
+    setLoading(true);
+    try {
+      // Calls the NEW Admin-only route
+      const res = await axios.get("https://bisenenterprisebackend.onrender.com/api/products/admin/all", {
+        headers: { "x-auth-token": token },
+      });
+      setProducts(res.data);
+    } catch (err) { alert("Failed to load inventory"); } finally { setLoading(false); }
+  };
+
+  const handleUpdateStock = async (productId) => {
+    const newStock = stockUpdates[productId];
+    if (newStock === undefined) return; // No change made
+
     try {
       await axios.put(
-        `https://bisenenterprisebackend.onrender.com/api/auth/promote/${userId}`,
-        { role: newRole },
+        `https://bisenenterprisebackend.onrender.com/api/products/${productId}`,
+        { stock: newStock },
         { headers: { "x-auth-token": token } }
       );
-      alert("User Updated!");
-      fetchUsers();
+      alert("Stock Updated! 📈");
+      fetchInventory(); // Refresh list
+      setStockUpdates(prev => {
+        const newState = { ...prev };
+        delete newState[productId]; // Clear modified state
+        return newState;
+      });
     } catch (err) { alert("Update Failed"); }
   };
 
-  const handleQtyChange = async (orderId, productId, newQty) => {
-    try {
-      await axios.put(
-        `https://bisenenterprisebackend.onrender.com/api/orders/${orderId}/item/${productId}`,
-        { qty: newQty },
-        { headers: { "x-auth-token": token } }
-      );
-      alert("Order Updated!");
-      dispatch(fetchAllOrders());
-    } catch (err) { alert("Failed to update quantity"); }
-  };
-
-  const handleStatusChange = (orderId, newStatus) => {
-    dispatch(updateOrderStatus({ orderId, status: newStatus }));
-  };
+  // --- HANDLERS (Existing) ---
+  const handlePromote = async (userId, newRole) => { /* ... existing code ... */ };
+  const handleQtyChange = async (orderId, productId, newQty) => { /* ... existing code ... */ };
+  const handleStatusChange = (orderId, newStatus) => { dispatch(updateOrderStatus({ orderId, status: newStatus })); };
 
   return (
     <div className="container mt-5 mb-5" style={{ minHeight: "80vh" }}>
@@ -81,16 +95,22 @@ const CRMPage = () => {
           </button>
         </li>
         <li className="nav-item">
+          <button className={`nav-link ${activeTab === "inventory" ? "active fw-bold" : ""}`} onClick={() => setActiveTab("inventory")}>
+            <FaBoxes className="me-2" /> Inventory
+          </button>
+        </li>
+        <li className="nav-item">
           <button className={`nav-link ${activeTab === "users" ? "active fw-bold" : ""}`} onClick={() => setActiveTab("users")}>
             <FaUsers className="me-2" /> User Accounts
           </button>
         </li>
       </ul>
 
-      {/* ORDERS TAB */}
+      {/* --- TAB 1: ORDERS (Existing) --- */}
       {activeTab === "orders" && (
+        // ... (Keep your existing Order Table Code exactly as is)
         <div className="table-responsive shadow-sm rounded bg-white p-3">
-          <table className="table table-hover align-middle">
+             <table className="table table-hover align-middle">
             <thead className="bg-light">
               <tr>
                 <th>ID</th>
@@ -177,41 +197,56 @@ const CRMPage = () => {
         </div>
       )}
 
-      {/* USERS TAB */}
-      {activeTab === "users" && (
+      {/* --- TAB 2: INVENTORY (🆕 NEW) --- */}
+      {activeTab === "inventory" && (
         <div className="table-responsive shadow-sm rounded bg-white p-3">
-          {loadingUsers ? <p>Loading...</p> : (
+          {loading ? <p>Loading Inventory...</p> : (
             <table className="table table-hover align-middle">
               <thead className="bg-light">
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Actions</th>
+                  <th>Image</th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Current Stock</th>
+                  <th>Update</th>
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
-                  <tr key={user._id}>
-                    <td className="fw-bold">{user.name}</td>
-                    <td>{user.email}</td>
+                {products.map((prod) => (
+                  <tr key={prod._id} className={prod.stock === 0 ? "table-danger" : ""}>
                     <td>
-                      {user.role === "superadmin" ? (
-                        <span className="badge bg-warning text-dark"><FaCrown /> Super Admin</span>
-                      ) : user.role === "admin" ? (
-                        <span className="badge bg-primary"><FaUserShield /> Admin</span>
-                      ) : (
-                        <span className="badge bg-secondary">User</span>
-                      )}
+                      <img 
+                        src={prod.images?.[0] || prod.image} 
+                        alt="prod" 
+                        style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "5px" }} 
+                      />
                     </td>
                     <td>
-                      {user.role === "superadmin" ? (
-                        <span className="text-muted small fst-italic">Master</span>
-                      ) : (
-                        <div className="btn-group btn-group-sm">
-                          <button className="btn btn-outline-primary" disabled={user.role === "admin"} onClick={() => handlePromote(user._id, "admin")}>Make Admin</button>
-                          <button className="btn btn-outline-secondary" disabled={user.role === "user"} onClick={() => handlePromote(user._id, "user")}>Demote</button>
-                        </div>
+                      <div className="fw-bold">{prod.title}</div>
+                      {prod.stock === 0 && <small className="text-danger fw-bold"><FaExclamationTriangle /> OUT OF STOCK</small>}
+                    </td>
+                    <td>₹{prod.price}</td>
+                    
+                    {/* STOCK INPUT */}
+                    <td>
+                      <input 
+                        type="number" 
+                        className="form-control form-control-sm"
+                        style={{ width: "80px" }}
+                        value={stockUpdates[prod._id] !== undefined ? stockUpdates[prod._id] : prod.stock}
+                        onChange={(e) => setStockUpdates({ ...stockUpdates, [prod._id]: Number(e.target.value) })}
+                      />
+                    </td>
+
+                    {/* SAVE BUTTON (Only shows when edited) */}
+                    <td>
+                      {stockUpdates[prod._id] !== undefined && stockUpdates[prod._id] !== prod.stock && (
+                        <button 
+                          className="btn btn-sm btn-primary"
+                          onClick={() => handleUpdateStock(prod._id)}
+                        >
+                          <FaSave /> Save
+                        </button>
                       )}
                     </td>
                   </tr>
@@ -220,6 +255,52 @@ const CRMPage = () => {
             </table>
           )}
         </div>
+      )}
+
+      {/* --- TAB 3: USERS (Existing) --- */}
+      {activeTab === "users" && (
+         // ... (Keep your existing User Table Code exactly as is)
+         <div className="table-responsive shadow-sm rounded bg-white p-3">
+         {loading ? <p>Loading...</p> : (
+           <table className="table table-hover align-middle">
+             <thead className="bg-light">
+               <tr>
+                 <th>Name</th>
+                 <th>Email</th>
+                 <th>Role</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+             <tbody>
+               {users.map((user) => (
+                 <tr key={user._id}>
+                   <td className="fw-bold">{user.name}</td>
+                   <td>{user.email}</td>
+                   <td>
+                     {user.role === "superadmin" ? (
+                       <span className="badge bg-warning text-dark"><FaCrown /> Super Admin</span>
+                     ) : user.role === "admin" ? (
+                       <span className="badge bg-primary"><FaUserShield /> Admin</span>
+                     ) : (
+                       <span className="badge bg-secondary">User</span>
+                     )}
+                   </td>
+                   <td>
+                     {user.role === "superadmin" ? (
+                       <span className="text-muted small fst-italic">Master</span>
+                     ) : (
+                       <div className="btn-group btn-group-sm">
+                         <button className="btn btn-outline-primary" disabled={user.role === "admin"} onClick={() => handlePromote(user._id, "admin")}>Make Admin</button>
+                         <button className="btn btn-outline-secondary" disabled={user.role === "user"} onClick={() => handlePromote(user._id, "user")}>Demote</button>
+                       </div>
+                     )}
+                   </td>
+                 </tr>
+               ))}
+             </tbody>
+           </table>
+         )}
+       </div>
       )}
     </div>
   );

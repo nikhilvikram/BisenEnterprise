@@ -33,12 +33,13 @@ router.get("/", async (req, res) => {
     }
     // 2. MISS: Not in Cache. Ask the CEO (MongoDB).
     console.log("🐌 Serving Products from MongoDB");
-    const products = await Product.find().sort({ createdAt: -1 }); // Sort by newest
-
+    // const products = await Product.find().sort({ createdAt: -1 }); // Sort by newest
+    // 🛑 FILTER: Only show items with stock >= 1
+    const products = await Product.find({ stock: { $gte: 1 } }).sort({ createdAt: -1 });
     // 3. Give a copy to Receptionist (Save to Redis)
     // 'EX', 3600 means "Expire in 1 hour" (Auto-refresh)
     await redisClient.set(cacheKey, JSON.stringify(products), {
-      EX: 3600 
+      EX: 3600
     });
     res.json(products);
   } catch (err) {
@@ -46,7 +47,16 @@ router.get("/", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
+// 2. ADMIN ROUTE (CRM View) - Show EVERYTHING
+router.get("/admin/all", [auth, admin], async (req, res) => {
+  try {
+    // Admin needs to see 0 stock items to restock them!
+    const products = await Product.find().sort({ stock: 1 }); // Sorted by lowest stock first
+    res.json(products);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
 // ==================================================
 // @route   POST /api/products
 // @desc    Add a new product (Admin Only)
@@ -75,7 +85,7 @@ router.post("/", [auth, admin], async (req, res) => {
     const savedProduct = await newProduct.save();
     // 🧹 CACHE INVALIDATION
     // The list changed! Tear up the old photocopy.
-    await redisClient.del("all_products"); 
+    await redisClient.del("all_products");
     console.log("🧹 Redis Cache Cleared (New Product Added)");
     res.json(savedProduct);
 
@@ -84,5 +94,22 @@ router.post("/", [auth, admin], async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+// 3. UPDATE STOCK ROUTE
+router.put("/:id", [auth, admin], async (req, res) => {
+  try {
+    const { stock } = req.body;
+    const product = await Product.findById(req.params.id);
 
+    if (stock !== undefined) product.stock = stock;
+
+    await product.save();
+
+    // 🧹 Clear Cache so customers see changes immediately
+    await redisClient.del("active_products");
+
+    res.json(product);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;
