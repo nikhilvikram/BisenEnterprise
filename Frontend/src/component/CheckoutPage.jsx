@@ -126,31 +126,35 @@ const CheckoutPage = () => {
           order_id: orderData.data.id, // Order ID from backend
 
           handler: async function (response) {
-            // 4. Verify Payment on Backend
-            const verifyRes = await axios.post(
-              "https://bisenenterprisebackend.onrender.com/api/payment/verify",
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }
-            );
-
-            if (verifyRes.data.success) {
-              // 5. IF VERIFIED -> SAVE ORDER TO DB
-              await axios.post(
-                "https://bisenenterprisebackend.onrender.com/api/orders/create",
+            try {
+              // Verify Signature
+              const verifyRes = await axios.post(
+                "https://bisenenterprisebackend.onrender.com/api/payment/verify",
                 {
-                  address: { ...address, zip: address.pincode },
-                  paymentMethod: "ONLINE",
-                  paymentId: response.razorpay_payment_id, // Save this reference!
-                },
-                { headers: { "x-auth-token": token } }
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                }
               );
 
-              dispatch(clearCartLocal());
-              alert("Payment Successful! Order Placed 🎉");
-              navigate("/my-orders");
+              if (verifyRes.data.success) {
+                // 5. IF VERIFIED -> SAVE ORDER TO DB
+                await axios.post(
+                  "https://bisenenterprisebackend.onrender.com/api/orders/create",
+                  {
+                    address: { ...address, zip: address.pincode },
+                    paymentMethod: "ONLINE",
+                    paymentId: response.razorpay_payment_id, // Save this reference!
+                  },
+                  { headers: { "x-auth-token": token } }
+                );
+
+                dispatch(clearCartLocal());
+                alert("Payment Successful! Order Placed 🎉");
+                navigate("/my-orders");
+              }
+            } catch (error) {
+              alert("Payment verification failed.");
             }
           },
           prefill: {
@@ -166,36 +170,44 @@ const CheckoutPage = () => {
         // 4. Open Popup
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
+        setIsPlacing(false); // Stop loader so UI doesn't freeze
       }
-      // 2. Call Backend API
-      // 🛑 NOTICE: We only send 'address'. The backend grabs items from the DB itself.
-      const response = await axios.post(
-        "https://bisenenterprisebackend.onrender.com/api/orders/create", // <--- Updated URL
-        {
-          address: {
-            street: address.line1,
-            city: address.city,
-            zip: address.pincode, // Backend expects 'zip', frontend state is 'pincode'
-          },
-        },
-        { headers: { "x-auth-token": token } }
-      );
-
-      // 3. Success Handling
-      // Since backend wiped the DB cart, we must wipe the Redux/Frontend cart to match.
-      dispatch(clearCartLocal()); // Use the synchronous clear action we made earlier
-
-      alert("Order Placed Successfully! 🎉");
-      navigate("/my-orders"); // Redirect to history
     } catch (err) {
       console.error("Order Error:", err);
-      // specific error message from backend (e.g. "Cart is empty")
       const errMsg = err.response?.data?.msg || "Failed to place order.";
       alert(errMsg);
-    } finally {
       setIsPlacing(false);
     }
   };
+  // 2. Call Backend API
+  // 🛑 NOTICE: We only send 'address'. The backend grabs items from the DB itself.
+  // const response = await axios.post(
+  //   "https://bisenenterprisebackend.onrender.com/api/orders/create", // <--- Updated URL
+  //   {
+  //     address: {
+  //       street: address.line1,
+  //       city: address.city,
+  //       zip: address.pincode, // Backend expects 'zip', frontend state is 'pincode'
+  //     },
+  //   },
+  //   { headers: { "x-auth-token": token } }
+  // );
+
+  // 3. Success Handling
+  // Since backend wiped the DB cart, we must wipe the Redux/Frontend cart to match.
+  //     dispatch(clearCartLocal()); // Use the synchronous clear action we made earlier
+
+  //     alert("Order Placed Successfully! 🎉");
+  //     navigate("/my-orders"); // Redirect to history
+  //   } catch (err) {
+  //     console.error("Order Error:", err);
+  //     // specific error message from backend (e.g. "Cart is empty")
+  //     const errMsg = err.response?.data?.msg || "Failed to place order.";
+  //     alert(errMsg);
+  //   } finally {
+  //     setIsPlacing(false);
+  //   }
+  // };
 
   if (items.length === 0) {
     return (
@@ -269,14 +281,16 @@ const CheckoutPage = () => {
             </div>
 
             {/* OPTION 1: CASH ON DELIVERY */}
-            <label 
-              className={`payment-radio ${paymentMethod === "COD" ? "selected" : ""}`}
+            <label
+              className={`payment-radio ${
+                paymentMethod === "COD" ? "selected" : ""
+              }`}
               onClick={() => setPaymentMethod("COD")}
             >
-              <input 
-                type="radio" 
-                name="payment" 
-                checked={paymentMethod === "COD"} 
+              <input
+                type="radio"
+                name="payment"
+                checked={paymentMethod === "COD"}
                 onChange={() => setPaymentMethod("COD")}
               />
               <div className="radio-content">
@@ -286,14 +300,16 @@ const CheckoutPage = () => {
             </label>
 
             {/* OPTION 2: ONLINE PAYMENT */}
-            <label 
-              className={`payment-radio ${paymentMethod === "ONLINE" ? "selected" : ""}`}
+            <label
+              className={`payment-radio ${
+                paymentMethod === "ONLINE" ? "selected" : ""
+              }`}
               onClick={() => setPaymentMethod("ONLINE")}
             >
-              <input 
-                type="radio" 
-                name="payment" 
-                checked={paymentMethod === "ONLINE"} 
+              <input
+                type="radio"
+                name="payment"
+                checked={paymentMethod === "ONLINE"}
                 onChange={() => setPaymentMethod("ONLINE")}
               />
               <div className="radio-content">

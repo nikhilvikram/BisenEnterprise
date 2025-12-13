@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const admin = require("../middleware/admin");
-
+const redisClient = require("../config/redis");
 // @route   GET /api/orders
 // @desc    Get all orders for the logged-in user
 // @access  Private
@@ -25,7 +25,7 @@ router.post("/create", auth, async (req, res) => {
   try {
     const userId = req.user._id;
     // 🆕 Extract Payment Details from Frontend
-    const { address, paymentMethod, paymentId } = req.body; 
+    const { address, paymentMethod, paymentId } = req.body;
 
     // 1. Find the user's cart
     // CRITICAL: We use .populate() because the Cart only has IDs.
@@ -111,7 +111,10 @@ router.put("/:id/status", [auth, admin], async (req, res) => {
     // Update the status
     order.status = status;
     await order.save();
-
+    // 🧹 CRITICAL FIX: CLEAR CACHE ON UPDATE
+    // If we don't do this, the old price stays in Redis for 1 hour!
+    await redisClient.del("all_products");
+    console.log("🧹 Redis Cache Cleared (Product Updated)");
     res.json(order);
   } catch (err) {
     console.error(err.message);
@@ -127,7 +130,7 @@ router.get("/all", [auth, admin], async (req, res) => {
     // Fetch all orders, sorted by newest
     // .populate("userId") pulls the user's name/email so you know who bought it
     const orders = await Order.find()
-      .populate("userId", "name email") 
+      .populate("userId", "name email")
       .sort({ createdAt: -1 });
     res.json(orders);
   } catch (err) {
@@ -164,6 +167,10 @@ router.put("/:orderId/item/:productId", [auth, admin], async (req, res) => {
     order.amount = order.products.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
     await order.save();
+    // 🧹 CRITICAL FIX: CLEAR CACHE ON UPDATE
+    // If we don't do this, the old price stays in Redis for 1 hour!
+    await redisClient.del("all_products");
+    console.log("🧹 Redis Cache Cleared (Product Updated)");
     res.json(order);
   } catch (err) {
     console.error(err.message);

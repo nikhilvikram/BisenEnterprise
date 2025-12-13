@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
-
+const redisClient = require("../config/redis");
 // @route   POST api/cart/add
 // @desc    Add item to cart
 // @access  Private (Logged in users only)
@@ -122,10 +122,16 @@ router.put("/update", auth, async (req, res) => {
       }
       
       await cart.save();
-      
+
       // Populate to return full data
       const updatedCart = await Cart.findOne({ userId }).populate("items.productId", "title price image category");
+
+      // 🧹 CRITICAL FIX: CLEAR CACHE ON UPDATE
+      // If we don't do this, the old price stays in Redis for 1 hour!
+      await redisClient.del("all_products");
+      console.log("🧹 Redis Cache Cleared (Product Updated)");
       res.json(updatedCart);
+
     } else {
       return res.status(404).json({ msg: "Item not found in cart" });
     }
