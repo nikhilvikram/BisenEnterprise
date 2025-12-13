@@ -65,24 +65,32 @@ router.get("/admin/all", [auth, admin], async (req, res) => {
 });
 
 // ==================================================
-// 3. UPDATE STOCK ROUTE (The Fix for 500 Error)
+// 3. UPDATE STOCK ROUTE (Self-Healing Fix)
 // ==================================================
 router.put("/:id", [auth, admin], async (req, res) => {
   try {
     const { stock } = req.body;
 
-    // 1. Update MongoDB
+    // 1. Find Product
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ msg: "Product not found" });
 
+    // 2. Update Stock
     if (stock !== undefined) {
       product.stock = Number(stock);
     }
 
+    // 🩹 SELF-HEALING: If Slug is missing, create it now!
+    if (!product.slug) {
+      product.slug = createSlug(product.title) + "-" + Date.now();
+      console.log(`🩹 Auto-fixed missing slug for: ${product.title}`);
+    }
+
+    // 3. Save (Now it passes validation)
     await product.save();
     console.log(`✅ Stock Updated for ${product.title} to ${product.stock}`);
 
-    // 2. Clear Cache (Safely)
+    // 4. Clear Cache
     try {
       if (redisClient && redisClient.isOpen) {
         await redisClient.del("active_products");
@@ -96,7 +104,7 @@ router.put("/:id", [auth, admin], async (req, res) => {
 
   } catch (err) {
     console.error("❌ Update Stock Fatal Error:", err);
-    res.status(500).send("Server Error");
+    res.status(500).send("Server Error: " + err.message);
   }
 });
 
