@@ -139,7 +139,10 @@ const SearchOverlay = ({ close }) => {
                   className="search-card"
                   onClick={() => handleSelect(p)}
                 >
-                  <img src={p.image} alt={p.title} />
+                  <img
+                    src={p.images?.length > 0 ? p.images[0] : p.image}
+                    alt={p.title}
+                  />
                   <div className="search-info">
                     <h5>{p.title}</h5>
                     <span className="price">₹{p.price}</span>

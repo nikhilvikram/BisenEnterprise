@@ -216,7 +216,7 @@ const CRMPage = () => {
                   <tr key={prod._id} className={prod.stock === 0 ? "table-danger" : ""}>
                     <td>
                       <img 
-                        src={prod.images?.[0] || prod.image} 
+                        src={prod.images?.length > 0 ? prod.images[0] : prod.image || "https://placehold.co/50"}
                         alt="prod" 
                         style={{ width: "40px", height: "40px", objectFit: "cover", borderRadius: "5px" }} 
                       />

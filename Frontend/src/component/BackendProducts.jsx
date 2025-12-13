@@ -32,7 +32,7 @@ const BackendProducts = () => {
           <div key={item._id} className="col-6 col-md-3">
             <div className="card shadow-sm p-2">
               <img
-                src={`${item.image}`}
+                src={`${item.images?.length > 0 ? item.images[0] : item.image}`}
                 alt={item.title}
                 className="img-fluid rounded"
               />

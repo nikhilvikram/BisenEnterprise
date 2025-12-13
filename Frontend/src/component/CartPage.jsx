@@ -97,7 +97,14 @@ const CartPage = () => {
                     className="cart-img-wrapper"
                     onClick={() => navigate(`/product/${pid}`)}
                   >
-                    <img src={product.image} alt={product.title} />
+                    <img
+                      src={
+                        product.images?.length > 0
+                          ? product.images[0]
+                          : product.image
+                      }
+                      alt={product.title}
+                    />
                   </div>
 
                   {/* Info */}

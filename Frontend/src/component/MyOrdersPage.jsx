@@ -93,7 +93,11 @@ const MyOrdersPage = () => {
                       {/* Assuming item.product has image/title populated. 
                         If backend stores minimal data, adjust fields */}
                       <img
-                        src={item.image || "https://via.placeholder.com/60"}
+                        src={
+                          item.images?.length > 0
+                            ? item.images[0]
+                            : item.image || "https://placehold.co/60"
+                        }
                         alt={item.title}
                         style={{
                           width: "60px",
