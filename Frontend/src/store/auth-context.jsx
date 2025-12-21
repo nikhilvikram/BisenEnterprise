@@ -12,21 +12,21 @@ export const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
   // ✅ Lazy Initialization
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [token, setToken] = useState(() => localStorage.getItem("auth-token"));
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
     return savedUser && savedUser !== "undefined"
       ? JSON.parse(savedUser)
       : null;
   });
-
+  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   // Login Function
   const login = async (email, password) => {
     try {
-      const res = await axios.post(
-        "https://bisenenterprisebackend.onrender.com/api/auth/login",
-        { email, password }
-      );
+      const res = await axios.post(`${baseUrl}/auth/login`, {
+        email,
+        password,
+      });
 
       console.log("Login Response:", res.data);
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         setUser(receivedUser);
 
         // 2. Persist to LocalStorage
-        localStorage.setItem("token", receivedToken);
+        localStorage.setItem("auth-token", receivedToken);
         localStorage.setItem("user", JSON.stringify(receivedUser));
 
         // 3. Return Success + Role (So LoginPage knows where to go)
@@ -62,10 +62,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      await axios.post(
-        "https://bisenenterprisebackend.onrender.com/api/auth/register",
-        { name, email, password }
-      );
+      await axios.post(`${baseUrl}/auth/register`, { name, email, password });
       return await login(email, password);
     } catch (error) {
       return {

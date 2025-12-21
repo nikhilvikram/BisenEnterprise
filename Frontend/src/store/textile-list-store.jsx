@@ -8,11 +8,12 @@ export const TextileList = createContext({
 
 const TextileListProvider = ({ children }) => {
   const [textileArray, setTextileArray] = useState([]);
-
+  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   // FETCH REAL PRODUCTS FROM MONGODB
   useEffect(() => {
+    console.log("🔌 Fetching from:", baseUrl);
     axios
-      .get("https://bisenenterprisebackend.onrender.com/api/products")
+      .get(`${baseUrl}/products`)
       .then((res) => {
         setTextileArray(res.data); // These items have real _id like "654..."
       })

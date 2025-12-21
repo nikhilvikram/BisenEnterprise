@@ -56,7 +56,7 @@ function AppContent() {
   // ✅ LOAD INITIAL DATA
   useEffect(() => {
     // Only fetch if user is logged in
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("auth-token")) {
       dispatch(fetchWishlist());
       dispatch(fetchCart()); // <--- Fetch cart from MongoDB
     }
@@ -90,7 +90,7 @@ function AppContent() {
             <Route path="/EditProfile" element={<h2>Edit Profile Page</h2>} />
             <Route path="/my-orders" element={<MyOrdersPage />} />
 
-            <Route  element={<AdminRoute />}>
+            <Route element={<AdminRoute />}>
               <Route path="/crm" element={<CRMPage />} />
               <Route path="/admin/add-product" element={<AddProductPage />} />
             </Route>

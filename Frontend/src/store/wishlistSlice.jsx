@@ -1,20 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 // 1. FETCH Wishlist from DB
 export const fetchWishlist = createAsyncThunk(
   "wishlist/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       if (!token) return []; // If no user, return empty
 
-      const res = await axios.get(
-        "https://bisenenterprisebackend.onrender.com/api/wishlist",
-        {
-          headers: { "x-auth-token": token },
-        }
-      );
+      const res = await axios.get(`${baseUrl}/wishlist`, {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
+      });
       return res.data; // Returns array of products
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -27,12 +24,12 @@ export const addToWishlist = createAsyncThunk(
   "wishlist/add",
   async (productId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       const res = await axios.post(
-        `https://bisenenterprisebackend.onrender.com/api/wishlist/add/${productId}`,
+        `${baseUrl}/wishlist/add/${productId}`,
         {},
         {
-          headers: { "x-auth-token": token },
+          headers: { "auth-token": localStorage.getItem("auth-token") },
         }
       );
       return res.data; // Returns updated list
@@ -47,11 +44,11 @@ export const removeFromWishlist = createAsyncThunk(
   "wishlist/remove",
   async (productId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       const res = await axios.delete(
-        `https://bisenenterprisebackend.onrender.com/api/wishlist/remove/${productId}`,
+        `${baseUrl}/wishlist/remove/${productId}`,
         {
-          headers: { "x-auth-token": token },
+          headers: { "auth-token": localStorage.getItem("auth-token") },
         }
       );
       return res.data; // Returns updated list

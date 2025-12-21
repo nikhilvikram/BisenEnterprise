@@ -1,15 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL } from "../config"; // Or use "http://localhost:5000/api"
-
+const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 // 1. ASYNC THUNK: Fetch Orders from Backend
 export const fetchOrders = createAsyncThunk(
   "orders/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${API_BASE_URL}/orders`, {
-        headers: { "x-auth-token": token },
+      const currentToken = localStorage.getItem("auth-token");
+      const response = await axios.get(`${baseUrl}/orders`, {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       return response.data; // The array of orders
     } catch (error) {
@@ -25,13 +24,10 @@ export const fetchAllOrders = createAsyncThunk(
   "orders/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        "https://bisenenterprisebackend.onrender.com/api/orders/all",
-        {
-          headers: { "x-auth-token": token },
-        }
-      );
+      const currentToken = localStorage.getItem("auth-token");
+      const response = await axios.get(`${baseUrl}/orders/all`, {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -46,11 +42,11 @@ export const updateOrderStatus = createAsyncThunk(
   "orders/updateStatus",
   async ({ orderId, status }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       const response = await axios.put(
-        `https://bisenenterprisebackend.onrender.com/api/orders/${orderId}/status`,
+        `${baseUrl}/orders/${orderId}/status`,
         { status },
-        { headers: { "x-auth-token": token } }
+        { headers: { "auth-token": localStorage.getItem("auth-token") } }
       );
       return response.data; // Returns updated order
     } catch (error) {

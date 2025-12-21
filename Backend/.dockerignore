@@ -1,0 +1,12 @@
+# .dockerignore
+
+# 🛑 Speed & Size: Don't copy the massive local dependencies.
+# Docker will install fresh ones inside the container.
+node_modules
+
+# 🔒 Security: Never bake secrets into the image.
+# We will inject these at runtime.
+.env
+
+# 🧹 Cleanliness: Ignore debug logs
+npm-debug.log

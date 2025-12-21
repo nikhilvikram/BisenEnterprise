@@ -5,8 +5,7 @@ import { FaCloudUploadAlt, FaArrowLeft } from "react-icons/fa";
 
 const AddProductPage = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
+  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -22,11 +21,9 @@ const AddProductPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "https://bisenenterprisebackend.onrender.com/api/products",
-        formData,
-        { headers: { "x-auth-token": token } }
-      );
+      await axios.post(`${baseUrl}/products`, formData, {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
+      });
       alert("Product Added Successfully! 🎉");
       navigate("/crm"); // Go back to CRM
     } catch (err) {

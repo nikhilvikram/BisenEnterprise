@@ -1,0 +1,80 @@
+version: "3.8" # The standard version for modern Docker features
+
+services:
+  # ==========================================
+  # 1. THE REDIS SERVICE (The Cache)
+  # Why? We need a dedicated, isolated Redis instance
+  # that mimics exactly what Render/AWS gives us.
+  # ==========================================
+  redis:
+    image: redis:alpine # Use the lightweight Alpine version (smaller size, faster boot)
+    container_name: bisen_redis
+    ports:
+      - "6379:6379" # Map Host Port 6379 -> Container Port 6379 (Standard Redis port)
+    volumes:
+      - redis_data:/data # 💾 PERSISTENCE: If container restarts, don't lose the cache!
+        # This maps a virtual drive 'redis_data' to the container's storage.
+
+  # ==========================================
+  # 2. THE BACKEND SERVICE (Your API)
+  # Why? This is your Express Server.
+  # ==========================================
+  # backend:
+  #   build: ./Backend # "Go into Backend folder and follow the Dockerfile recipe"
+  #   container_name: bisen_api
+  #   ports:
+  #     - "5000:5000" # Open the API to your browser (localhost:5000)
+  #   environment:
+  #     # 🔌 THE CONNECTION
+  #     # Notice we don't use 'localhost' here. Inside Docker, 'localhost' means "this container".
+  #     # To talk to Redis, we use the SERVICE NAME defined above: 'redis'.
+  #     - REDIS_URL=redis://redis:6379
+  #     - PORT=5000
+  #     # You still need to paste your Mongo URL here or use an .env file
+  #     - MONGO_URI=mongodb+srv://nikhilbisen25:Boldspirit%4025@bisenenterprise.vp4msi4.mongodb.net/?appNameBisenEnterprise=
+  #   depends_on:
+  #     - redis # 🚦 ORDER: Don't start the Backend until Redis is fully awake.
+
+  # ... (inside docker-compose.yml)
+
+  backend:
+    build: ./Backend
+    container_name: bisen_api
+    ports:
+      - "5000:5000"
+
+    # ✅ OPTION 1: The Cleanest Way (Recommended)
+    # This tells Docker: "Look for a file named .env in the same folder
+    # and inject ALL variables found inside it."
+    env_file:
+      - backend/.env
+
+    # 🛑 OPTION 2: If you prefer manual (Current way - prone to missing keys)
+    # environment:
+    #   - REDIS_URL=redis://redis:6379
+    #   - PORT=5000
+    #   - MONGO_URI=...
+    #   - RAZORPAY_KEY_ID=...     <-- You were missing this
+    #   - RAZORPAY_KEY_SECRET=... <-- And this
+
+    depends_on:
+      - redis
+
+  # --- Service 3: Frontend (UI) ---
+  frontend:
+    build: ./Frontend # Build from the Frontend folder
+    container_name: bisen_ui
+    ports:
+      - "5173:5173" # Map port 5173 (or 3000)
+    environment:
+      # Tell React where the API is.
+      # Since the browser runs on YOUR laptop, we still point to localhost:5000
+      - API_BASE_URL=http://localhost:5000/api
+    depends_on:
+      - backend # Wait for backend to start
+# ==========================================
+# 3. VOLUMES (The Hard Drives)
+# We declare the virtual hard drives here.
+# ==========================================
+volumes:
+  redis_data: # Keeps your cache alive across restarts

@@ -3,13 +3,11 @@ import React, { useEffect, useState } from "react";
 const BackendProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch(
-          "https://bisenenterprisebackend.onrender.com/api/products"
-        );
+        const res = await fetch(`${baseUrl}/products`);
         const data = await res.json();
         setProducts(data);
       } catch (err) {

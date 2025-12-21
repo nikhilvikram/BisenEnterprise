@@ -10,10 +10,10 @@ export const CartContext = createContext({
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { token } = useContext(AuthContext);
-
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   // ✅ HELPER: Get token from Context OR LocalStorage (Safe Fallback)
   const getToken = () => {
-    return token || localStorage.getItem("token");
+    return localStorage.getItem("auth-token");
   };
 
   // 1. FETCH CART FROM DB ON LOAD
@@ -21,8 +21,8 @@ const CartProvider = ({ children }) => {
     const currentToken = getToken();
     if (currentToken) {
       axios
-        .get("https://bisenenterprisebackend.onrender.com/api/cart", {
-          headers: { "x-auth-token": currentToken },
+        .get(`${baseUrl}/cart`, {
+          headers: { "auth-token": currentToken },
         })
         .then((res) => {
           setCart(res.data.items || []);
@@ -43,25 +43,25 @@ const CartProvider = ({ children }) => {
       return;
     }
 
-    const config = { headers: { "x-auth-token": currentToken } };
+    const config = { headers: { "auth-token": currentToken } };
 
     try {
       if (action.type === "ADD_TO_CART") {
         const res = await axios.post(
-          "https://bisenenterprisebackend.onrender.com/api/cart/add",
+          `${baseUrl}/cart/add`,
           action.payload,
           config
         );
         setCart(res.data.items);
       } else if (action.type === "REMOVE_FROM_CART") {
         const res = await axios.delete(
-          `https://bisenenterprisebackend.onrender.com/api/cart/item/${action.payload}`,
+          `${baseUrl}/cart/item/${action.payload}`,
           config
         );
         setCart(res.data.items);
       } else if (action.type === "UPDATE_QTY") {
         const res = await axios.put(
-          "https://bisenenterprisebackend.onrender.com/api/cart/update",
+          `${baseUrl}/cart/update`,
           action.payload,
           config
         );

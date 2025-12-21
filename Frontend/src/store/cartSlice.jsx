@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_BASE_URL } from "../config"; // Ensure you have this, or hardcode the URL
-
+const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 // =========================================================
 // 1. ASYNC THUNKS (The API Communication Layer)
 // =========================================================
@@ -13,12 +12,12 @@ export const fetchCart = createAsyncThunk(
   "cart/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       // If no token, we can't fetch. Return empty array.
       if (!token) return { items: [] };
 
-      const response = await axios.get(`${API_BASE_URL}/cart`, {
-        headers: { "x-auth-token": token },
+      const response = await axios.get(`${baseUrl}/cart`, {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
       });
 
       // Return the data so the Reducer can save it
@@ -36,11 +35,11 @@ export const addToCart = createAsyncThunk(
   "cart/add",
   async ({ productId, qty }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       const response = await axios.post(
-        `${API_BASE_URL}/cart/add`,
+        `${baseUrl}/cart/add`,
         { productId, qty },
-        { headers: { "x-auth-token": token } }
+        { headers: { "auth-token": localStorage.getItem("auth-token") } }
       );
       return response.data; // Backend returns the updated cart
     } catch (error) {
@@ -56,11 +55,11 @@ export const removeFromCart = createAsyncThunk(
   "cart/remove",
   async (productId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       const response = await axios.delete(
-        `${API_BASE_URL}/cart/item/${productId}`,
+        `${baseUrl}/cart/item/${productId}`,
         {
-          headers: { "x-auth-token": token },
+          headers: { "auth-token": localStorage.getItem("auth-token") },
         }
       );
       return response.data;
@@ -75,11 +74,11 @@ export const updateQty = createAsyncThunk(
   "cart/update",
   async ({ productId, qty }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       const response = await axios.put(
-        `${API_BASE_URL}/cart/update`,
+        `${baseUrl}/cart/update`,
         { productId, qty },
-        { headers: { "x-auth-token": token } }
+        { headers: { "auth-token": localStorage.getItem("auth-token") } }
       );
       return response.data;
     } catch (error) {
@@ -92,10 +91,10 @@ export const clearCartServer = createAsyncThunk(
   "cart/clear",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const currentToken = localStorage.getItem("auth-token");
       // Call backend to delete all items
-      await axios.delete(`${API_BASE_URL}/cart/clear`, {
-        headers: { "x-auth-token": token },
+      await axios.delete(`${baseUrl}/cart/clear`, {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       return []; // Return empty array
     } catch (error) {

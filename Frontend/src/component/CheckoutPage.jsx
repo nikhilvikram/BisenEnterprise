@@ -11,7 +11,6 @@ import {
 
 import { TextileList } from "../store/textile-list-store"; // Keep for product details if needed
 import { clearCartServer } from "../store/cartSlice"; // Import the clear action
-import { API_BASE_URL } from "../config"; // Or use your URL string
 import { clearCartLocal } from "../store/cartSlice";
 
 // Add a script loader function at the top (outside component)
@@ -28,7 +27,7 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("COD"); // Default COD
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   // 2. Redux State
   const cartItems = useSelector((state) => state.cart.items);
   const { textileArray } = useContext(TextileList);
@@ -76,7 +75,7 @@ const CheckoutPage = () => {
     }
 
     setIsPlacing(true);
-    const token = localStorage.getItem("token");
+    const currentToken = localStorage.getItem("auth-token");
 
     try {
       // ---------------------------------------------
@@ -84,12 +83,12 @@ const CheckoutPage = () => {
       // ---------------------------------------------
       if (paymentMethod === "COD") {
         await axios.post(
-          "https://bisenenterprisebackend.onrender.com/api/orders/create",
+          `${baseUrl}/orders/create`,
           {
             address: { ...address, zip: address.pincode }, // Backend needs 'zip'
             paymentMethod: "COD",
           },
-          { headers: { "x-auth-token": token } }
+          { headers: { "auth-token": localStorage.getItem("auth-token") } }
         );
 
         dispatch(clearCartLocal());
@@ -108,12 +107,9 @@ const CheckoutPage = () => {
         }
 
         // 2. Create Order on Backend
-        const orderData = await axios.post(
-          "https://bisenenterprisebackend.onrender.com/api/payment/create-order",
-          {
-            amount: finalTotal, // Send amount from frontend state
-          }
-        );
+        const orderData = await axios.post(`${baseUrl}/payment/create-order`, {
+          amount: finalTotal, // Send amount from frontend state
+        });
 
         // 3. Configure Options
         const options = {
@@ -128,25 +124,26 @@ const CheckoutPage = () => {
           handler: async function (response) {
             try {
               // Verify Signature
-              const verifyRes = await axios.post(
-                "https://bisenenterprisebackend.onrender.com/api/payment/verify",
-                {
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                }
-              );
+              const verifyRes = await axios.post(`${baseUrl}/payment/verify`, {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              });
 
               if (verifyRes.data.success) {
                 // 5. IF VERIFIED -> SAVE ORDER TO DB
                 await axios.post(
-                  "https://bisenenterprisebackend.onrender.com/api/orders/create",
+                  `${baseUrl}/orders/create`,
                   {
                     address: { ...address, zip: address.pincode },
                     paymentMethod: "ONLINE",
                     paymentId: response.razorpay_payment_id, // Save this reference!
                   },
-                  { headers: { "x-auth-token": token } }
+                  {
+                    headers: {
+                      "auth-token": localStorage.getItem("auth-token"),
+                    },
+                  }
                 );
 
                 dispatch(clearCartLocal());
@@ -182,7 +179,7 @@ const CheckoutPage = () => {
   // 2. Call Backend API
   // 🛑 NOTICE: We only send 'address'. The backend grabs items from the DB itself.
   // const response = await axios.post(
-  //   "https://bisenenterprisebackend.onrender.com/api/orders/create", // <--- Updated URL
+  //   `${baseUrl}/orders/create", // <--- Updated URL
   //   {
   //     address: {
   //       street: address.line1,
@@ -190,7 +187,7 @@ const CheckoutPage = () => {
   //       zip: address.pincode, // Backend expects 'zip', frontend state is 'pincode'
   //     },
   //   },
-  //   { headers: { "x-auth-token": token } }
+  //   { headers: { "auth-token": localStorage.getItem("auth-token") } }
   // );
 
   // 3. Success Handling
