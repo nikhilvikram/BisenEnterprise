@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// ✅ CORRECT (Smart Switching)
+const backendUrl =
+  import.meta.env.MODE === "production"
+    ? "https://bisenenterprise.onrender.com" // <--- Your Live Render Backend
+    : "http://localhost:5000"; // <--- Your Local Testing
 // =========================================================
 // 1. ASYNC THUNKS (The API Communication Layer)
 // =========================================================
@@ -56,12 +60,9 @@ export const removeFromCart = createAsyncThunk(
   async (productId, { rejectWithValue }) => {
     try {
       const currentToken = localStorage.getItem("auth-token");
-      const response = await axios.delete(
-        `${baseUrl}/cart/item/${productId}`,
-        {
-          headers: { "auth-token": localStorage.getItem("auth-token") },
-        }
-      );
+      const response = await axios.delete(`${baseUrl}/cart/item/${productId}`, {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message);

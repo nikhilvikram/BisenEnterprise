@@ -10,7 +10,11 @@ export const CartContext = createContext({
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { token } = useContext(AuthContext);
-    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  // ✅ CORRECT (Smart Switching)
+  const backendUrl =
+    import.meta.env.MODE === "production"
+      ? "https://bisenenterprise.onrender.com" // <--- Your Live Render Backend
+      : "http://localhost:5000"; // <--- Your Local Testing
   // ✅ HELPER: Get token from Context OR LocalStorage (Safe Fallback)
   const getToken = () => {
     return localStorage.getItem("auth-token");

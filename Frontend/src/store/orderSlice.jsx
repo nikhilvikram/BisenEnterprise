@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// ✅ CORRECT (Smart Switching)
+const backendUrl =
+  import.meta.env.MODE === "production"
+    ? "https://bisenenterprise.onrender.com" // <--- Your Live Render Backend
+    : "http://localhost:5000"; // <--- Your Local Testing
 // 1. ASYNC THUNK: Fetch Orders from Backend
 export const fetchOrders = createAsyncThunk(
   "orders/fetch",
