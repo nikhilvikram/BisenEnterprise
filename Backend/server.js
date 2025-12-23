@@ -17,7 +17,8 @@ app.use(express.json());
 
 // CORS
 app.use(cors({
-  origin: ["https://nikhilvikram.github.io", "http://localhost:5173"],
+  origin: ["https://nikhilvikram.github.io", "http://localhost:5173", "https://bisenenterprise.com",
+    "https://www.bisenenterprise.com"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
