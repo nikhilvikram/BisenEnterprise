@@ -7,7 +7,7 @@ const AddProductPage = () => {
   const navigate = useNavigate();
   // const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   // ✅ CORRECT (Smart Switching)
-  const backendUrl =
+  const baseUrl =
     import.meta.env.MODE === "production"
       ? "https://bisenenterprise.onrender.com" // <--- Your Live Render Backend
       : "http://localhost:5000"; // <--- Your Local Testing

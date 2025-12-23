@@ -11,7 +11,7 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { token } = useContext(AuthContext);
   // ✅ CORRECT (Smart Switching)
-  const backendUrl =
+  const baseUrl =
     import.meta.env.MODE === "production"
       ? "https://bisenenterprise.onrender.com" // <--- Your Live Render Backend
       : "http://localhost:5000"; // <--- Your Local Testing
