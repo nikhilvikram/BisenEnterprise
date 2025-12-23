@@ -3,8 +3,8 @@ import axios from "axios";
 // ✅ CORRECT (Smart Switching)
 const baseUrl =
   import.meta.env.MODE === "production"
-    ? "https://bisenenterprise.onrender.com" // <--- Your Live Render Backend
-    : "http://localhost:5000"; // <--- Your Local Testing
+    ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+    : "http://localhost:5000/api"; // <--- Your Local Testing
 // 1. FETCH Wishlist from DB
 export const fetchWishlist = createAsyncThunk(
   "wishlist/fetch",

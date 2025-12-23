@@ -11,8 +11,8 @@ const TextileListProvider = ({ children }) => {
   // ✅ CORRECT (Smart Switching)
   const baseUrl =
     import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com" // <--- Your Live Render Backend
-      : "http://localhost:5000"; // <--- Your Local Testing
+      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+      : "http://localhost:5000/api"; // <--- Your Local Testing
   // FETCH REAL PRODUCTS FROM MONGODB
   useEffect(() => {
     console.log("🔌 Fetching from:", baseUrl);
