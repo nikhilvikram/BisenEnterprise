@@ -1,38 +1,69 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaCloudUploadAlt, FaArrowLeft } from "react-icons/fa";
-import { API_URL } from "../config"
+import { FaCloudUploadAlt, FaArrowLeft, FaImage } from "react-icons/fa";
+import { API_URL } from "../config";
+
 const AddProductPage = () => {
   const navigate = useNavigate();
-  // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-  // ✅ CORRECT (Smart Switching)
-  // const API_URL =
-  //   import.meta.env.MODE === "production"
-  //     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-  //     : "http://localhost:5000/api"; // <--- Your Local Testing
+
+  // 1. State for text fields
   const [formData, setFormData] = useState({
     title: "",
     price: "",
-    category: "Saree", // Default
-    image: "",
+    stock: "", // Added stock
+    category: "Saree",
     description: "",
   });
 
+  // 2. Separate State for the File
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
+
+  // Handle Text Inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle File Selection
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile)); // Show preview instantly
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    // 3. Prepare FormData (Required for File Uploads)
+    const data = new FormData();
+    data.append("image", file); // Must match backend: upload.single('image')
+    data.append("title", formData.title);
+    data.append("price", formData.price);
+    data.append("stock", formData.stock);
+    data.append("category", formData.category);
+    data.append("description", formData.description);
+
     try {
-      await axios.post(`${API_URL}/products`, formData, {
-        headers: { "auth-token": localStorage.getItem("auth-token") },
+      // 4. Send as Multipart Form Data
+      await axios.post(`${API_URL}/products`, data, {
+        headers: {
+          "auth-token": localStorage.getItem("auth-token"),
+          "Content-Type": "multipart/form-data", // Crucial header
+        },
       });
+
       alert("Product Added Successfully! 🎉");
-      navigate("/crm"); // Go back to CRM
+      navigate("/crm");
     } catch (err) {
-      alert("Error adding product. Check permissions.");
+      console.error(err);
+      alert("Error adding product. Check console/permissions.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -48,6 +79,8 @@ const AddProductPage = () => {
       <div className="card shadow p-4">
         <h3 className="mb-4 fw-bold">Upload New Product 📤</h3>
         <form onSubmit={handleSubmit}>
+          
+          {/* TITLE */}
           <div className="mb-3">
             <label className="form-label">Product Title</label>
             <input
@@ -59,7 +92,8 @@ const AddProductPage = () => {
           </div>
 
           <div className="row">
-            <div className="col-md-6 mb-3">
+            {/* PRICE */}
+            <div className="col-md-4 mb-3">
               <label className="form-label">Price (₹)</label>
               <input
                 type="number"
@@ -69,19 +103,21 @@ const AddProductPage = () => {
                 onChange={handleChange}
               />
             </div>
-            {/* 🆕 STOCK INPUT FIELD */}
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Initial Stock Qty</label>
+
+            {/* STOCK */}
+            <div className="col-md-4 mb-3">
+              <label className="form-label">Stock Qty</label>
               <input
                 type="number"
                 name="stock"
                 className="form-control"
-                value={formData.stock}
-                onChange={handleChange}
                 required
+                onChange={handleChange}
               />
             </div>
-            <div className="col-md-6 mb-3">
+
+            {/* CATEGORY */}
+            <div className="col-md-4 mb-3">
               <label className="form-label">Category</label>
               <select
                 name="category"
@@ -96,25 +132,34 @@ const AddProductPage = () => {
             </div>
           </div>
 
+          {/* 📸 IMAGE UPLOAD SECTION */}
           <div className="mb-3">
-            <label className="form-label">Image URL</label>
-            <input
-              name="image"
-              className="form-control"
-              placeholder="https://..."
-              required
-              onChange={handleChange}
-            />
-            {formData.image && (
-              <img
-                src={formData.image}
-                alt="Preview"
-                className="mt-2 rounded"
-                style={{ height: "80px" }}
+            <label className="form-label fw-bold">Product Image</label>
+            <div className="border p-3 rounded text-center" style={{ backgroundColor: "#f8f9fa" }}>
+              <input
+                type="file"
+                name="image"
+                className="form-control mb-2"
+                accept="image/*"
+                required
+                onChange={handleFileChange}
               />
-            )}
+              {preview ? (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="img-thumbnail mt-2 shadow-sm"
+                  style={{ maxHeight: "150px", objectFit: "cover" }}
+                />
+              ) : (
+                <div className="text-muted small mt-2">
+                  <FaImage className="me-1" /> No image selected
+                </div>
+              )}
+            </div>
           </div>
 
+          {/* DESCRIPTION */}
           <div className="mb-3">
             <label className="form-label">Description</label>
             <textarea
@@ -126,8 +171,17 @@ const AddProductPage = () => {
             ></textarea>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100 py-2 fw-bold">
-            <FaCloudUploadAlt /> Publish Product
+          {/* SUBMIT BUTTON */}
+          <button 
+            type="submit" 
+            className="btn btn-primary w-100 py-2 fw-bold"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span>Uploading to AWS... ⏳</span>
+            ) : (
+              <span><FaCloudUploadAlt /> Publish Product</span>
+            )}
           </button>
         </form>
       </div>
