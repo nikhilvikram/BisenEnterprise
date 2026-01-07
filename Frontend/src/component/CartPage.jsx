@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { CartContext } from "../store/cart-context";
 import { TextileList } from "../store/textile-list-store";
 import { useNavigate } from "react-router-dom";
 import { FaTrash, FaArrowLeft, FaShieldAlt } from "react-icons/fa";

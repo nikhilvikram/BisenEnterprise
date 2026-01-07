@@ -18,7 +18,7 @@ export const fetchCart = createAsyncThunk(
     try {
       const currentToken = localStorage.getItem("auth-token");
       // If no token, we can't fetch. Return empty array.
-      if (!token) return { items: [] };
+      if (!currentToken) return { items: [] };
 
       const response = await axios.get(`${baseUrl}/cart`, {
         headers: { "auth-token": localStorage.getItem("auth-token") },

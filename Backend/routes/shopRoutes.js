@@ -3,7 +3,7 @@ const router = express.Router();
 const Product = require("../models/Product");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
-
+const upload = require("../middleware/uploadS3");
 // 🟢 CRITICAL: Make sure this path is correct!
 const redisClient = require("../config/redis");
 
@@ -61,6 +61,47 @@ router.get("/admin/all", [auth, admin], async (req, res) => {
     res.json(products);
   } catch (err) {
     res.status(500).send("Server Error");
+  }
+});
+
+// ==================================================
+// 3. CREATE PRODUCT (AWS S3 INTEGRATED)
+// ==================================================
+// 🟢 NOTICE: We added 'upload.single("image")' middleware here
+router.post("/", [auth, admin, upload.single("image")], async (req, res) => {
+  try {
+    // 1. Extract text fields
+    const { title, price, description, category, rating, stock } = req.body;
+    
+    // 2. Handle Image from AWS S3 (Multer adds req.file)
+    // If upload worked, 'req.file.location' holds the S3 URL
+    const imageUrl = req.file ? req.file.location : "https://via.placeholder.com/150";
+
+    const slug = createSlug(title) + "-" + Date.now();
+
+    const newProduct = new Product({
+      title, 
+      slug, 
+      price, 
+      description, 
+      category,
+      images: [imageUrl], // <--- Save the AWS S3 URL here
+      rating: rating || 4,
+      reviewsCount: 0,
+      stock: Number(stock) || 0
+    });
+
+    const savedProduct = await newProduct.save();
+
+    // Clear Cache
+    try {
+      if (redisClient && redisClient.isOpen) await redisClient.del("active_products");
+    } catch (e) { }
+
+    res.json(savedProduct);
+  } catch (err) {
+    console.error("❌ Create Product Error:", err);
+    res.status(500).send("Server Error: " + err.message);
   }
 });
 
