@@ -1,17 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 // ✅ CORRECT (Smart Switching)
-const baseUrl =
-  import.meta.env.MODE === "production"
-    ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-    : "http://localhost:5000/api"; // <--- Your Local Testing
-// 1. ASYNC THUNK: Fetch Orders from Backend
+// const API_URL =
+//   import.meta.env.MODE === "production"
+//     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+//     : "http://localhost:5000/api"; // <--- Your Local Testing
+// // 1. ASYNC THUNK: Fetch Orders from Backend
+import { API_URL } from "../config";
 export const fetchOrders = createAsyncThunk(
   "orders/fetch",
   async (_, { rejectWithValue }) => {
     try {
       const currentToken = localStorage.getItem("auth-token");
-      const response = await axios.get(`${baseUrl}/orders`, {
+      const response = await axios.get(`${API_URL}/orders`, {
         headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       return response.data; // The array of orders
@@ -29,7 +30,7 @@ export const fetchAllOrders = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const currentToken = localStorage.getItem("auth-token");
-      const response = await axios.get(`${baseUrl}/orders/all`, {
+      const response = await axios.get(`${API_URL}/orders/all`, {
         headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       return response.data;
@@ -48,7 +49,7 @@ export const updateOrderStatus = createAsyncThunk(
     try {
       const currentToken = localStorage.getItem("auth-token");
       const response = await axios.put(
-        `${baseUrl}/orders/${orderId}/status`,
+        `${API_URL}/orders/${orderId}/status`,
         { status },
         { headers: { "auth-token": localStorage.getItem("auth-token") } }
       );

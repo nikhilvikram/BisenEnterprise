@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { API_URL } from "../config";
 import axios from "axios";
 // ✅ CORRECT (Smart Switching)
-const baseUrl =
-  import.meta.env.MODE === "production"
-    ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-    : "http://localhost:5000/api"; // <--- Your Local Testing
-// 1. FETCH Wishlist from DB
+// const API_URL =
+//   import.meta.env.MODE === "production"
+//     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+//     : "http://localhost:5000/api"; // <--- Your Local Testing
+// // 1. FETCH Wishlist from DB
 export const fetchWishlist = createAsyncThunk(
   "wishlist/fetch",
   async (_, { rejectWithValue }) => {
@@ -13,7 +14,7 @@ export const fetchWishlist = createAsyncThunk(
       const currentToken = localStorage.getItem("auth-token");
       if (!token) return []; // If no user, return empty
 
-      const res = await axios.get(`${baseUrl}/wishlist`, {
+      const res = await axios.get(`${API_URL}/wishlist`, {
         headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       return res.data; // Returns array of products
@@ -30,7 +31,7 @@ export const addToWishlist = createAsyncThunk(
     try {
       const currentToken = localStorage.getItem("auth-token");
       const res = await axios.post(
-        `${baseUrl}/wishlist/add/${productId}`,
+        `${API_URL}/wishlist/add/${productId}`,
         {},
         {
           headers: { "auth-token": localStorage.getItem("auth-token") },
@@ -50,7 +51,7 @@ export const removeFromWishlist = createAsyncThunk(
     try {
       const currentToken = localStorage.getItem("auth-token");
       const res = await axios.delete(
-        `${baseUrl}/wishlist/remove/${productId}`,
+        `${API_URL}/wishlist/remove/${productId}`,
         {
           headers: { "auth-token": localStorage.getItem("auth-token") },
         }

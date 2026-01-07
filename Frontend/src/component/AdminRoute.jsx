@@ -2,21 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../store/auth-context";
 import axios from "axios";
-
+import { API_URL } from "../config"
 const AdminRoute = () => {
   const { token } = useContext(AuthContext);
   const [role, setRole] = useState(null); // null = loading
   // ✅ CORRECT (Smart Switching)
-  const baseUrl =
-    import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-      : "http://localhost:5000/api"; // <--- Your Local Testing
+  // const API_URL =
+    // import.meta.env.MODE === "production"
+    //   ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+    //   : "http://localhost:5000/api"; // <--- Your Local Testing
   useEffect(() => {
     const checkRole = async () => {
       try {
         // You need an endpoint that returns the user's profile info
         // Ideally: GET /api/auth/me
-        const res = await axios.get(`${baseUrl}/auth/me`, {
+        const res = await axios.get(`${API_URL}/auth/me`, {
           headers: { "auth-token": localStorage.getItem("auth-token") },
         });
         setRole(res.data.role);

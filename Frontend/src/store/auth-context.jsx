@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-
+import { API_URL } from "../config";
 export const AuthContext = createContext({
   user: null,
   token: null,
@@ -19,15 +19,15 @@ export const AuthProvider = ({ children }) => {
       ? JSON.parse(savedUser)
       : null;
   });
-  // ✅ CORRECT (Smart Switching)
-  const baseUrl =
-    import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-      : "http://localhost:5000/api"; // <--- Your Local Testing
-  // Login Function
+  // // ✅ CORRECT (Smart Switching)
+  // const API_URL =
+  //   import.meta.env.MODE === "production"
+  //     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+  //     : "http://localhost:5000/api"; // <--- Your Local Testing
+  // // Login Function
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${baseUrl}/auth/login`, {
+      const res = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      await axios.post(`${baseUrl}/auth/register`, { name, email, password });
+      await axios.post(`${API_URL}/auth/register`, { name, email, password });
       return await login(email, password);
     } catch (error) {
       return {

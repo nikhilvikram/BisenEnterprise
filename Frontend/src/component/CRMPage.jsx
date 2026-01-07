@@ -15,13 +15,13 @@ import {
   FaSave,
   FaExclamationTriangle,
 } from "react-icons/fa";
-
+import { API_URL } from "../config";
 const CRMPage = () => {
   // ✅ CORRECT (Smart Switching)
-  const baseUrl =
-    import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-      : "http://localhost:5000/api"; // <--- Your Local Testing
+  // const API_URL =
+  //   import.meta.env.MODE === "production"
+  //     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+  //     : "http://localhost:5000/api"; // <--- Your Local Testing
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { orders } = useSelector((state) => state.orders);
@@ -51,7 +51,7 @@ const CRMPage = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${baseUrl}/auth/users`, {
+      const res = await axios.get(`${API_URL}/auth/users`, {
         headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       setUsers(res.data);
@@ -66,7 +66,7 @@ const CRMPage = () => {
     setLoading(true);
     try {
       // Calls the NEW Admin-only route
-      const res = await axios.get(`${baseUrl}/products/admin/all`, {
+      const res = await axios.get(`${API_URL}/products/admin/all`, {
         headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       setProducts(res.data);
@@ -82,7 +82,7 @@ const CRMPage = () => {
 
     try {
       await axios.put(
-        `${baseUrl}/products/${productId}`,
+        `${API_URL}/products/${productId}`,
         { stock: newStock },
         { headers: { "auth-token": localStorage.getItem("auth-token") } }
       );

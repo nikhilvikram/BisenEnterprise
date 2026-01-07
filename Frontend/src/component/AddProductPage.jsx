@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaCloudUploadAlt, FaArrowLeft } from "react-icons/fa";
-
+import { API_URL } from "../config"
 const AddProductPage = () => {
   const navigate = useNavigate();
-  // const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   // ✅ CORRECT (Smart Switching)
-  const baseUrl =
-    import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-      : "http://localhost:5000/api"; // <--- Your Local Testing
+  // const API_URL =
+  //   import.meta.env.MODE === "production"
+  //     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+  //     : "http://localhost:5000/api"; // <--- Your Local Testing
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -26,7 +26,7 @@ const AddProductPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${baseUrl}/products`, formData, {
+      await axios.post(`${API_URL}/products`, formData, {
         headers: { "auth-token": localStorage.getItem("auth-token") },
       });
       alert("Product Added Successfully! 🎉");

@@ -8,7 +8,7 @@ import {
   FaMoneyBillWave,
   FaShieldAlt,
 } from "react-icons/fa";
-
+import { API_URL } from "../config";
 import { TextileList } from "../store/textile-list-store"; // Keep for product details if needed
 import { clearCartServer } from "../store/cartSlice"; // Import the clear action
 import { clearCartLocal } from "../store/cartSlice";
@@ -28,11 +28,11 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // ✅ CORRECT (Smart Switching)
-  const baseUrl =
-    import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-      : "http://localhost:5000/api"; // <--- Your Local Testing
-  // 2. Redux State
+  // const API_URL =
+  //   import.meta.env.MODE === "production"
+  //     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+  //     : "http://localhost:5000/api"; // <--- Your Local Testing
+  // // 2. Redux State
   const cartItems = useSelector((state) => state.cart.items);
   const { textileArray } = useContext(TextileList);
 
@@ -87,7 +87,7 @@ const CheckoutPage = () => {
       // ---------------------------------------------
       if (paymentMethod === "COD") {
         await axios.post(
-          `${baseUrl}/orders/create`,
+          `${API_URL}/orders/create`,
           {
             address: { ...address, zip: address.pincode }, // Backend needs 'zip'
             paymentMethod: "COD",
@@ -111,7 +111,7 @@ const CheckoutPage = () => {
         }
 
         // 2. Create Order on Backend
-        const orderData = await axios.post(`${baseUrl}/payment/create-order`, {
+        const orderData = await axios.post(`${API_URL}/payment/create-order`, {
           amount: finalTotal, // Send amount from frontend state
         });
 
@@ -128,7 +128,7 @@ const CheckoutPage = () => {
           handler: async function (response) {
             try {
               // Verify Signature
-              const verifyRes = await axios.post(`${baseUrl}/payment/verify`, {
+              const verifyRes = await axios.post(`${API_URL}/payment/verify`, {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
@@ -137,7 +137,7 @@ const CheckoutPage = () => {
               if (verifyRes.data.success) {
                 // 5. IF VERIFIED -> SAVE ORDER TO DB
                 await axios.post(
-                  `${baseUrl}/orders/create`,
+                  `${API_URL}/orders/create`,
                   {
                     address: { ...address, zip: address.pincode },
                     paymentMethod: "ONLINE",
@@ -183,7 +183,7 @@ const CheckoutPage = () => {
   // 2. Call Backend API
   // 🛑 NOTICE: We only send 'address'. The backend grabs items from the DB itself.
   // const response = await axios.post(
-  //   `${baseUrl}/orders/create", // <--- Updated URL
+  //   `${API_URL}/orders/create", // <--- Updated URL
   //   {
   //     address: {
   //       street: address.line1,

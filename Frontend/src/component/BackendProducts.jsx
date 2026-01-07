@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-
+import { API_URL } from "../config";
 const BackendProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   // ✅ CORRECT (Smart Switching)
-  const baseUrl =
-    import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-      : "http://localhost:5000/api"; // <--- Your Local Testing
+  // const baseUrl =
+  //   import.meta.env.MODE === "production"
+  //     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+  //     : "http://localhost:5000/api"; // <--- Your Local Testing
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch(`${baseUrl}/products`);
+        const res = await fetch(`${API_URL}/products`);
         const data = await res.json();
         setProducts(data);
       } catch (err) {

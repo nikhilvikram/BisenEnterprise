@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./auth-context";
-
+import { API_URL } from "../config";
 export const CartContext = createContext({
   cart: [],
   dispatch: () => {},
@@ -11,11 +11,11 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { token } = useContext(AuthContext);
   // ✅ CORRECT (Smart Switching)
-  const baseUrl =
-    import.meta.env.MODE === "production"
-      ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
-      : "http://localhost:5000/api"; // <--- Your Local Testing
-  // ✅ HELPER: Get token from Context OR LocalStorage (Safe Fallback)
+  // const API_URL =
+  //   import.meta.env.MODE === "production"
+  //     ? "https://bisenenterprise.onrender.com/api" // <--- Your Live Render Backend
+  //     : "http://localhost:5000/api"; // <--- Your Local Testing
+  // // ✅ HELPER: Get token from Context OR LocalStorage (Safe Fallback)
   const getToken = () => {
     return localStorage.getItem("auth-token");
   };
@@ -25,7 +25,7 @@ const CartProvider = ({ children }) => {
     const currentToken = getToken();
     if (currentToken) {
       axios
-        .get(`${baseUrl}/cart`, {
+        .get(`${API_URL}/cart`, {
           headers: { "auth-token": currentToken },
         })
         .then((res) => {
@@ -52,20 +52,20 @@ const CartProvider = ({ children }) => {
     try {
       if (action.type === "ADD_TO_CART") {
         const res = await axios.post(
-          `${baseUrl}/cart/add`,
+          `${API_URL}/cart/add`,
           action.payload,
           config
         );
         setCart(res.data.items);
       } else if (action.type === "REMOVE_FROM_CART") {
         const res = await axios.delete(
-          `${baseUrl}/cart/item/${action.payload}`,
+          `${API_URL}/cart/item/${action.payload}`,
           config
         );
         setCart(res.data.items);
       } else if (action.type === "UPDATE_QTY") {
         const res = await axios.put(
-          `${baseUrl}/cart/update`,
+          `${API_URL}/cart/update`,
           action.payload,
           config
         );
