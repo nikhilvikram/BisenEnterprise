@@ -29,7 +29,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
   const handleMenuClick = () => {
     setOpen(false); // Close sidebar
   };
-  
+
   const initials = user
     ? user.name
         .split(" ")
@@ -118,7 +118,7 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
               onClick={() => handleMenuClick("SareeList")}
             >
               <span className="icon">🥻</span>
-              <span className="label">Saree List</span>
+              <span className="label">Explore</span>
             </NavLink>
             <span className="sidebar-user-arrow">›</span>
           </div>
@@ -126,12 +126,12 @@ const Sidebar = ({ selectedTab, setselectedTab }) => {
           {/* KURTA LIST */}
           <div className="sidebar-user-card">
             <NavLink
-              to="/KurtaList"
+              to="/Categories"
               className="sidebar-user-link"
-              onClick={() => handleMenuClick("KurtaList")}
+              onClick={() => handleMenuClick("Categories")}
             >
               <span className="icon">👚</span>
-              <span className="label">Kurta List</span>
+              <span className="label">Categories</span>
             </NavLink>
             <span className="sidebar-user-arrow">›</span>
           </div>

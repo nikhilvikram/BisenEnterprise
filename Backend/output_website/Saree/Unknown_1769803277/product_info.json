@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "Unknown",
+    "product_title": "Elegant Black Saree with Delicate White Accents",
+    "short_description": "Make a statement with this stunning black saree, featuring subtle white detailing. Perfect for special occasions and evening events.",
+    "attributes": {
+        "color": "Black",
+        "fabric": "Georgette",
+        "pattern": "Striped",
+        "occasion": "Party"
+    },
+    "tags": [
+        "Black Saree",
+        "Party Wear",
+        "Georgette Saree",
+        "Evening Wear",
+        "Striped Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/Unknown_1769803277/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/Unknown_1769803277/pose_2.jpg"
+    ]
+}

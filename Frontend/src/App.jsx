@@ -20,6 +20,9 @@ import ScrollRestoration from "./component/ScrollRestoration";
 import BackendProducts from "./component/BackendProducts";
 import Login from "./component/Login";
 import UserProvider from "./store/user-context";
+import CatalogUploadPage from "./component/CatalogUploadPage";
+import CategoryProductList from "./component/CategoryProductList";
+
 import {
   HashRouter as Router,
   Routes,
@@ -74,6 +77,10 @@ function AppContent() {
             <Route path="/Home" element={<PostList />} />
             <Route path="/HomePage" element={<HomePage />} />
             <Route path="/CreatePost" element={<CreatePost />} />
+            <Route
+              path="/category/:categoryName"
+              element={<CategoryProductList />}
+            />
             <Route path="/SareeList" element={<SareeList />} />
             <Route path="/Categories" element={<Categories />} />
             <Route path="/Cart" element={<CartPage />} />
@@ -93,6 +100,7 @@ function AppContent() {
             <Route element={<AdminRoute />}>
               <Route path="/crm" element={<CRMPage />} />
               <Route path="/admin/add-product" element={<AddProductPage />} />
+              <Route path="/admin/catalog" element={<CatalogUploadPage />} />
             </Route>
             <Route path="/policy/:type" element={<Policies />} />
           </Routes>

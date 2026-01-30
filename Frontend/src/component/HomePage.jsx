@@ -5,21 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 // Icons
 import { FaChevronLeft, FaChevronRight, FaArrowRight } from "react-icons/fa";
 
-// Assets
+// Assets (Fallbacks)
 import saree1 from "../assets/saree1.jpg";
 import saree2 from "../assets/saree2.jpg";
 import saree3 from "../assets/saree3.jpg";
 import saree10 from "../assets/saree10.jpg";
 import nightwear from "../assets/nightwear.jpeg";
-import jwellery from "../assets/jwellery.jpg";
 
 // Stores & Actions
 import { TextileList } from "../store/textile-list-store";
 import { addToCart, removeFromCart } from "../store/cartSlice";
 import { saveScrollFor } from "../utils/scrollStore";
+import { API_URL } from "../config"; // 🟢 Import Config
 
 // ==========================================
-// 1. HERO SLIDER (Kept as requested)
+// 1. HERO SLIDER (Unchanged)
 // ==========================================
 const HeroSlider = () => {
   const navigate = useNavigate();
@@ -109,7 +109,7 @@ const HeroSlider = () => {
             <div className="slide-text">
               <h2>{slide.title}</h2>
               <p>{slide.subtitle}</p>
-              <button onClick={() => navigate("/SareeList")}>
+              <button onClick={() => navigate("/category/Saree")}>
                 {slide.btnText}
               </button>
             </div>
@@ -150,8 +150,10 @@ const HomePage = () => {
   // Redux Logic
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-  // If textileArray is null/undefined, use empty array []
+
   const safeProducts = textileArray || [];
+
+  // Best Sellers (Sort by reviews or just take first 4)
   const bestSellers = [...safeProducts]
     .sort((a, b) => (b.reviews || 0) - (a.reviews || 0))
     .slice(0, 4);
@@ -167,18 +169,51 @@ const HomePage = () => {
     return item ? item.qty : 0;
   };
 
-  const handleAddToCart = (id) =>
-    dispatch(addToCart({ productId: id, qty: 1 }));
   const removeWholeQty = (id) => dispatch(removeFromCart(id));
 
-  // --- TOP 6 CATEGORIES ---
+  // 🟢 HELPER: Fix Image URLs
+  const getImgSrc = (imagePath) => {
+    if (!imagePath) return null;
+    if (imagePath.startsWith("http")) return imagePath;
+    const baseUrl = API_URL.replace("/api", "");
+    return `${baseUrl}${imagePath}`;
+  };
+
+  // 🟢 DYNAMIC CATEGORY IMAGE FINDER
+  const getCategoryImage = (path, fallback) => {
+    if (!textileArray || textileArray.length === 0) return fallback;
+
+    const catSlug = path.split("/").pop(); // "Saree"
+    if (!catSlug) return fallback;
+
+    const cleanCat = catSlug.replace(/_/g, " ").toLowerCase().trim();
+
+    // Find first product in this category
+    const product = textileArray.find((p) => {
+      const pCat = (p.category || "").replace(/_/g, " ").toLowerCase().trim();
+      return pCat === cleanCat || pCat.includes(cleanCat);
+    });
+
+    if (product) {
+      const rawImg = product.images?.[0] || product.image;
+      return getImgSrc(rawImg);
+    }
+
+    return fallback;
+  };
+
+  // --- TOP 6 CATEGORIES (Updated Paths) ---
   const topCategories = [
-    { name: "Signature Sarees", img: saree1, path: "/SareeList" },
-    { name: "Ready-to-Wear", img: saree3, path: "/SareeList" },
-    { name: "Kurti Sets", img: saree10, path: "/KurtaList" },
-    { name: "Co-ord Sets", img: saree2, path: "/SareeList" }, // Use actual co-ord img if avail
-    { name: "Nauvari", img: saree1, path: "/SareeList" },
-    { name: "Jewellery", img: jwellery, path: "/SareeList" },
+    { name: "Signature Sarees", defaultImg: saree1, path: "/category/Saree" },
+    {
+      name: "Ready-to-Wear",
+      defaultImg: saree3,
+      path: "/category/Ready-to-wear_Saree",
+    },
+    { name: "Kurti Sets", defaultImg: saree10, path: "/category/Kurti_Set" },
+    { name: "Co-ord Sets", defaultImg: saree2, path: "/category/Co-ord_Set" },
+    { name: "Nauvari", defaultImg: saree1, path: "/category/Nauvari" },
+    { name: "Nightwear", defaultImg: nightwear, path: "/category/Nightwear" },
   ];
 
   return (
@@ -186,7 +221,7 @@ const HomePage = () => {
       {/* HERO SLIDER */}
       <HeroSlider />
 
-      {/* ===== TOP CATEGORIES (Clean & Premium) ===== */}
+      {/* ===== TOP CATEGORIES (Dynamic) ===== */}
       <div className="container mt-4 category-box">
         <div className="section-header-flex">
           <h2 className="section-title">Shop By Category</h2>
@@ -194,18 +229,23 @@ const HomePage = () => {
 
         {/* Simple 6-Item Grid */}
         <div className="category-grid-simple">
-          {topCategories.map((cat, i) => (
-            <div
-              key={i}
-              className="category-tile-premium"
-              onClick={() => navigate(cat.path)}
-            >
-              <div className="cat-premium-img">
-                <img src={cat.img} alt={cat.name} />
+          {topCategories.map((cat, i) => {
+            // 🟢 Get Real Image if available
+            const displayImg = getCategoryImage(cat.path, cat.defaultImg);
+
+            return (
+              <div
+                key={i}
+                className="category-tile-premium"
+                onClick={() => navigate(cat.path)}
+              >
+                <div className="cat-premium-img">
+                  <img src={displayImg} alt={cat.name} loading="lazy" />
+                </div>
+                <div className="cat-premium-label">{cat.name}</div>
               </div>
-              <div className="cat-premium-label">{cat.name}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Explore All Button */}
@@ -227,6 +267,8 @@ const HomePage = () => {
             const itemId = item._id || item.id;
             if (!itemId) return null;
             const qty = getQty(itemId);
+            const rawImage =
+              item.images?.length > 0 ? item.images[0] : item.image;
 
             return (
               <div key={itemId} className="bisen-card">
@@ -239,8 +281,9 @@ const HomePage = () => {
                   }}
                 >
                   <img
-                    src={item.images?.length > 0 ? item.images[0] : item.image}
+                    src={getImgSrc(rawImage)}
                     alt={item.title}
+                    loading="lazy"
                   />
                 </div>
 

@@ -10,7 +10,7 @@ const orderRoutes = require("./routes/orders");
 const wishlistRoutes = require("./routes/wishlist");
 const shopRoutes = require("./routes/shopRoutes");
 const payment = require("./routes/payment");
-
+const path = require('path');
 const app = express();
 
 app.use(express.json());
@@ -41,5 +41,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/payment", payment);
+app.use('/api/pipeline', require('./routes/pipeline'));
+app.use('/output_website', express.static(path.join(__dirname, 'output_website')));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✔ Server running on port ${PORT}`));

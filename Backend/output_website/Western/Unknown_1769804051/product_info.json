@@ -1,0 +1,23 @@
+{
+    "category": "Western",
+    "design_code": "Unknown",
+    "product_title": "Textured Ruffle Trim Mock Neck Top",
+    "short_description": "Elevate your wardrobe with this stylish white long-sleeved top featuring a unique textured design and ruffle trim mock neck. Perfect for a chic and sophisticated look.",
+    "attributes": {
+        "color": "White",
+        "fabric": "Polyester",
+        "pattern": "Textured",
+        "occasion": "Casual"
+    },
+    "tags": [
+        "top",
+        "white",
+        "long sleeve",
+        "textured",
+        "ruffle",
+        "mock neck"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Western/Unknown_1769804051/pose_1.jpg"
+    ]
+}

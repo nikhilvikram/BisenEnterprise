@@ -68,24 +68,30 @@ router.get("/admin/all", [auth, admin], async (req, res) => {
 // 3. CREATE PRODUCT (AWS S3 INTEGRATED)
 // ==================================================
 // 🟢 NOTICE: We added 'upload.single("image")' middleware here
-router.post("/", [auth, admin, upload.single("image")], async (req, res) => {
+router.post("/", [auth, admin, upload.array("images", 5)], async (req, res) => {
   try {
+    // 1. Validate Upload
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: "Please upload at least one image" });
+    }
+    console.log(req.files + ",,,," + req.files)
     // 1. Extract text fields
     const { title, price, description, category, rating, stock } = req.body;
-    
+
     // 2. Handle Image from AWS S3 (Multer adds req.file)
     // If upload worked, 'req.file.location' holds the S3 URL
-    const imageUrl = req.file ? req.file.location : "https://via.placeholder.com/150";
+    // const imageUrl = req.file ? req.file.location : "https://via.placeholder.com/150";
+    const imageUrl = req.files ? req.files.map(file => file.location) : "https://via.placeholder.com/150";;
 
     const slug = createSlug(title) + "-" + Date.now();
 
     const newProduct = new Product({
-      title, 
-      slug, 
-      price, 
-      description, 
+      title,
+      slug,
+      price,
+      description,
       category,
-      images: [imageUrl], // <--- Save the AWS S3 URL here
+      images: imageUrl, // <--- Save the AWS S3 URL here
       rating: rating || 4,
       reviewsCount: 0,
       stock: Number(stock) || 0
@@ -167,29 +173,29 @@ router.post("/reset-stock-all", async (req, res) => {
 });
 
 // ... Keep your POST / (Create Product) and DELETE routes here ...
-router.post("/", [auth, admin], async (req, res) => {
-  try {
-    const { title, price, description, category, image, rating, stock } = req.body;
-    const slug = createSlug(title) + "-" + Date.now();
+// router.post("/", [auth, admin], async (req, res) => {
+//   try {
+//     const { title, price, description, category, image, rating, stock } = req.body;
+//     const slug = createSlug(title) + "-" + Date.now();
 
-    const newProduct = new Product({
-      title, slug, price, description, category,
-      images: [image],
-      rating: rating || 4,
-      reviewsCount: 0,
-      stock: Number(stock) || 0
-    });
+//     const newProduct = new Product({
+//       title, slug, price, description, category,
+//       images: [image],
+//       rating: rating || 4,
+//       reviewsCount: 0,
+//       stock: Number(stock) || 0
+//     });
 
-    const savedProduct = await newProduct.save();
+//     const savedProduct = await newProduct.save();
 
-    try {
-      if (redisClient && redisClient.isOpen) await redisClient.del("active_products");
-    } catch (e) { }
+//     try {
+//       if (redisClient && redisClient.isOpen) await redisClient.del("active_products");
+//     } catch (e) { }
 
-    res.json(savedProduct);
-  } catch (err) {
-    res.status(500).send("Server Error");
-  }
-});
+//     res.json(savedProduct);
+//   } catch (err) {
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 module.exports = router;

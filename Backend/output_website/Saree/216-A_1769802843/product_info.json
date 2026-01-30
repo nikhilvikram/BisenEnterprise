@@ -1,0 +1,22 @@
+{
+    "category": "Saree",
+    "design_code": "216-A",
+    "product_title": "Elegant Pink Cotton Saree with Floral Print Border",
+    "short_description": "This beautiful pink cotton saree features a unique floral print border, perfect for any occasion.",
+    "attributes": {
+        "color": "Pink",
+        "fabric": "Cotton",
+        "pattern": "Floral Print",
+        "occasion": "Casual"
+    },
+    "tags": [
+        "Cotton Saree",
+        "Pink Saree",
+        "Floral Print",
+        "Casual Wear",
+        "Traditional"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/216-A_1769802843/pose_1.jpg"
+    ]
+}

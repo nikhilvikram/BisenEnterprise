@@ -12,7 +12,7 @@ router.post("/add", auth, async (req, res) => {
 
   try {
     // 1. Get the user ID from the token (FIXED: uses _id)
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
     // 2. Check if product exists
     const product = await Product.findById(productId);
@@ -59,11 +59,11 @@ router.get("/", auth, async (req, res) => {
   try {
     // Populate gives you Title/Price/Image instead of just ID
     const cart = await Cart.findOne({ userId: req.user._id }).populate("items.productId", "title price image category");
-    
+
     if (!cart) {
-        return res.json({ items: [] });
+      return res.json({ items: [] });
     }
-    
+    cart.items = cart.items.filter(item => item.productId !== null);
     res.json(cart);
   } catch (err) {
     console.error(err.message);
@@ -120,7 +120,7 @@ router.put("/update", auth, async (req, res) => {
       } else {
         cart.items.splice(itemIndex, 1); // Remove if 0
       }
-      
+
       await cart.save();
 
       // Populate to return full data

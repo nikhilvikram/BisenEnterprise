@@ -4,6 +4,8 @@ import { TextileList } from "../store/textile-list-store";
 import { CartContext } from "../store/cart-context";
 import { saveScrollFor } from "../utils/scrollStore";
 import { addToCart, updateQty, removeFromCart } from "../store/cartSlice";
+// 🟢 1. Import API_URL to get the base domain
+import { API_URL } from "../config";
 import { useDispatch, useSelector } from "react-redux";
 const SareeList = () => {
   const { textileArray } = useContext(TextileList);
@@ -16,6 +18,23 @@ const SareeList = () => {
 
   // Read Cart from Redux Store
   const cartItems = useSelector((state) => state.cart.items);
+
+  // 🟢 2. HELPER: Force Images to Backend Port
+  const getImgSrc = (imagePath) => {
+    if (!imagePath) return "https://via.placeholder.com/150";
+
+    // If it's already an AWS or full link, use it
+    if (imagePath.startsWith("http")) return imagePath;
+
+    // If it's a local pipeline path (starts with /output_website)
+    // We need to point it to http://localhost:5000 (NOT 5173)
+
+    // HACK: API_URL is usually "http://localhost:5000/api"
+    // We need just "http://localhost:5000"
+    const baseUrl = API_URL.replace("/api", "");
+
+    return `${baseUrl}${imagePath}`;
+  };
 
   const handleAddToCart = (id) => {
     // Dispatch to Context (which calls API)
@@ -79,7 +98,8 @@ const SareeList = () => {
           }
 
           const qty = getQty(itemId);
-
+          const rawImage =
+            item.images?.length > 0 ? item.images[0] : item.image;
           return (
             <div key={itemId} className="bisen-card">
               {/* IMAGE */}
@@ -92,7 +112,8 @@ const SareeList = () => {
                 }}
               >
                 <img
-                  src={item.images?.length > 0 ? item.images[0] : item.image}
+                  // src={item.images?.length > 0 ? item.images[0] : item.image}
+                  src={getImgSrc(rawImage)}
                   alt={item.title}
                 />
               </div>

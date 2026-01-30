@@ -1,48 +1,29 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useRef } from "react"; // Added useRef
 import { TextileList } from "../store/textile-list-store";
-import { CartContext } from "../store/cart-context";
+// import { CartContext } from "../store/cart-context"; // Context (Commented out as you use Redux)
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "../store/wishlistSlice";
 import { saveScrollFor } from "../utils/scrollStore";
-// Import Icons for cleaner UI (optional, if you have them set up)
-// import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { addToCart, updateQty, removeFromCart } from "../store/cartSlice";
+
 const ProductDetail = () => {
   const { textileArray } = useContext(TextileList);
-  const { id } = useParams(); // This is the Product ID from URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const [animateCart, setAnimateCart] = useState(false);
 
   const loc = useLocation();
   const currentKey = `${loc.pathname}${loc.hash || ""}`;
 
-  // --- 1. CART CONTEXT ---
-  // const { cart, dispatch } = useContext(CartContext);
-
-  // --- 3. FIND PRODUCT ---
-  // Ensure we compare strings to avoid Type errors
-  // const item = textileArray.find((p) => p._id === id || p.id === id);
-
-  // --- 4. CHECK CART QUANTITY (BACKEND COMPATIBLE) ---
-  // const cartItem = cart.find((c) => {
-  //   // Backend populates productId as an Object { _id, title... }
-  //   // But sometimes it might be just an ID string. Handle both.
-  //   const cartProdId = c.productId._id || c.productId;
-  //   return cartProdId.toString() === id;
-  // });
-  // const qty = cartItem ? cartItem.qty : 0;
-
-  // --- 5. CHECK WISHLIST STATUS ---
-  // const isInWishlist = wishlistItems.some((i) => i._id === id || i.id === id);
-
-  // --- 3. REDUX SETUP ---
+  // --- 1. REDUX SETUP ---
   const dispatch = useDispatch();
+  const reduxDispatch = useDispatch();
 
   // Read Cart from Redux Store
   const cartItems = useSelector((state) => state.cart.items);
 
-  // Find item in Redux Cart (Handle MongoDB _id)
+  // Find item in Redux Cart
   const cartItem = cartItems.find((c) => {
     const pId = c.productId._id || c.productId;
     return pId === id;
@@ -51,11 +32,37 @@ const ProductDetail = () => {
 
   // Find product in Catalogue
   const item = textileArray.find((p) => p._id === id || p.id === id);
-  // --- 2. WISHLIST REDUX ---
-  const reduxDispatch = useDispatch();
-  const wishlistItems = useSelector((state) => state.wishlist.items);
 
-  // Check if item is in wishlist (Safe check)
+  // --- 2. IMAGE GALLERY LOGIC (NEW) ---
+  // Normalize images: Use array if available, otherwise fallback to single string
+  const productImages =
+    item?.images?.length > 0 ? item.images : item?.image ? [item.image] : [];
+
+  const [activeImgIndex, setActiveImgIndex] = useState(0);
+  const scrollRef = useRef(null);
+
+  // Handle Scroll (Detect Swipe)
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, offsetWidth } = scrollRef.current;
+      const newIndex = Math.round(scrollLeft / offsetWidth);
+      setActiveImgIndex(newIndex);
+    }
+  };
+
+  // Handle Thumbnail Click
+  const scrollToImage = (index) => {
+    setActiveImgIndex(index);
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        left: scrollRef.current.offsetWidth * index,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // --- 3. WISHLIST REDUX ---
+  const wishlistItems = useSelector((state) => state.wishlist.items);
   const isInWishlist =
     item &&
     wishlistItems.some((i) => {
@@ -63,15 +70,9 @@ const ProductDetail = () => {
       const itemId = item._id || item.id;
       return iId?.toString() === itemId?.toString();
     });
-  // --- HANDLERS ---
 
+  // --- HANDLERS ---
   const handleAddToCart = () => {
-    // Dispatch to Context (which calls API)
-    // dispatch({
-    //   type: "ADD_TO_CART",
-    //   payload: { productId: id, qty: 1 }, // Backend expects { productId, qty }
-    // });
-    // 4. Dispatch to Redux Thunk
     dispatch(addToCart({ productId: id, qty: 1 }));
   };
 
@@ -82,32 +83,23 @@ const ProductDetail = () => {
   };
 
   const handleUpdateQty = (newQty) => {
-    // if (newQty < 1) {
-    //   dispatch({ type: "REMOVE_FROM_CART", payload: id });
-    // } else {
-    //   // For simple update, we can reuse ADD logic or creating a specific UPDATE action
-    //   // Since your backend ADD logic increments, we need a specific UPDATE logic or
-    //   // calculate the difference.
-    //   // Simplest for now: Call UPDATE_QTY action if your Context handles it
-    //   dispatch({
-    //     type: "UPDATE_QTY",
-    //     payload: { productId: id, qty: newQty },
-    //   });
-    // }
     if (newQty < 1) {
       dispatch(removeFromCart(id));
     } else {
       dispatch(updateQty({ productId: id, qty: newQty }));
     }
   };
+
   const removeWholeQty = (id) => {
     dispatch(removeFromCart(id));
   };
-  // Related Products (Logic remains same)
+
+  // Related Products
   const bestSellers = [...textileArray]
-    .filter((p) => p._id !== id && p.id !== id) // Don't show current item
+    .filter((p) => p._id !== id && p.id !== id)
     .sort((a, b) => b.reviews - a.reviews)
     .slice(0, 8);
+
   if (!item) {
     return (
       <div className="user_notfound">
@@ -121,6 +113,59 @@ const ProductDetail = () => {
 
   return (
     <>
+      {/* 🎨 INTERNAL STYLES FOR GALLERY (Copy to CSS if preferred) */}
+      <style>{`
+        .gallery-container {
+          position: relative;
+          width: 100%;
+          overflow: hidden;
+        }
+        /* The Swipeable Track */
+        .gallery-scroll-track {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch; /* Smooth swipe on iOS */
+          scrollbar-width: none; /* Hide scrollbar Firefox */
+        }
+        .gallery-scroll-track::-webkit-scrollbar {
+          display: none; /* Hide scrollbar Chrome/Safari */
+        }
+        /* Individual Main Image */
+        .gallery-main-img {
+          min-width: 100%;
+          scroll-snap-align: center;
+          height: 350px; /* Adjust based on your design */
+          object-fit: cover; /* or contain, depending on preference */
+          border-radius: 12px;
+        }
+        /* Thumbnails Strip */
+        .gallery-thumbnails {
+          display: flex;
+          gap: 10px;
+          margin-top: 15px;
+          justify-content: center;
+          overflow-x: auto;
+          padding-bottom: 5px;
+        }
+        .gallery-thumb {
+          width: 60px;
+          height: 60px;
+          border-radius: 8px;
+          object-fit: cover;
+          cursor: pointer;
+          opacity: 0.6;
+          border: 2px solid transparent;
+          transition: all 0.2s ease;
+        }
+        .gallery-thumb.active {
+          opacity: 1;
+          border-color: #333; /* Active color */
+          transform: scale(1.05);
+        }
+      `}</style>
+
       <div className="user_product_detail_wrapper">
         {/* HEADER SECTION */}
         <div className="user_pd_header">
@@ -139,13 +184,47 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* IMAGE */}
-        <div className="user_pd_imgbox">
-          <img
-            src={item.images?.length > 0 ? item.images[0] : item.image}
-            alt={item.title}
-          />
+        {/* ============ NEW IMAGE GALLERY ============ */}
+        <div
+          className="user_pd_imgbox"
+          style={{ background: "transparent", padding: 0 }}
+        >
+          <div className="gallery-container">
+            {/* 1. Swipeable Main Images */}
+            <div
+              className="gallery-scroll-track"
+              ref={scrollRef}
+              onScroll={handleScroll}
+            >
+              {productImages.map((imgUrl, idx) => (
+                <img
+                  key={idx}
+                  src={imgUrl}
+                  alt={`${item.title} - ${idx + 1}`}
+                  className="gallery-main-img"
+                />
+              ))}
+            </div>
+
+            {/* 2. Thumbnails (Only show if > 1 image) */}
+            {productImages.length > 1 && (
+              <div className="gallery-thumbnails">
+                {productImages.map((imgUrl, idx) => (
+                  <img
+                    key={idx}
+                    src={imgUrl}
+                    alt={`Thumb ${idx}`}
+                    className={`gallery-thumb ${
+                      activeImgIndex === idx ? "active" : ""
+                    }`}
+                    onClick={() => scrollToImage(idx)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
+        {/* =========================================== */}
 
         {/* DETAILS */}
         <div className="user_pd_content">
@@ -174,7 +253,6 @@ const ProductDetail = () => {
           className={`user_pd_sticky_bar_fixed ${qty > 0 ? "three-btns" : ""}`}
         >
           <div className="sticky-row-top">
-            {/* 3. GO TO BAG BUTTON (Visible ONLY if Qty > 0) */}
             {qty > 0 && (
               <button className="btn-go-bag" onClick={() => navigate("/cart")}>
                 GO TO BAG <span style={{ marginLeft: "5px" }}>→</span>
@@ -186,7 +264,6 @@ const ProductDetail = () => {
             <button
               className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
               onClick={() => {
-                // Dispatch Async Thunk (sends API call)
                 reduxDispatch(
                   isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
                 );
@@ -227,10 +304,9 @@ const ProductDetail = () => {
               </button>
             </div>
           </div>
-          {/* PLUS (Only show if in cart - optional design choice to split button) */}
-          {/* If you want a +/- counter style instead of just "Add", you can add a Plus button here too */}
         </div>
       </div>
+
       {/* ============== MORE PRODUCTS SECTION ============== */}
       <div className="container mt-5">
         <h2 className="section-title">Related PRODUCTS</h2>
@@ -243,6 +319,7 @@ const ProductDetail = () => {
               onClick={() => navigate(`/product/${item._id || item.id}`)}
             >
               <div className="bisen-img-box">
+                {/* Updated Grid Image Logic */}
                 <img
                   src={item.images?.length > 0 ? item.images[0] : item.image}
                   alt={item.title}

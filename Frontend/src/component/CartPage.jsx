@@ -18,6 +18,7 @@ const CartPage = () => {
   // ✅ FIX: Robust Logic to Match Cart Items with Product Details
   const cartItems = cart
     .map((cartItem) => {
+      if (!cartItem.productId) return null;
       // 1. Extract the ID string safely (Backend might send Object or String)
       const cartProductId = cartItem.productId._id || cartItem.productId;
 
