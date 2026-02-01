@@ -29,9 +29,8 @@ router.post("/process", upload.single("file"), (req, res) => {
     // Look back 2 seconds to catch file touches
     const startTime = Date.now() - 2000;
 
-    const pythonBin =
-      process.env.PYTHON_BIN ||
-      (process.platform === "win32" ? "python" : "python3");
+// 🟢 FIX: Force usage of Virtual Environment Python
+    const pythonBin = "./venv/bin/python";
     const pythonProcess = spawn(pythonBin, ["scripts/process_catalog.py"]);
     pythonProcess.stdout.on("data", (data) => console.log(`🐍 ${data}`));
     pythonProcess.stderr.on("data", (data) => console.error(`🐍 Err: ${data}`));
