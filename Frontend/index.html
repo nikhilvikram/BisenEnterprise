@@ -4,8 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bisen Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html {
+        overflow-anchor: none;
+      }
+    </style>
+    <script>
+      (function () {
+        if ("scrollRestoration" in history)
+          history.scrollRestoration = "manual";
+        window.scrollTo(0, 0);
+        try {
+          document.documentElement.scrollTop = 0;
+        } catch (e) {}
+        try {
+          document.body.scrollTop = 0;
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body>
+  <body style="overflow-anchor: none">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

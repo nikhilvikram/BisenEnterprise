@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
+import "../styles/categories.css";
+import "../styles/product-grid.css";
+import "../styles/shared-buttons.css";
 import { TextileList } from "../store/textile-list-store";
 import { saveScrollFor } from "../utils/scrollStore";
 import { addToCart } from "../store/cartSlice"; // Keep if you re-enable cart button
@@ -12,7 +16,8 @@ const CategoryProductList = () => {
 
   const { textileArray } = useContext(TextileList);
   const navigate = useNavigate();
-  const { pathname, hash } = useLocation();
+  const location = useLocation();
+  const { pathname, hash } = location;
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
 
@@ -68,16 +73,31 @@ const CategoryProductList = () => {
       className="container category-page-wrapper"
       style={{ minHeight: "80vh" }}
     >
-      {/* HEADER SECTION */}
-      <div className="text-center mb-5 mt-4">
+      {/* BACK BUTTON + HEADER */}
+      <div className="category-list-header mb-4 mt-3">
+        <button
+          className="app-back-btn"
+          onClick={() =>
+            navigate(
+              location.state?.from === "home" ? "/HomePage" : "/Categories"
+            )
+          }
+          type="button"
+          aria-label="Back to categories"
+        >
+          <FaArrowLeft className="me-2" />
+          {location.state?.from === "home"
+            ? "Back to Home"
+            : "Back to Categories"}
+        </button>
         <h2
-          className="section-title"
+          className="section-title text-center mt-3"
           style={{ textTransform: "capitalize", marginBottom: "5px" }}
         >
           {displayTitle} Collection
         </h2>
       </div>
-      <p className="text-muted">
+      <p className="text-muted text-center">
         Found {categoryProducts.length} exclusive designs
       </p>
 
@@ -90,10 +110,17 @@ const CategoryProductList = () => {
             Check back tomorrow for new designs!
           </p>
           <button
-            className="btn btn-outline-dark mt-3"
-            onClick={() => navigate("/")}
+            className="app-back-btn btn mt-3"
+            onClick={() =>
+              navigate(
+                location.state?.from === "home" ? "/HomePage" : "/Categories"
+              )
+            }
           >
-            Browse All Categories
+            <FaArrowLeft className="me-2" />
+            {location.state?.from === "home"
+              ? "Back to Home"
+              : "Browse All Categories"}
           </button>
         </div>
       ) : (

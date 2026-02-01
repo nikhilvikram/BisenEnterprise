@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { TextileList } from "../store/textile-list-store";
 import { useNavigate } from "react-router-dom";
 import { FaSearch, FaChevronLeft, FaHistory, FaTimes } from "react-icons/fa";
+import "../styles/home-slider-search.css";
 
 const SearchOverlay = ({ close }) => {
   const { textileArray } = useContext(TextileList);

@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/about-us.css";
 import aboutus1 from "../assets/aboutus1.png";
 import aboutus from "../assets/aboutus.mp4";
 export default function AboutUs() {

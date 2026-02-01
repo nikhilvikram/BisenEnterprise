@@ -1,5 +1,10 @@
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import React, { useContext, useState, useRef } from "react"; // Added useRef
+import React, { useContext, useState, useRef, useEffect } from "react"; // Added useRef
+import { FaHeart, FaShoppingBag } from "react-icons/fa";
+import "../styles/product-detail.css";
+import "../styles/product-grid.css";
+import "../styles/product-actions.css";
+import "../styles/badges.css";
 import { TextileList } from "../store/textile-list-store";
 // import { CartContext } from "../store/cart-context"; // Context (Commented out as you use Redux)
 import { useDispatch, useSelector } from "react-redux";
@@ -82,6 +87,14 @@ const ProductDetail = () => {
     setTimeout(() => setAnimateCart(false), 300);
   };
 
+  useEffect(() => {
+    if (qty > 0) {
+      setAnimateCart(true);
+      const timer = setTimeout(() => setAnimateCart(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [qty]);
+
   const handleUpdateQty = (newQty) => {
     if (newQty < 1) {
       dispatch(removeFromCart(id));
@@ -137,8 +150,19 @@ const ProductDetail = () => {
           min-width: 100%;
           scroll-snap-align: center;
           height: 350px; /* Adjust based on your design */
-          object-fit: cover; /* or contain, depending on preference */
+          object-fit: contain; /* Full product visible - no cropping */
+          object-position: center;
+          background: #f8f8f8;
           border-radius: 12px;
+        }
+        @media (max-width: 768px) {
+          .gallery-main-img {
+            object-fit: contain;
+            background: #f5f5f5;
+          }
+        }
+        body.dark .gallery-main-img {
+          background: #1e1e1e;
         }
         /* Thumbnails Strip */
         .gallery-thumbnails {
@@ -249,60 +273,33 @@ const ProductDetail = () => {
         </div>
 
         {/* STICKY BOTTOM BAR */}
-        <div
-          className={`user_pd_sticky_bar_fixed ${qty > 0 ? "three-btns" : ""}`}
-        >
-          <div className="sticky-row-top">
-            {qty > 0 && (
-              <button className="btn-go-bag" onClick={() => navigate("/cart")}>
-                GO TO BAG <span style={{ marginLeft: "5px" }}>→</span>
-              </button>
-            )}
-          </div>
-          <div className="sticky-row-bottom">
-            {/* WISHLIST */}
+        <div className="user_pd_sticky_bar_fixed">
+          <div className="pd-action-row">
             <button
-              className={`bisen-wishlist-btn ${isInWishlist ? "active" : ""}`}
+              className={`bisen-wishlist-btn pd-wishlist-btn ${
+                isInWishlist ? "active" : ""
+              }`}
               onClick={() => {
                 reduxDispatch(
                   isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
                 );
               }}
             >
-              {isInWishlist ? "♥ Wishlisted" : "♡ Wishlist"}
+              <FaHeart className="pd-btn-icon" />
+              {isInWishlist ? "Wishlisted" : "Wishlist"}
             </button>
-            {/* ADD BUTTON */}
+
             <button
-              className={`btn-cart cart-btn-wrapper 
-    ${animateCart ? "cart-animate" : ""} 
-    ${qty > 0 ? "cart-added" : ""}`}
-              onClick={handleAddToCartAnimated}
+              className={`btn-cart pd-cart-btn ${
+                animateCart ? "cart-animate" : ""
+              } ${qty > 0 ? "is-added" : ""}`}
+              onClick={() =>
+                qty > 0 ? navigate("/cart") : handleAddToCartAnimated()
+              }
             >
-              <span className="btn-cart-content">
-                {qty > 0 ? `Add again 🛒` : "Add 🛒"}
-              </span>
-
-              {qty > 0 && <span className="icon-badge">{qty}</span>}
+              <FaShoppingBag className="pd-btn-icon" />
+              {qty > 0 ? "Go to Bag" : "Add to Cart"}
             </button>
-
-            {/* REMOVE + MINUS STACK */}
-            <div className="remove_stack">
-              <button
-                className={`user_cart_minus removebtn ${
-                  qty > 0 ? "show" : "hide"
-                }`}
-                onClick={() => removeWholeQty(item._id || item.id)}
-              >
-                Remove
-              </button>
-
-              <button
-                className={`user_cart_minus ${qty > 0 ? "show" : "hide"}`}
-                onClick={() => handleUpdateQty(qty - 1)}
-              >
-                −
-              </button>
-            </div>
           </div>
         </div>
       </div>

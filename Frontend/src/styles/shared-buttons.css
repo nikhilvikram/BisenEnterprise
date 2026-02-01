@@ -1,0 +1,53 @@
+/* Shared App Back Button */
+.app-back-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color);
+  background: var(--bg-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 63, 108, 0.15);
+}
+.app-back-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateX(-2px);
+  box-shadow: 0 4px 14px rgba(255, 63, 108, 0.35);
+}
+.app-back-btn:active {
+  transform: translateX(0);
+}
+.app-back-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 63, 108, 0.25);
+}
+body.dark .app-back-btn {
+  border-color: #ff6b8a;
+  box-shadow: 0 2px 8px rgba(255, 107, 138, 0.2);
+}
+body.dark .app-back-btn:hover {
+  background: #ff3f6c;
+  color: white;
+  border-color: #ff3f6c;
+}
+
+@media (max-width: 576px) {
+  .catalog-review-header {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .catalog-review-header .d-flex.align-items-center {
+    flex-wrap: wrap;
+  }
+  .catalog-review-header .app-back-btn,
+  .category-list-header .app-back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

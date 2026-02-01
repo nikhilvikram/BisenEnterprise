@@ -1,0 +1,35 @@
+/* Shared badges */
+.icon-badge {
+  position: absolute !important;
+  top: -15px !important; /* Move UP outside the button */
+  right: -15px !important; /* Move RIGHT outside the button */
+
+  background: #ff3f6c; /* Brand Pink/Red */
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid var(--navbar-bg);
+  z-index: 10;
+
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

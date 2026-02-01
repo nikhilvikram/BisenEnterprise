@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"; // 1. Use Redux
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/cart-checkout-wishlist.css";
 import {
   FaMapMarkerAlt,
   FaTag,

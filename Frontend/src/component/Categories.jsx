@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import "../styles/categories.css";
+import { saveScrollFor } from "../utils/scrollStore";
 import { TextileList } from "../store/textile-list-store";
 import { API_URL } from "../config";
 
@@ -18,6 +20,7 @@ const DEFAULT_PLACEHOLDER = "https://via.placeholder.com/300?text=Coming+Soon";
 
 const Categories = () => {
   const navigate = useNavigate();
+  const { pathname, hash } = useLocation();
   const { textileArray } = useContext(TextileList);
 
   // 1. HELPER: Fix Image URLs (S3 vs Local)
@@ -178,7 +181,7 @@ const Categories = () => {
               const { img1, img2 } = getDynamicImages(
                 cat.path,
                 cat.default1,
-                cat.default2,
+                cat.default2
               );
 
               return (
@@ -187,7 +190,10 @@ const Categories = () => {
                   className={`category-card-robust ${
                     cat.size === "large" ? "span-2" : ""
                   }`}
-                  onClick={() => navigate(cat.path)}
+                  onClick={() => {
+                    saveScrollFor(`${pathname}${hash || ""}`);
+                    navigate(cat.path, { state: { from: "categories" } });
+                  }}
                 >
                   <div className="cat-img-split">
                     <div className="cat-img-half">

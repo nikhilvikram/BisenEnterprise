@@ -1,0 +1,221 @@
+/* Product Buttons & Actions */
+.bisen-cart-btn-small {
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 0;
+  border-radius: 10px;
+  font-weight: 600;
+  border: 2px solid var(--text-color);
+  background: transparent;
+  color: var(--text-color);
+  transition: 0.3s ease;
+  position: relative;
+  overflow: visible;
+}
+.bisen-cart-btn-small:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+.bisen-cart-btn-small.added {
+  border-color: #e63946;
+  background: #e63946;
+  color: white;
+}
+
+.btn-cart {
+  background: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 2px solid var(--text-color) !important;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 160px;
+  margin-right: 5px;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  position: relative !important; /* Needed for icon-badge */
+  overflow: visible !important;
+}
+.btn-cart:hover {
+  background: var(--text-color) !important;
+  color: var(--bg-color) !important;
+}
+.btn-cart.cart-animate {
+  background: #e63946 !important;
+  border-color: #e63946 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(230, 57, 70, 0.45);
+}
+
+.bisen-wishlist-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  min-width: 160px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #ffffff;
+  border: 2px solid #000000;
+  color: #020202;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+.bisen-wishlist-btn:hover {
+  background: rgba(230, 57, 70, 0.08);
+}
+.bisen-wishlist-btn.active {
+  background: #e63946;
+  color: #fff;
+  border-color: #e63946;
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.4);
+}
+body.dark .bisen-wishlist-btn {
+  background: #0a0707;
+  color: #ffffff;
+  border: 2px solid var(--text-color) !important;
+}
+body.dark .bisen-wishlist-btn.active {
+  background: #ff4d5c;
+  border-color: #ff4d5c;
+  color: #fff;
+}
+
+.heart {
+  width: 20px;
+  height: 20px;
+  transition: 0.25s ease;
+}
+.heart.outline {
+  stroke: #e63946;
+  fill: transparent;
+  stroke-width: 2.2;
+}
+.heart.filled {
+  fill: #fff;
+  stroke: #fff;
+  transform: scale(1.1);
+}
+.bisen-wishlist-btn.active .heart.filled {
+  animation: heartPop 0.35s ease;
+}
+@keyframes heartPop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Floating Badge Fix */
+.cart-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: #e63946;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  animation: popBadge 0.3s ease;
+  z-index: 2;
+}
+@keyframes popBadge {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.card-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #070707;
+  color: #fff;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* Extra Small */
+@media (max-width: 420px) {
+  .cart-btn-wrapper {
+    font-size: 14px;
+  }
+  .bisen-wishlist-btn {
+    font-size: 13px;
+  }
+}
+
+/* Tiny (<= 390px) */
+@media (max-width: 390px) {
+  .bisen-wishlist-btn {
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    min-width: 70px !important;
+  }
+  .btn-cart {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    min-width: 90px !important;
+  }
+  .stack-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    align-items: stretch; /* both buttons same width */
+  }
+
+  /* Remove button */
+  .stack-buttons .remove-btn {
+    background: #ffe8e8;
+    color: #d63a3a;
+    border: 1px solid #ffcccc;
+    padding: 8px 0;
+    font-size: 13px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  /* Minus button */
+  .stack-buttons .minus-btn {
+    background: #fff;
+    color: #d63a3a;
+    border: 1px solid #ffb6b6;
+    padding: 6px 0;
+    font-size: 18px;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+}

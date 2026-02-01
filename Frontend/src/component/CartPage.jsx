@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaTrash, FaArrowLeft, FaShieldAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, updateQty } from "../store/cartSlice";
+import "../styles/cart-checkout-wishlist.css";
 
 const CartPage = () => {
   const { textileArray } = useContext(TextileList);

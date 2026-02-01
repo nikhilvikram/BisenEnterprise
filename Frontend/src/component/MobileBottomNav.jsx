@@ -1,6 +1,7 @@
 import { FaStore, FaList, FaCompass, FaTshirt, FaUser } from "react-icons/fa";
 import { saveScrollFor } from "../utils/scrollStore";
 import SaveNavLink from "./SaveNavLink";
+import "../styles/mobile-bottom-nav.css";
 const MobileBottomNav = () => {
   return (
     <div className="mobile-bottom-nav">

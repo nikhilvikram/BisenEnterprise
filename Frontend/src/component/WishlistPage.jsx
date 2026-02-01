@@ -4,6 +4,7 @@ import { removeFromWishlist } from "../store/wishlistSlice";
 import { CartContext } from "../store/cart-context";
 import { useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import "../styles/cart-checkout-wishlist.css";
 
 const WishlistPage = () => {
   const items = useSelector((state) => state.wishlist.items);

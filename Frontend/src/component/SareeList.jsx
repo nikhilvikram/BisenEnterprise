@@ -1,5 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
+import "../styles/categories.css";
+import "../styles/product-grid.css";
+import "../styles/product-actions.css";
+import "../styles/shared-buttons.css";
 import { TextileList } from "../store/textile-list-store";
 import { CartContext } from "../store/cart-context";
 import { saveScrollFor } from "../utils/scrollStore";
@@ -85,8 +90,32 @@ const SareeList = () => {
   }
 
   return (
-    <div className="container mt-4">
-      {/* Check if CSS class exists */}
+    <div
+      className="container category-page-wrapper"
+      style={{ minHeight: "80vh" }}
+    >
+      {/* BACK BUTTON + HEADER (same as CategoryProductList) */}
+      <div className="category-list-header mb-4 mt-3">
+        <button
+          className="app-back-btn"
+          onClick={() => navigate("/HomePage")}
+          type="button"
+          aria-label="Back to home"
+        >
+          <FaArrowLeft className="me-2" />
+          Back to Home
+        </button>
+        <h2
+          className="section-title text-center mt-3"
+          style={{ marginBottom: "5px" }}
+        >
+          Explore All Products
+        </h2>
+      </div>
+      <p className="text-muted text-center mb-4">
+        Found {textileArray?.length || 0} exclusive designs
+      </p>
+
       <div className="bisen-grid">
         {textileArray.map((item) => {
           // Handle both MongoDB _id and Static id
@@ -112,9 +141,9 @@ const SareeList = () => {
                 }}
               >
                 <img
-                  // src={item.images?.length > 0 ? item.images[0] : item.image}
                   src={getImgSrc(rawImage)}
                   alt={item.title}
+                  loading="lazy"
                 />
               </div>
 

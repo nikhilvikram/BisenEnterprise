@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import "../styles/header-navbar.css";
+import "../styles/badges.css";
 import { FaSearch, FaHeart, FaShoppingBag } from "react-icons/fa";
 import { ThemeContext } from "../store/theme-context";
 import { CartContext } from "../store/cart-context";

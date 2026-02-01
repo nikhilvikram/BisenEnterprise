@@ -1,92 +1,103 @@
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import "../styles/footer.css";
+
 const Footer = () => {
   return (
     <footer className="footer-section">
-      <div className="footer-top">
+      <div className="footer-main">
         <div className="footer-container">
-          {/* ==== COLUMN 1 ==== */}
-          <div className="footer-column">
-            <h5 className="footer-title">BisenEnterprise</h5>
-            <p className="footer-text">
+          {/* Brand & Description */}
+          <div className="footer-column footer-brand">
+            <h4 className="footer-logo">BisenEnterprise</h4>
+            <p className="footer-desc">
               Premium clothing sourced directly from Surat, Jaipur & Ahmedabad.
               Quality you can trust, delivered to your doorstep.
             </p>
           </div>
 
-          {/* ==== COLUMN 2 ==== */}
+          {/* Quick Links */}
           <div className="footer-column">
-            <h6 className="footer-subtitle">Quick Links</h6>
-            <ul class="no-style">
+            <h5 className="footer-heading">Quick Links</h5>
+            <ul className="footer-links">
               <li>
-                <a href="/Home">Home</a>
+                <Link to="/HomePage">Home</Link>
               </li>
               <li>
-                <a href="/SareeList">Sarees</a>
+                <Link to="/SareeList">Sarees</Link>
               </li>
               <li>
-                <a href="/Categories">Kurtas</a>
+                <Link to="/Categories">Categories</Link>
               </li>
               <li>
-                <a href="/CreatePost">Create Post</a>
+                <Link to="/CreatePost">Create Post</Link>
               </li>
             </ul>
           </div>
 
-          {/* ==== COLUMN 3 ==== */}
+          {/* Support */}
           <div className="footer-column">
-            <h6 className="footer-subtitle">Support</h6>
-            <ul class="no-style">
+            <h5 className="footer-heading">Support</h5>
+            <ul className="footer-links">
               <li>
-                <a href="#">FAQs</a>
+                <Link to="#">FAQs</Link>
               </li>
               <li>
-                <a href="#">Shipping</a>
+                <Link to="#">Shipping</Link>
               </li>
               <li>
-                <a href="#">Returns</a>
+                <Link to="#">Returns</Link>
               </li>
               <li>
-                <a href="#">Contact Us</a>
+                <Link to="/policy/contact-us">Contact Us</Link>
               </li>
             </ul>
           </div>
 
-          {/* ==== COLUMN 4 ==== */}
+          {/* Legal */}
           <div className="footer-column">
-            <h6 className="footer-subtitle">Follow Us</h6>
+            <h5 className="footer-heading">Legal</h5>
+            <ul className="footer-links">
+              <li>
+                <Link to="/policy/privacy-policy">Privacy Policy</Link>
+              </li>
+              <li>
+                <Link to="/policy/terms-conditions">Terms & Conditions</Link>
+              </li>
+              <li>
+                <Link to="/policy/refund-policy">Cancellation & Refund</Link>
+              </li>
+              <li>
+                <Link to="/policy/shipping-policy">Shipping Policy</Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Social */}
+          <div className="footer-column footer-social-col">
+            <h5 className="footer-heading">Follow Us</h5>
             <div className="footer-social">
-              <FaFacebook size={20} />
-              <FaInstagram size={20} />
-              <FaTwitter size={20} />
-              <FaYoutube size={20} />
+              <a href="#" className="footer-social-link" aria-label="Facebook">
+                <FaFacebook size={18} />
+              </a>
+              <a href="#" className="footer-social-link" aria-label="Instagram">
+                <FaInstagram size={18} />
+              </a>
+              <a href="#" className="footer-social-link" aria-label="Twitter">
+                <FaTwitter size={18} />
+              </a>
+              <a href="#" className="footer-social-link" aria-label="YouTube">
+                <FaYoutube size={18} />
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <div className="footer-column">
-        <h4>Legal</h4>
-        <ul className="no-style">
-          <li>
-            <Link to="/policy/privacy-policy">Privacy Policy</Link>
-          </li>
-          <li>
-            <Link to="/policy/terms-conditions">Terms & Conditions</Link>
-          </li>
-          <li>
-            <Link to="/policy/refund-policy">Cancellation & Refund</Link>
-          </li>
-          <li>
-            <Link to="/policy/shipping-policy">Shipping Policy</Link>
-          </li>
-          <li>
-            <Link to="/policy/contact-us">Contact Us</Link>
-          </li>
-        </ul>
-      </div>
-      {/* ==== COPYRIGHT BAR ==== */}
+
       <div className="footer-bottom">
-        © {new Date().getFullYear()} BisenEnterprise — All Rights Reserved.
+        <p className="footer-copyright">
+          © {new Date().getFullYear()} BisenEnterprise. All rights reserved.
+        </p>
       </div>
     </footer>
   );

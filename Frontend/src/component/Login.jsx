@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import "../styles/login.css";
 import { AuthContext } from "../store/auth-context"; // ✅ Use the real Auth Context
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [tab, setTab] = useState("login"); // login | signup
-  
+
   // ✅ Updated state for real backend auth
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

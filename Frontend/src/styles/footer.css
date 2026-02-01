@@ -1,0 +1,147 @@
+/* =========================================
+   FOOTER - Professional Layout
+   ========================================= */
+.footer-section {
+  margin-top: 3rem;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  background: var(--card-bg);
+  border-top: 1px solid var(--divider);
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .footer-section {
+    padding-bottom: 80px; /* Space above mobile nav */
+  }
+  .footer-main {
+    padding: 2rem 1rem 1.5rem;
+  }
+  .footer-container {
+    text-align: left;
+  }
+  .footer-brand {
+    max-width: 100%;
+  }
+}
+
+.footer-main {
+  padding: 2.5rem 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 576px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 992px) {
+  .footer-container {
+    grid-template-columns: 1.8fr 1fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.footer-column {
+  min-width: 0;
+}
+
+.footer-brand {
+  max-width: 320px;
+}
+
+.footer-logo {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
+}
+
+.footer-desc {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.footer-heading {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--primary-color);
+}
+
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--divider);
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.footer-social-link:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.footer-bottom {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--divider);
+  background: var(--bg-color);
+}
+
+.footer-copyright {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: center;
+  font-weight: 400;
+}

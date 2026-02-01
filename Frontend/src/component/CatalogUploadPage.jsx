@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config";
-import { FaCloudUploadAlt, FaCheckCircle, FaRobot } from "react-icons/fa";
+import { FaCheckCircle, FaRobot, FaArrowLeft } from "react-icons/fa";
+import "../styles/shared-buttons.css";
 
 const CatalogUploadPage = () => {
   const [file, setFile] = useState(null);
@@ -42,7 +43,7 @@ const CatalogUploadPage = () => {
 
     setLoading(true);
     setLoadingText(
-      "Uploading & Running AI Pipeline (This may take time)... 🤖",
+      "Uploading & Running AI Pipeline (This may take time)... 🤖"
     );
 
     const formData = new FormData();
@@ -74,7 +75,13 @@ const CatalogUploadPage = () => {
     setDraftProducts(newDrafts);
   };
 
-  // 3. Final Publish
+  // 3. Back to upload (clear drafts)
+  const handleBack = () => {
+    setDraftProducts([]);
+    setFile(null);
+  };
+
+  // 4. Final Publish
   const handlePublish = async () => {
     const invalid = draftProducts.find((p) => !p.price || !p.stock);
     if (invalid) return alert("Please fill Price & Stock for all items!");
@@ -122,8 +129,21 @@ const CatalogUploadPage = () => {
       {/* SECTION 2: REVIEW & EDIT */}
       {draftProducts.length > 0 && (
         <div className="animate-fade-in">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h4>Review AI Suggestions ({draftProducts.length} Items)</h4>
+          <div className="catalog-review-header d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <div className="d-flex align-items-center gap-3">
+              <button
+                className="app-back-btn btn"
+                onClick={handleBack}
+                type="button"
+                aria-label="Back to upload"
+              >
+                <FaArrowLeft className="me-2" />
+                Back to Upload
+              </button>
+              <h4 className="mb-0">
+                Review AI Suggestions ({draftProducts.length} Items)
+              </h4>
+            </div>
             <button className="btn btn-success btn-lg" onClick={handlePublish}>
               <FaCheckCircle /> Confirm & Publish All
             </button>
@@ -140,7 +160,7 @@ const CatalogUploadPage = () => {
                         <img
                           src={getImageUrl(prod.localImages[0])}
                           className="img-fluid rounded-start"
-                          style={{ height: "100%", objectFit: "cover" }}
+                          style={{ height: "100%", objectFit: "contain" }}
                           alt="AI Crop"
                         />
                       )}
@@ -161,7 +181,7 @@ const CatalogUploadPage = () => {
                             handleInputChange(
                               idx,
                               "product_title",
-                              e.target.value,
+                              e.target.value
                             )
                           }
                         />

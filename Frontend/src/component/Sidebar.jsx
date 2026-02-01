@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../styles/sidebar.css";
 import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { FaBookOpenReader } from "react-icons/fa6";

@@ -4,6 +4,8 @@ import { TextileList } from "../store/textile-list-store";
 import { CartContext } from "../store/cart-context";
 import { useLocation } from "react-router-dom";
 import { saveScrollFor } from "../utils/scrollStore";
+import "../styles/product-grid.css";
+import "../styles/product-actions.css";
 
 const KurtaList = () => {
   const { textileArray } = useContext(TextileList);

@@ -1,0 +1,542 @@
+/* =========================================
+   HOME / HERO / SLIDER / SEARCH OVERLAY
+   ========================================= */
+/* =========================================
+   HERO SECTION
+   ========================================= */
+.hero-banner {
+  position: relative;
+}
+
+.redesigned-hero {
+  position: relative;
+  height: auto;
+  max-height: 420px;
+  overflow: hidden;
+  border-radius: 18px;
+  margin: 20px auto;
+  max-width: 1400px;
+  background: linear-gradient(135deg, #fce4ec 0%, #ffffff 100%);
+  display: flex;
+  justify-content: center;
+}
+
+body.dark .redesigned-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+}
+
+.redesigned-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 250px;
+}
+
+.redesigned-hero-text {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.redesigned-hero-text h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.hero-btn {
+  margin-top: 8px;
+  padding: 6px 20px;
+  border: none;
+  background: #ff3168;
+  color: white;
+  font-weight: 600;
+  border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  .redesigned-hero {
+    max-height: 380px;
+    border-radius: 0;
+  }
+  .redesigned-hero-text {
+    left: 20px;
+    bottom: 20px;
+  }
+}
+
+/* =========================================
+   SEARCH & PRODUCT GRID
+   ========================================= */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-color);
+  z-index: 999999;
+  overflow-y: auto;
+  padding-bottom: 60px;
+}
+
+.search-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 16px;
+  background: var(--navbar-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+  font-size: 20px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.search-input-box {
+  flex: 1;
+  position: relative;
+}
+.search-input-box input {
+  width: 100%;
+  padding: 10px 36px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: var(--card-bg);
+  color: var(--text-color);
+  outline: none;
+}
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 15px;
+  opacity: 0.6;
+}
+
+/* =========================================
+   PREMIUM HERO SLIDER STYLES
+   ========================================= */
+.hero-slider-container {
+  position: relative;
+  width: 95%;
+  max-width: 1400px;
+  height: 250px; /* Mobile Height */
+  margin: 20px auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  /* Touch action for smooth swiping */
+  touch-action: pan-y;
+}
+
+/* Slide Item */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 20px;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slide-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  gap: 20px;
+}
+
+.slide-text {
+  flex: 1;
+  z-index: 3;
+}
+
+.slide-text h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.slide-text p {
+  font-size: var(--font-size-base);
+  margin-bottom: 1rem;
+  opacity: 0.95;
+  line-height: var(--line-height-normal);
+}
+
+.slide-text button {
+  padding: 10px 24px;
+  background: white;
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.slide-text button:hover {
+  transform: scale(1.05);
+}
+
+.slide-image-box {
+  width: 140px;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: none; /* Hide image on small mobile to save space */
+}
+.slide-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Progress Bar */
+.slider-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 5;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #ff3f6c; /* Brand color */
+  width: 0%;
+  animation-name: progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.progress-fill.paused {
+  animation-play-state: paused;
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Controls (PC) */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  opacity: 0; /* Hidden on mobile by default */
+}
+
+.slider-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.slider-btn.left {
+  left: 15px;
+}
+.slider-btn.right {
+  right: 15px;
+}
+
+.hero-slider-container:hover .slider-btn {
+  opacity: 1; /* Show on hover (PC) */
+}
+
+/* Dots */
+.slider-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+  .hero-slider-container {
+    height: 400px;
+  }
+  .slide-text h2 {
+    font-size: 3.5rem;
+  }
+  .slide-text p {
+    font-size: 1.4rem;
+  }
+  .slide-image-box {
+    display: block; /* Show image on desktop */
+    width: 250px;
+    height: 250px;
+  }
+  .slider-btn {
+    opacity: 0.5; /* Always visible slightly on desktop */
+  }
+}
+
+/* =========================================
+   SEARCH OVERLAY (Full Screen App Style)
+   ========================================= */
+
+/* 1. The Main Overlay Container */
+.search-overlay {
+  position: fixed;
+  inset: 0; /* Top, Right, Bottom, Left = 0 */
+  background-color: var(--bg-color);
+  z-index: 99999; /* Sit on top of everything */
+  overflow-y: auto; /* Allow scrolling for results */
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. The Fixed Header */
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--divider);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.close-btn {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* 3. The Input Box */
+.search-input-box {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.search-input-box input {
+  width: 100%;
+  padding: 10px 12px 10px 38px; /* Left padding makes room for icon */
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: #f3f4f6; /* Light grey for contrast */
+  color: #333;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-input-box input:focus {
+  background-color: #fff;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 63, 108, 0.1);
+}
+
+/* Dark Mode Input Adjustment */
+body.dark .search-input-box input {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+body.dark .search-input-box input:focus {
+  background-color: #1f1f1f;
+}
+
+/* 4. Recent Searches Section */
+.recent-box {
+  padding: 20px 16px;
+}
+
+.recent-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--divider);
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.recent-item:hover {
+  color: var(--primary-color);
+}
+
+.recent-icon {
+  color: #bbb;
+  font-size: 0.9rem;
+}
+
+/* 5. Search Results Section */
+.results-box {
+  padding: 10px 0;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 1.1rem;
+}
+
+/* 6. The Result Card (Row Style) */
+.search-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--divider);
+  transition: background 0.2s;
+}
+
+.search-card:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+body.dark .search-card:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.search-card img {
+  width: 50px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.search-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.search-info h5 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-color);
+  /* Truncate long text */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
+.search-info .price {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  /* Search results */
+  .search-card img {
+    object-fit: contain !important;
+    background: #f5f5f5;
+  }
+  body.dark .search-card img {
+    background: #1a1a1a;
+  }
+
+  /* Hero banner - keep cover for impact but ensure visible */
+  .redesigned-hero-img {
+    object-fit: contain;
+    object-position: center;
+  }
+  .redesigned-hero {
+    background: #f0f0f0;
+  }
+  body.dark .redesigned-hero {
+    background: #1a1a1a;
+  }
+}

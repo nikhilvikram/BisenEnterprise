@@ -1,5 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import "../styles/categories.css";
+import "../styles/home-slider-search.css";
+import "../styles/product-grid.css";
 import { useDispatch, useSelector } from "react-redux";
 
 // Icons
@@ -237,7 +240,7 @@ const HomePage = () => {
               <div
                 key={i}
                 className="category-tile-premium"
-                onClick={() => navigate(cat.path)}
+                onClick={() => navigate(cat.path, { state: { from: "home" } })}
               >
                 <div className="cat-premium-img">
                   <img src={displayImg} alt={cat.name} loading="lazy" />
