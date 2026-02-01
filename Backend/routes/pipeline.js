@@ -21,140 +21,72 @@ const upload = multer({ storage: storage });
 const createSlug = (text) => text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
 
 // ==================================================
-// ROUTE 1: PROCESS (Start Job)
+// ROUTE 1: PROCESS
 // ==================================================
-const jobs = new Map();
-
-const collectResults = (startTime) => {
-  const outputDir = "./output_website";
-  const results = [];
-
-  if (fs.existsSync(outputDir)) {
-    const categories = fs.readdirSync(outputDir);
-    categories.forEach((cat) => {
-      const catPath = path.join(outputDir, cat);
-      if (fs.lstatSync(catPath).isDirectory()) {
-        const designs = fs.readdirSync(catPath);
-        designs.forEach((design) => {
-          const designPath = path.join(catPath, design);
-          const jsonPath = path.join(designPath, "product_info.json");
-
-          if (fs.existsSync(jsonPath)) {
-            // Check if file was created OR "touched" recently
-            if (fs.statSync(jsonPath).mtimeMs > startTime) {
-              const rawData = fs.readFileSync(jsonPath);
-              const jsonData = JSON.parse(rawData);
-
-              // 🟢 Use S3 Links. Fallback to local if upload failed.
-              jsonData.localImages = jsonData.s3_images || [];
-
-              // If S3 array is empty (old file), try to use local images if they exist
-              if (jsonData.localImages.length === 0) {
-                const imgFiles = fs
-                  .readdirSync(designPath)
-                  .filter((f) => f.endsWith(".jpg"));
-                jsonData.localImages = imgFiles.map(
-                  (img) => `/output_website/${cat}/${design}/${img}`
-                );
-              }
-
-              jsonData.folderPath = designPath;
-              results.push(jsonData);
-            }
-          }
-        });
-      }
-    });
-  }
-
-  return results;
-};
-
-const pushLog = (job, type, message) => {
-  const entry = { type, message, ts: Date.now() };
-  job.logs.push(entry);
-  job.clients.forEach((client) => {
-    client.write(`event: ${type}\n`);
-    client.write(`data: ${JSON.stringify(entry)}\n\n`);
-  });
-};
-
 router.post("/process", upload.single("file"), (req, res) => {
   try {
     console.log("⚡ Starting Cloud AI Pipeline...");
-    const jobId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    const job = {
-      id: jobId,
-      status: "running",
-      logs: [],
-      products: [],
-      error: null,
-      startTime: Date.now() - 2000,
-      clients: new Set(),
-    };
-    jobs.set(jobId, job);
+    // Look back 2 seconds to catch file touches
+    const startTime = Date.now() - 2000;
 
-    const pythonProcess = spawn("python", ["scripts/process_catalog.py"]);
-    pythonProcess.stdout.on("data", (data) =>
-      pushLog(job, "log", data.toString().trim())
-    );
-    pythonProcess.stderr.on("data", (data) =>
-      pushLog(job, "error", data.toString().trim())
-    );
+    const pythonBin =
+      process.env.PYTHON_BIN ||
+      (process.platform === "win32" ? "python" : "python3");
+    const pythonProcess = spawn(pythonBin, ["scripts/process_catalog.py"]);
+    pythonProcess.stdout.on("data", (data) => console.log(`🐍 ${data}`));
+    pythonProcess.stderr.on("data", (data) => console.error(`🐍 Err: ${data}`));
 
     pythonProcess.on("close", (code) => {
       console.log(`✅ Pipeline Finished (Code ${code})`);
-      job.status = code === 0 ? "done" : "error";
-      job.products = collectResults(job.startTime);
-      pushLog(job, "done", `Pipeline finished with code ${code}`);
+      const outputDir = "./output_website";
+      const results = [];
+
+      if (fs.existsSync(outputDir)) {
+        const categories = fs.readdirSync(outputDir);
+        categories.forEach((cat) => {
+          const catPath = path.join(outputDir, cat);
+          if (fs.lstatSync(catPath).isDirectory()) {
+            const designs = fs.readdirSync(catPath);
+            designs.forEach((design) => {
+              const designPath = path.join(catPath, design);
+              const jsonPath = path.join(designPath, "product_info.json");
+
+              if (fs.existsSync(jsonPath)) {
+                // Check if file was created OR "touched" recently
+                if (fs.statSync(jsonPath).mtimeMs > startTime) {
+                  const rawData = fs.readFileSync(jsonPath);
+                  const jsonData = JSON.parse(rawData);
+
+                  // 🟢 Use S3 Links. Fallback to local if upload failed.
+                  jsonData.localImages = jsonData.s3_images || [];
+
+                  // If S3 array is empty (old file), try to use local images if they exist
+                  if (jsonData.localImages.length === 0) {
+                    const imgFiles = fs
+                      .readdirSync(designPath)
+                      .filter((f) => f.endsWith(".jpg"));
+                    jsonData.localImages = imgFiles.map(
+                      (img) => `/output_website/${cat}/${design}/${img}`
+                    );
+                  }
+
+                  jsonData.folderPath = designPath;
+                  results.push(jsonData);
+                }
+              }
+            });
+          }
+        });
+      }
+
+      console.log(`🔍 Found ${results.length} active products.`);
+      res.json({ success: true, products: results });
     });
 
-    res.json({ success: true, jobId });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Pipeline Failed" });
   }
-});
-
-// ==================================================
-// ROUTE 1B: STREAM LOGS (SSE)
-// ==================================================
-router.get("/process/stream/:jobId", (req, res) => {
-  const { jobId } = req.params;
-  const job = jobs.get(jobId);
-
-  if (!job) return res.status(404).end();
-
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
-  res.flushHeaders();
-
-  job.logs.forEach((entry) => {
-    res.write(`event: ${entry.type}\n`);
-    res.write(`data: ${JSON.stringify(entry)}\n\n`);
-  });
-
-  job.clients.add(res);
-
-  req.on("close", () => {
-    job.clients.delete(res);
-  });
-});
-
-// ==================================================
-// ROUTE 1C: STATUS
-// ==================================================
-router.get("/process/status/:jobId", (req, res) => {
-  const { jobId } = req.params;
-  const job = jobs.get(jobId);
-
-  if (!job) return res.status(404).json({ error: "Job not found" });
-  res.json({
-    status: job.status,
-    products: job.products,
-    error: job.error,
-  });
 });
 
 // ==================================================

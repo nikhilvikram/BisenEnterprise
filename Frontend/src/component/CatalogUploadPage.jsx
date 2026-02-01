@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config";
 import { FaCheckCircle, FaRobot, FaArrowLeft } from "react-icons/fa";
@@ -10,10 +10,6 @@ const CatalogUploadPage = () => {
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const [draftProducts, setDraftProducts] = useState([]);
-  const [jobId, setJobId] = useState(null);
-  const [logs, setLogs] = useState([]);
-  const [phase, setPhase] = useState("idle");
-  const eventSourceRef = useRef(null);
 
   // 🟢 CATEGORY OPTIONS (Matches Python Logic)
   const CATEGORIES = [
@@ -50,63 +46,22 @@ const CatalogUploadPage = () => {
     setLoadingText(
       "Uploading & Running AI Pipeline (This may take time)... 🤖"
     );
-    setLogs([]);
-    setPhase("upload");
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
       const res = await axios.post(`${API_URL}/pipeline/process`, formData);
-      const newJobId = res.data.jobId;
-      setJobId(newJobId);
 
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-      }
+      const preparedDrafts = res.data.products.map((p) => ({
+        ...p,
+        price: "",
+        stock: 10,
+        category: p.category || "General", // Ensure category exists
+      }));
 
-      const streamUrl = `${API_URL}/pipeline/process/stream/${newJobId}`;
-      const es = new EventSource(streamUrl);
-      eventSourceRef.current = es;
-
-      es.addEventListener("log", (evt) => {
-        const payload = JSON.parse(evt.data);
-        const message = payload.message || "";
-        setLogs((prev) => [...prev, message].slice(-80));
-
-        if (message.includes("Checking")) setPhase("extract");
-        if (message.includes("Uploading")) setPhase("uploading");
-        if (message.includes("Cleaned up")) setPhase("cleanup");
-      });
-
-      es.addEventListener("error", (evt) => {
-        const payload = JSON.parse(evt.data || "{}");
-        const message = payload.message || "Pipeline error.";
-        setLogs((prev) => [...prev, message].slice(-80));
-        setPhase("error");
-        setLoading(false);
-        es.close();
-      });
-
-      es.addEventListener("done", async () => {
-        es.close();
-        const statusRes = await axios.get(
-          `${API_URL}/pipeline/process/status/${newJobId}`
-        );
-        if (statusRes.data.status === "done") {
-          const preparedDrafts = statusRes.data.products.map((p) => ({
-            ...p,
-            price: "",
-            stock: 10,
-            category: p.category || "General",
-          }));
-          setDraftProducts(preparedDrafts);
-          setPhase("review");
-        } else {
-          setPhase("error");
-        }
-        setLoading(false);
-      });
+      setDraftProducts(preparedDrafts);
+      setLoading(false);
     } catch (err) {
       console.error(err);
       alert("Pipeline Error. Check backend logs.");
@@ -125,13 +80,6 @@ const CatalogUploadPage = () => {
   const handleBack = () => {
     setDraftProducts([]);
     setFile(null);
-    setJobId(null);
-    setLogs([]);
-    setPhase("idle");
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close();
-      eventSourceRef.current = null;
-    }
   };
 
   // 4. Final Publish
@@ -149,14 +97,6 @@ const CatalogUploadPage = () => {
       alert("Publish Error");
     }
   };
-
-  useEffect(() => {
-    return () => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-      }
-    };
-  }, []);
 
   return (
     <div className="container mt-5 catalog-page">
@@ -219,48 +159,11 @@ const CatalogUploadPage = () => {
                 <div className="catalog-progress-fill" />
               </div>
               <div className="catalog-steps">
-                <div
-                  className={`catalog-step ${phase !== "idle" ? "active" : ""}`}
-                >
-                  Upload
-                </div>
-                <div
-                  className={`catalog-step ${
-                    ["extract", "uploading", "cleanup", "review"].includes(
-                      phase
-                    )
-                      ? "active"
-                      : ""
-                  }`}
-                >
-                  Extract
-                </div>
-                <div
-                  className={`catalog-step ${
-                    ["uploading", "cleanup", "review"].includes(phase)
-                      ? "active"
-                      : ""
-                  }`}
-                >
-                  Upload
-                </div>
-                <div
-                  className={`catalog-step ${
-                    phase === "review" ? "active" : ""
-                  }`}
-                >
-                  Review
-                </div>
+                <div className="catalog-step active">Upload</div>
+                <div className="catalog-step active">Extract</div>
+                <div className="catalog-step active">Classify</div>
+                <div className="catalog-step">Review</div>
               </div>
-              {logs.length > 0 && (
-                <div className="catalog-log">
-                  {logs.slice(-6).map((line, i) => (
-                    <div key={i} className="catalog-log-line">
-                      {line}
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           )}
         </div>
