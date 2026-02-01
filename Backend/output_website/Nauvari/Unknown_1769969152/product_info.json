@@ -1,0 +1,22 @@
+{
+    "category": "Nauvari",
+    "design_code": "Unknown",
+    "product_title": "Traditional Red Maharashtrian Nauvari Saree with Gold Zari Border",
+    "short_description": "Embrace the rich heritage with this stunning red Nauvari saree, featuring intricate gold zari work and a traditional Maharashtrian drape. Perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Red",
+        "fabric": "Silk Blend",
+        "pattern": "Floral",
+        "occasion": "Wedding"
+    },
+    "tags": [
+        "Nauvari Saree",
+        "Maharashtrian Saree",
+        "Red Saree",
+        "Wedding Saree",
+        "Traditional Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Nauvari/Unknown_1769969152/pose_1.jpg"
+    ]
+}

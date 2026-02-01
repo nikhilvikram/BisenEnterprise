@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config";
 import { FaCheckCircle, FaRobot, FaArrowLeft } from "react-icons/fa";
@@ -10,6 +10,10 @@ const CatalogUploadPage = () => {
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
   const [draftProducts, setDraftProducts] = useState([]);
+  const [jobId, setJobId] = useState(null);
+  const [logs, setLogs] = useState([]);
+  const [phase, setPhase] = useState("idle");
+  const eventSourceRef = useRef(null);
 
   // 🟢 CATEGORY OPTIONS (Matches Python Logic)
   const CATEGORIES = [
@@ -46,22 +50,63 @@ const CatalogUploadPage = () => {
     setLoadingText(
       "Uploading & Running AI Pipeline (This may take time)... 🤖"
     );
+    setLogs([]);
+    setPhase("upload");
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
       const res = await axios.post(`${API_URL}/pipeline/process`, formData);
+      const newJobId = res.data.jobId;
+      setJobId(newJobId);
 
-      const preparedDrafts = res.data.products.map((p) => ({
-        ...p,
-        price: "",
-        stock: 10,
-        category: p.category || "General", // Ensure category exists
-      }));
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+      }
 
-      setDraftProducts(preparedDrafts);
-      setLoading(false);
+      const streamUrl = `${API_URL}/pipeline/process/stream/${newJobId}`;
+      const es = new EventSource(streamUrl);
+      eventSourceRef.current = es;
+
+      es.addEventListener("log", (evt) => {
+        const payload = JSON.parse(evt.data);
+        const message = payload.message || "";
+        setLogs((prev) => [...prev, message].slice(-80));
+
+        if (message.includes("Checking")) setPhase("extract");
+        if (message.includes("Uploading")) setPhase("uploading");
+        if (message.includes("Cleaned up")) setPhase("cleanup");
+      });
+
+      es.addEventListener("error", (evt) => {
+        const payload = JSON.parse(evt.data || "{}");
+        const message = payload.message || "Pipeline error.";
+        setLogs((prev) => [...prev, message].slice(-80));
+        setPhase("error");
+        setLoading(false);
+        es.close();
+      });
+
+      es.addEventListener("done", async () => {
+        es.close();
+        const statusRes = await axios.get(
+          `${API_URL}/pipeline/process/status/${newJobId}`
+        );
+        if (statusRes.data.status === "done") {
+          const preparedDrafts = statusRes.data.products.map((p) => ({
+            ...p,
+            price: "",
+            stock: 10,
+            category: p.category || "General",
+          }));
+          setDraftProducts(preparedDrafts);
+          setPhase("review");
+        } else {
+          setPhase("error");
+        }
+        setLoading(false);
+      });
     } catch (err) {
       console.error(err);
       alert("Pipeline Error. Check backend logs.");
@@ -80,6 +125,13 @@ const CatalogUploadPage = () => {
   const handleBack = () => {
     setDraftProducts([]);
     setFile(null);
+    setJobId(null);
+    setLogs([]);
+    setPhase("idle");
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+      eventSourceRef.current = null;
+    }
   };
 
   // 4. Final Publish
@@ -98,32 +150,119 @@ const CatalogUploadPage = () => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+      }
+    };
+  }, []);
+
   return (
-    <div className="container mt-5">
-      <h2 className="mb-4">🤖 AI Catalog Automator</h2>
+    <div className="container mt-5 catalog-page">
+      <div className="catalog-header">
+        <div>
+          <h2 className="catalog-title">AI Catalog Automator</h2>
+          <p className="catalog-subtitle">
+            Upload a PDF or image and let the AI prepare your products.
+          </p>
+        </div>
+        <div className="catalog-badge">
+          <FaRobot /> AI Pipeline
+        </div>
+      </div>
 
       {/* SECTION 1: UPLOAD */}
       {draftProducts.length === 0 && (
-        <div className="card p-5 text-center shadow-sm">
-          <input
-            type="file"
-            accept=".pdf,.jpg,.png"
-            onChange={(e) => setFile(e.target.files[0])}
-            className="form-control mb-3"
-          />
-          <button
-            className="btn btn-primary btn-lg"
-            onClick={handleProcess}
-            disabled={loading}
-          >
-            {loading ? (
-              loadingText
-            ) : (
-              <>
-                <FaRobot /> Process Catalog with AI
-              </>
-            )}
-          </button>
+        <div className="catalog-upload-card">
+          <label className="catalog-upload-area">
+            <input
+              type="file"
+              accept=".pdf,.jpg,.png"
+              onChange={(e) => setFile(e.target.files[0])}
+              className="catalog-file-input"
+            />
+            <div className="catalog-upload-inner">
+              <div className="catalog-upload-icon">
+                <FaRobot />
+              </div>
+              <div className="catalog-upload-text">
+                <h5>Drop your catalog here</h5>
+                <p>PDF or high-quality product images</p>
+              </div>
+              {file && <div className="catalog-file-pill">{file.name}</div>}
+            </div>
+          </label>
+
+          <div className="catalog-actions">
+            <button
+              className="btn btn-primary btn-lg catalog-primary-btn"
+              onClick={handleProcess}
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Process Catalog with AI"}
+            </button>
+          </div>
+
+          {loading && (
+            <div className="catalog-progress">
+              <div className="catalog-progress-header">
+                <div className="spinner-border text-danger" role="status"></div>
+                <div>
+                  <div className="catalog-progress-title">
+                    AI Pipeline Running
+                  </div>
+                  <div className="catalog-progress-subtitle">{loadingText}</div>
+                </div>
+              </div>
+              <div className="catalog-progress-bar">
+                <div className="catalog-progress-fill" />
+              </div>
+              <div className="catalog-steps">
+                <div
+                  className={`catalog-step ${phase !== "idle" ? "active" : ""}`}
+                >
+                  Upload
+                </div>
+                <div
+                  className={`catalog-step ${
+                    ["extract", "uploading", "cleanup", "review"].includes(
+                      phase
+                    )
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  Extract
+                </div>
+                <div
+                  className={`catalog-step ${
+                    ["uploading", "cleanup", "review"].includes(phase)
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  Upload
+                </div>
+                <div
+                  className={`catalog-step ${
+                    phase === "review" ? "active" : ""
+                  }`}
+                >
+                  Review
+                </div>
+              </div>
+              {logs.length > 0 && (
+                <div className="catalog-log">
+                  {logs.slice(-6).map((line, i) => (
+                    <div key={i} className="catalog-log-line">
+                      {line}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -141,11 +280,19 @@ const CatalogUploadPage = () => {
                 <FaArrowLeft className="me-2" />
                 Back to Upload
               </button>
-              <h4 className="mb-0">
-                Review AI Suggestions ({draftProducts.length} Items)
-              </h4>
+              <div>
+                <h4 className="mb-0">
+                  Review AI Suggestions ({draftProducts.length} Items)
+                </h4>
+                <p className="catalog-review-subtitle">
+                  Validate details before publishing to the store.
+                </p>
+              </div>
             </div>
-            <button className="btn btn-success btn-lg" onClick={handlePublish}>
+            <button
+              className="btn btn-success btn-lg catalog-publish-btn"
+              onClick={handlePublish}
+            >
               <FaCheckCircle /> Confirm & Publish All
             </button>
           </div>
@@ -153,7 +300,7 @@ const CatalogUploadPage = () => {
           <div className="row">
             {draftProducts.map((prod, idx) => (
               <div className="col-md-6 mb-4" key={idx}>
-                <div className="card h-100 shadow-sm border-primary">
+                <div className="card h-100 shadow-sm border-primary catalog-review-card">
                   <div className="row g-0">
                     {/* Image Preview */}
                     <div className="col-md-4">

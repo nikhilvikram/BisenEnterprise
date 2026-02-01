@@ -1,0 +1,22 @@
+{
+    "category": "Lingerie",
+    "design_code": "Unknown",
+    "product_title": "Red Lace Bra and Panty Set - Comfortable Lingerie",
+    "short_description": "Elegant red lace bra and panty set. Provides comfort and style for everyday wear.",
+    "attributes": {
+        "color": "Red",
+        "fabric": "Lace",
+        "pattern": "Floral Lace",
+        "occasion": "Everyday"
+    },
+    "tags": [
+        "Lingerie",
+        "Bra and Panty Set",
+        "Red Lace",
+        "Comfortable Lingerie",
+        "Floral Pattern"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Lingerie/Unknown_1769969096/pose_1.jpg"
+    ]
+}

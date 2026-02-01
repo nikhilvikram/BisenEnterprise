@@ -11,7 +11,7 @@ from pathlib import Path
 from botocore.exceptions import NoCredentialsError
 
 # --- CONFIGURATION ---
-GEMINI_API_KEY = "AIzaSyDxtcCI2riUpkKjXnIAv20xA-_PUsXrHjk" 
+GEMINI_API_KEY = "AIzaSyBuMoH4JHOdv-kQpQiQPbbIFEFL20g2ato" 
 INPUT_FOLDER = "inputs"
 OUTPUT_FOLDER = "output_website"
 MODEL_NAME = "gemini-2.0-flash"
