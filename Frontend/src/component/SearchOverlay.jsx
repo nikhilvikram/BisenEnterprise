@@ -67,16 +67,7 @@ const SearchOverlay = ({ close }) => {
             onChange={(e) => setQuery(e.target.value)}
           />
           {query && (
-            <FaTimes
-              className="clear-icon"
-              style={{
-                position: "absolute",
-                right: "10px",
-                color: "#888",
-                cursor: "pointer",
-              }}
-              onClick={() => setQuery("")}
-            />
+            <FaTimes className="clear-icon" onClick={() => setQuery("")} />
           )}
         </div>
       </div>
@@ -84,16 +75,10 @@ const SearchOverlay = ({ close }) => {
       {/* 1. Recent Searches (Show only if no query) */}
       {!query && recent.length > 0 && (
         <div className="recent-box">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <div className="recent-header">
             <h4 className="recent-title">Recent Searches</h4>
             <span
-              style={{ fontSize: "0.75rem", color: "red", cursor: "pointer" }}
+              className="recent-clear"
               onClick={() => {
                 setRecent([]);
                 localStorage.removeItem("recentSearches");
@@ -105,15 +90,12 @@ const SearchOverlay = ({ close }) => {
 
           {recent.map((text, i) => (
             <div key={i} className="recent-item" onClick={() => setQuery(text)}>
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
+              <div className="recent-item-content">
                 <FaHistory className="recent-icon" />
                 {text}
               </div>
               <FaTimes
                 className="delete-recent"
-                style={{ marginLeft: "auto", opacity: 0.4 }}
                 onClick={(e) => removeRecent(e, text)}
               />
             </div>
@@ -147,9 +129,7 @@ const SearchOverlay = ({ close }) => {
                   <div className="search-info">
                     <h5>{p.title}</h5>
                     <span className="price">₹{p.price}</span>
-                    <span style={{ fontSize: "0.7rem", color: "green" }}>
-                      {p.category}
-                    </span>
+                    <span className="search-category">{p.category}</span>
                   </div>
                 </div>
               );

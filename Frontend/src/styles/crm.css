@@ -1,0 +1,34 @@
+/* CRM Page */
+.crm-container {
+  min-height: 80vh;
+}
+
+.crm-address-cell {
+  max-width: 200px;
+  font-size: 0.9rem;
+}
+
+.crm-payment-id {
+  font-size: 0.7rem;
+}
+
+.crm-status-select {
+  width: 130px;
+}
+
+.crm-edit-popover {
+  z-index: 10;
+  width: 300px;
+  right: 50px;
+}
+
+.crm-prod-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.crm-stock-input {
+  width: 80px;
+}

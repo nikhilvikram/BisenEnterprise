@@ -1,33 +1,25 @@
 import { useContext } from "react";
 import { PostList } from "../store/post-list-store";
+import "../styles/post.css";
 
 const Post = ({ post }) => {
   const { deletePost } = useContext(PostList);
 
   return (
-    <div
-      className="card shadow-lg border-0 post-card"
-      style={{ width: "100%", maxWidth: "380px" }}
-    >
+    <div className="card shadow-lg border-0 post-card">
       {/* Top Image */}
       <img
         src={post.image}
         alt={post.title}
-        className="card-img-top"
-        style={{
-          height: "240px",
-          objectFit: "cover",
-          borderTopLeftRadius: "10px",
-          borderTopRightRadius: "10px",
-        }}
+        className="card-img-top post-image"
       />
 
-      <div className="card-body" style={{ color: "var(--text-color)" }}>
+      <div className="card-body post-body">
         {/* Name + Rating */}
         <div className="d-flex justify-content-between align-items-center mb-2">
           <h5 className="card-title fw-bold">{post.title}</h5>
 
-          <span className="text-warning" style={{ fontSize: "1rem" }}>
+          <span className="text-warning post-rating">
             {"★".repeat(post.rating)}
             {"☆".repeat(5 - post.rating)}
           </span>

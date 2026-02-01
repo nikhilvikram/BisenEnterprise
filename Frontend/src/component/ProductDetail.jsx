@@ -131,7 +131,10 @@ const ProductDetail = () => {
         .gallery-container {
           position: relative;
           width: 100%;
-          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          overflow: visible;
         }
         /* The Swipeable Track */
         .gallery-scroll-track {
@@ -164,30 +167,6 @@ const ProductDetail = () => {
         body.dark .gallery-main-img {
           background: #1e1e1e;
         }
-        /* Thumbnails Strip */
-        .gallery-thumbnails {
-          display: flex;
-          gap: 10px;
-          margin-top: 15px;
-          justify-content: center;
-          overflow-x: auto;
-          padding-bottom: 5px;
-        }
-        .gallery-thumb {
-          width: 60px;
-          height: 60px;
-          border-radius: 8px;
-          object-fit: cover;
-          cursor: pointer;
-          opacity: 0.6;
-          border: 2px solid transparent;
-          transition: all 0.2s ease;
-        }
-        .gallery-thumb.active {
-          opacity: 1;
-          border-color: #333; /* Active color */
-          transform: scale(1.05);
-        }
       `}</style>
 
       <div className="user_product_detail_wrapper">
@@ -209,10 +188,7 @@ const ProductDetail = () => {
         </div>
 
         {/* ============ NEW IMAGE GALLERY ============ */}
-        <div
-          className="user_pd_imgbox"
-          style={{ background: "transparent", padding: 0 }}
-        >
+        <div className="user_pd_imgbox">
           <div className="gallery-container">
             {/* 1. Swipeable Main Images */}
             <div
@@ -281,7 +257,7 @@ const ProductDetail = () => {
               }`}
               onClick={() => {
                 reduxDispatch(
-                  isInWishlist ? removeFromWishlist(id) : addToWishlist(id)
+                  isInWishlist ? removeFromWishlist(id) : addToWishlist(id),
                 );
               }}
             >
@@ -305,8 +281,8 @@ const ProductDetail = () => {
       </div>
 
       {/* ============== MORE PRODUCTS SECTION ============== */}
-      <div className="container mt-5">
-        <h2 className="section-title">Related PRODUCTS</h2>
+      <div className="container mt-5 pd-related-section">
+        <h2 className="section-title">Related Collection</h2>
 
         <div className="bisen-grid">
           {bestSellers.map((item) => (
@@ -337,16 +313,6 @@ const ProductDetail = () => {
                 {"⭐".repeat(item.rating || 4)}
                 <span className="review-count">({item.reviews} reviews)</span>
               </div>
-
-              <button
-                className="bisen-cart-btn-small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/product/${item._id || item.id}`);
-                }}
-              >
-                View Details
-              </button>
             </div>
           ))}
         </div>

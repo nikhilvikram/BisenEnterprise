@@ -1,0 +1,13 @@
+/* Add Product Page */
+.add-product-container {
+  max-width: 600px;
+}
+
+.add-product-upload-box {
+  background-color: #f8f9fa;
+}
+
+.add-product-preview {
+  max-height: 150px;
+  object-fit: cover;
+}

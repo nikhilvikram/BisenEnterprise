@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaCloudUploadAlt, FaArrowLeft, FaImage } from "react-icons/fa";
 import { API_URL } from "../config";
+import "../styles/add-product.css";
 
 const AddProductPage = () => {
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ const AddProductPage = () => {
   };
 
   return (
-    <div className="container mt-5 mb-5" style={{ maxWidth: "600px" }}>
+    <div className="container mt-5 mb-5 add-product-container">
       <button
         className="btn btn-outline-secondary mb-3"
         onClick={() => navigate("/crm")}
@@ -157,10 +158,7 @@ const AddProductPage = () => {
             <label className="form-label fw-bold">
               Product Images (Select Multiple)
             </label>
-            <div
-              className="border p-3 rounded text-center"
-              style={{ backgroundColor: "#f8f9fa" }}
-            >
+            <div className="border p-3 rounded text-center add-product-upload-box">
               <input
                 type="file"
                 multiple // Allow multiple files
@@ -175,8 +173,7 @@ const AddProductPage = () => {
                   <img
                     src={preview}
                     alt="Preview"
-                    className="img-thumbnail shadow-sm"
-                    style={{ maxHeight: "150px", objectFit: "cover" }}
+                    className="img-thumbnail shadow-sm add-product-preview"
                   />
                   {/* Show count of extra files if any */}
                   {files.length > 1 && (

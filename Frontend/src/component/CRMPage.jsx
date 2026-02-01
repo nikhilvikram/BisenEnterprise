@@ -16,6 +16,7 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 import { API_URL } from "../config";
+import "../styles/crm.css";
 const CRMPage = () => {
   // ✅ CORRECT (Smart Switching)
   // const API_URL =
@@ -110,7 +111,7 @@ const CRMPage = () => {
   };
 
   return (
-    <div className="container mt-5 mb-5" style={{ minHeight: "80vh" }}>
+    <div className="container mt-5 mb-5 crm-container">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Bisen Admin Portal 🛡️</h2>
         <button
@@ -185,7 +186,7 @@ const CRMPage = () => {
                   </td>
 
                   {/* 🆕 SAFE ADDRESS DISPLAY */}
-                  <td style={{ maxWidth: "200px", fontSize: "0.9rem" }}>
+                  <td className="crm-address-cell">
                     {order.address ? (
                       <>
                         <div>{order.address.line1 || order.address.street}</div>
@@ -211,10 +212,7 @@ const CRMPage = () => {
                       </span>
                     )}
                     {order.paymentId && (
-                      <div
-                        style={{ fontSize: "0.7rem" }}
-                        className="text-muted mt-1"
-                      >
+                      <div className="text-muted mt-1 crm-payment-id">
                         ID: {order.paymentId.slice(-8)}...
                       </div>
                     )}
@@ -222,12 +220,11 @@ const CRMPage = () => {
 
                   <td>
                     <select
-                      className="form-select form-select-sm"
+                      className="form-select form-select-sm crm-status-select"
                       value={order.status}
                       onChange={(e) =>
                         handleStatusChange(order._id, e.target.value)
                       }
-                      style={{ width: "130px" }}
                     >
                       <option value="Processing">Processing</option>
                       <option value="Shipped">Shipped</option>
@@ -249,10 +246,7 @@ const CRMPage = () => {
                       <FaEdit />
                     </button>
                     {editingOrder === order._id && (
-                      <div
-                        className="mt-2 p-2 bg-light rounded border position-absolute bg-white shadow"
-                        style={{ zIndex: 10, width: "300px", right: "50px" }}
-                      >
+                      <div className="mt-2 p-2 bg-light rounded border position-absolute bg-white shadow crm-edit-popover">
                         {order.products.map((item) => (
                           <div
                             key={item._id}
@@ -328,12 +322,7 @@ const CRMPage = () => {
                             : prod.image || "https://placehold.co/50"
                         }
                         alt="prod"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          objectFit: "cover",
-                          borderRadius: "5px",
-                        }}
+                        className="crm-prod-thumb"
                       />
                     </td>
                     <td>
@@ -350,8 +339,7 @@ const CRMPage = () => {
                     <td>
                       <input
                         type="number"
-                        className="form-control form-control-sm"
-                        style={{ width: "80px" }}
+                        className="form-control form-control-sm crm-stock-input"
                         value={
                           stockUpdates[prod._id] !== undefined
                             ? stockUpdates[prod._id]

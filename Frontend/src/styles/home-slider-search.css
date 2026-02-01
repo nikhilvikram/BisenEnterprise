@@ -391,6 +391,13 @@ body.dark .redesigned-hero {
   font-size: 0.9rem;
 }
 
+.clear-icon {
+  position: absolute;
+  right: 10px;
+  color: #888;
+  cursor: pointer;
+}
+
 .search-input-box input {
   width: 100%;
   padding: 10px 12px 10px 38px; /* Left padding makes room for icon */
@@ -430,6 +437,29 @@ body.dark .search-input-box input:focus {
   text-transform: uppercase;
   margin-bottom: 12px;
   letter-spacing: 0.5px;
+}
+
+.recent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recent-clear {
+  font-size: 0.75rem;
+  color: #dc2626;
+  cursor: pointer;
+}
+
+.recent-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-recent {
+  margin-left: auto;
+  opacity: 0.4;
 }
 
 .recent-item {
@@ -516,6 +546,11 @@ body.dark .search-card:hover {
   font-weight: 700;
   color: var(--text-color);
   margin-top: 4px;
+}
+
+.search-category {
+  font-size: 0.7rem;
+  color: #16a34a;
 }
 
 @media (max-width: 768px) {

@@ -1,0 +1,5 @@
+/* Catalog upload */
+.catalog-ai-crop {
+  height: 100%;
+  object-fit: contain;
+}

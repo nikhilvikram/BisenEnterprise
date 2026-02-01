@@ -90,10 +90,7 @@ const SareeList = () => {
   }
 
   return (
-    <div
-      className="container category-page-wrapper"
-      style={{ minHeight: "80vh" }}
-    >
+    <div className="container category-page-wrapper">
       {/* BACK BUTTON + HEADER (same as CategoryProductList) */}
       <div className="category-list-header mb-4 mt-3">
         <button
@@ -105,10 +102,7 @@ const SareeList = () => {
           <FaArrowLeft className="me-2" />
           Back to Home
         </button>
-        <h2
-          className="section-title text-center mt-3"
-          style={{ marginBottom: "5px" }}
-        >
+        <h2 className="section-title text-center mt-3 category-title">
           Explore All Products
         </h2>
       </div>

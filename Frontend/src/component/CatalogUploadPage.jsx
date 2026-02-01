@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_URL } from "../config";
 import { FaCheckCircle, FaRobot, FaArrowLeft } from "react-icons/fa";
 import "../styles/shared-buttons.css";
+import "../styles/catalog-upload.css";
 
 const CatalogUploadPage = () => {
   const [file, setFile] = useState(null);
@@ -159,8 +160,7 @@ const CatalogUploadPage = () => {
                       {prod.localImages && prod.localImages[0] && (
                         <img
                           src={getImageUrl(prod.localImages[0])}
-                          className="img-fluid rounded-start"
-                          style={{ height: "100%", objectFit: "contain" }}
+                          className="img-fluid rounded-start catalog-ai-crop"
                           alt="AI Crop"
                         />
                       )}

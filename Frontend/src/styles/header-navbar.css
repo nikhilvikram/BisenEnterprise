@@ -23,6 +23,18 @@
   margin-left: 35px;
 }
 
+.brand-link {
+  text-decoration: none;
+}
+
+.brand-primary {
+  color: #e63946;
+}
+
+.brand-secondary {
+  color: #6b7280;
+}
+
 .bisen-icons {
   display: flex;
   align-items: center;
@@ -33,6 +45,10 @@
 .header-icon,
 .theme-btn {
   color: var(--text-color);
+}
+
+.header-icon-clickable {
+  cursor: pointer;
 }
 
 .theme-btn {

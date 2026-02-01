@@ -21,10 +21,10 @@ const HeaderNavbar = () => {
       {openSearch && <SearchOverlay close={() => setOpenSearch(false)} />}
 
       <nav className="bisen-header">
-        <Link to="/HomePage" style={{ textDecoration: "none" }}>
+        <Link to="/HomePage" className="brand-link">
           <div className="bisen-logo">
-            <span style={{ color: "#E63946" }}>Bisen</span>
-            <span style={{ color: "gray" }}>Enterprise</span>
+            <span className="brand-primary">Bisen</span>
+            <span className="brand-secondary">Enterprise</span>
           </div>
         </Link>
 
@@ -36,9 +36,8 @@ const HeaderNavbar = () => {
           {/* SEARCH OPENER */}
           <FaSearch
             size={20}
-            className="header-icon"
+            className="header-icon header-icon-clickable"
             onClick={() => setOpenSearch(true)}
-            style={{ cursor: "pointer" }}
           />
 
           <NavLink

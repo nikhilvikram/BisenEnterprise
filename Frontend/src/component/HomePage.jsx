@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/categories.css";
 import "../styles/home-slider-search.css";
 import "../styles/product-grid.css";
+import "../styles/home-page.css";
 import { useDispatch, useSelector } from "react-redux";
 
 // Icons
@@ -304,29 +305,13 @@ const HomePage = () => {
                   <span className="review-count">({item.reviews || 0})</span>
                 </div>
 
-                <div
-                  className="d-flex align-items-center gap-2 mt-2"
-                  style={{ width: "100%" }}
-                >
+                <div className="d-flex align-items-center gap-2 mt-2 home-best-actions">
                   {qty > 0 && (
                     <button
-                      className="user_cart_minus show"
+                      className="user_cart_minus show home-remove-btn"
                       onClick={(e) => {
                         e.stopPropagation();
                         removeWholeQty(itemId);
-                      }}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                        border: "1px solid #ddd",
-                        background: "white",
-                        color: "red",
-                        fontSize: "18px",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
                       }}
                     >
                       🗑️

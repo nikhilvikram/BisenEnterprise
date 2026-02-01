@@ -93,7 +93,29 @@
 
 /* Robust Category Page */
 .category-page-wrapper {
+  min-height: 80vh;
   padding-bottom: 80px;
+}
+
+.category-loading {
+  min-height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-title {
+  text-transform: capitalize;
+  margin-bottom: 5px;
+}
+
+.category-empty-title {
+  color: #555;
+}
+
+.category-discount-badge {
+  font-size: 10px;
+  font-weight: 700;
 }
 .category-section {
   margin-bottom: 50px;

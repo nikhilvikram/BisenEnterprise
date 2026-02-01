@@ -53,15 +53,7 @@ const CategoryProductList = () => {
   // --- UI RENDER ---
   if (!textileArray) {
     return (
-      <div
-        className="container mt-4"
-        style={{
-          minHeight: "50vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="container mt-4 category-loading">
         <div className="spinner-border text-danger" role="status"></div>
         <span className="ms-2">Loading Collection...</span>
       </div>
@@ -69,10 +61,7 @@ const CategoryProductList = () => {
   }
 
   return (
-    <div
-      className="container category-page-wrapper"
-      style={{ minHeight: "80vh" }}
-    >
+    <div className="container category-page-wrapper">
       {/* BACK BUTTON + HEADER */}
       <div className="category-list-header mb-4 mt-3">
         <button
@@ -90,10 +79,7 @@ const CategoryProductList = () => {
             ? "Back to Home"
             : "Back to Categories"}
         </button>
-        <h2
-          className="section-title text-center mt-3"
-          style={{ textTransform: "capitalize", marginBottom: "5px" }}
-        >
+        <h2 className="section-title text-center mt-3 category-title">
           {displayTitle} Collection
         </h2>
       </div>
@@ -104,7 +90,7 @@ const CategoryProductList = () => {
       {/* EMPTY STATE */}
       {categoryProducts.length === 0 ? (
         <div className="d-flex flex-column align-items-center justify-content-center mt-5 p-5 text-center bg-light rounded">
-          <h3 style={{ color: "#555" }}>Coming Soon! ✨</h3>
+          <h3 className="category-empty-title">Coming Soon! ✨</h3>
           <p className="text-muted">
             We haven't uploaded <b>{displayTitle}</b> yet. <br />
             Check back tomorrow for new designs!
@@ -152,10 +138,7 @@ const CategoryProductList = () => {
                   />
                   {/* Discount Badge */}
                   {item.discount > 0 && (
-                    <span
-                      className="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 m-2 rounded"
-                      style={{ fontSize: "10px", fontWeight: "bold" }}
-                    >
+                    <span className="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 m-2 rounded category-discount-badge">
                       {item.discount}% OFF
                     </span>
                   )}

@@ -8,6 +8,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
 } from "react-icons/fa";
+import "../styles/my-orders.css";
 
 const MyOrdersPage = () => {
   const dispatch = useDispatch();
@@ -99,13 +100,7 @@ const MyOrdersPage = () => {
                             : item.image || "https://placehold.co/60"
                         }
                         alt={item.title}
-                        style={{
-                          width: "60px",
-                          height: "80px",
-                          objectFit: "cover",
-                          borderRadius: "4px",
-                        }}
-                        className="me-3"
+                        className="me-3 order-item-thumb"
                       />
                       <div className="flex-grow-1">
                         <h6 className="mb-0">{item.title}</h6>
