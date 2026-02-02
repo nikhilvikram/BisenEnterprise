@@ -1,0 +1,23 @@
+{
+    "category": "Anarkali",
+    "design_code": "Unknown",
+    "product_title": "Maroon Embroidered Anarkali Suit Set",
+    "short_description": "Elegant maroon Anarkali suit set with intricate embroidery, perfect for festive occasions and weddings.",
+    "attributes": {
+        "color": "Maroon",
+        "fabric": "Rayon",
+        "pattern": "Embroidered",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Anarkali",
+        "Suit Set",
+        "Maroon",
+        "Embroidery",
+        "Festive",
+        "Indian Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Anarkali/Unknown_1769951389/pose_1.jpg"
+    ]
+}

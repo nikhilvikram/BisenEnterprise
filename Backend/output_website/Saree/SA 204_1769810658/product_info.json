@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 204",
+    "product_title": "Elegant Navy Blue Striped Banarasi Silk Saree with Vibrant Blouse",
+    "short_description": "Drape yourself in timeless elegance with this exquisite navy blue Banarasi silk saree featuring subtle gold stripes. The saree is paired with a vibrant multi-colored blouse for a modern twist.",
+    "attributes": {
+        "color": "Navy Blue",
+        "fabric": "Banarasi Silk",
+        "pattern": "Striped",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Striped Saree",
+        "Indian Wedding",
+        "Festive Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 204_1769810658/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 204_1769810658/pose_2.jpg"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 124",
+    "product_title": "Elegant Yellow Banarasi Silk Saree with Green Embroidered Blouse",
+    "short_description": "Drape yourself in this exquisite yellow Banarasi silk saree. The intricate weaving and delicate embroidery paired with a contrasting green blouse will make you the center of attention at any event.",
+    "attributes": {
+        "color": "Yellow",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Yellow Saree",
+        "Indian Wedding",
+        "Festive Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 124_1769810682/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 124_1769810682/pose_2.jpg"
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "category": "Kurti Set",
+    "design_code": "Unknown",
+    "product_title": "Floral Print Top",
+    "short_description": "Elevate your casual style with this chic floral print top. Perfect for a day out or a relaxed evening.",
+    "attributes": {
+        "color": "Red",
+        "fabric": "Cotton",
+        "pattern": "Floral",
+        "occasion": "Casual"
+    },
+    "tags": [
+        "Floral",
+        "Top",
+        "Casual",
+        "Red",
+        "Cotton"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Western/Unknown_1769972012/pose_1.jpg"
+    ]
+}

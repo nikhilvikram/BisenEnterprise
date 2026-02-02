@@ -1,0 +1,23 @@
+{
+    "category": "Nightwear",
+    "design_code": "6005-B",
+    "product_title": "Women's Printed 3-Piece Night Suit",
+    "short_description": "Stay comfortable and stylish with this fabric sinker 3-piece night suit. Perfect for a relaxing night in.",
+    "attributes": {
+        "color": "Pink",
+        "fabric": "Sinker",
+        "pattern": "Printed",
+        "occasion": "Nightwear"
+    },
+    "tags": [
+        "Nightwear",
+        "Night Suit",
+        "Printed",
+        "Women"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Nightwear/6005-B_1769815395/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Nightwear/6005-B_1769815395/pose_2.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Nightwear/6005-B_1769815395/pose_3.jpg"
+    ]
+}

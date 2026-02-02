@@ -1,0 +1,22 @@
+{
+    "category": "Lingerie",
+    "design_code": "Unknown",
+    "product_title": "Black Lace Bra and Panty Set",
+    "short_description": "Elegant black lace bra and panty set for a comfortable and stylish fit. Perfect for everyday wear or special occasions.",
+    "attributes": {
+        "color": "Black",
+        "fabric": "Lace",
+        "pattern": "Floral Lace",
+        "occasion": "Everyday"
+    },
+    "tags": [
+        "Lingerie",
+        "Bra and Panty Set",
+        "Black Lace",
+        "Comfortable",
+        "Stylish"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Lingerie/Unknown_1769809909/pose_1.jpg"
+    ]
+}

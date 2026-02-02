@@ -1,0 +1,24 @@
+{
+    "category": "Saree",
+    "design_code": "SA 245",
+    "product_title": "Elegant Pink Banarasi Silk Saree with Embroidered Blouse",
+    "short_description": "Exquisite pink Banarasi silk saree featuring delicate floral motifs and a rich golden border. Paired with a beautifully embroidered green blouse, this saree is perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Pink",
+        "fabric": "Banarasi Silk",
+        "pattern": "Floral",
+        "occasion": "Wedding, Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Pink Saree",
+        "Wedding Saree",
+        "Festive Saree",
+        "Embroidered Blouse"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 245_1769810676/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 245_1769810676/pose_2.jpg"
+    ]
+}

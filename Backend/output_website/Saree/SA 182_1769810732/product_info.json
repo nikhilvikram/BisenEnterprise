@@ -1,0 +1,25 @@
+{
+    "category": "Saree",
+    "design_code": "SA 182",
+    "product_title": "Elegant Sea Green Banarasi Silk Saree with Golden Zari Work",
+    "short_description": "Drape yourself in timeless elegance with this stunning sea green Banarasi silk saree. Adorned with intricate golden zari work, this saree is perfect for weddings, festivities, and special occasions.",
+    "attributes": {
+        "color": "Sea Green",
+        "fabric": "Banarasi Silk",
+        "pattern": "Zari Woven",
+        "occasion": "Wedding, Festive, Party"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Wedding Saree",
+        "Festive Wear",
+        "Indian Traditional",
+        "Sea Green Saree",
+        "Zari Work"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 182_1769810732/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 182_1769810732/pose_2.jpg"
+    ]
+}

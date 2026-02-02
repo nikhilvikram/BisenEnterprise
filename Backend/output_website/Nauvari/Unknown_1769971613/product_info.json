@@ -1,0 +1,22 @@
+{
+    "category": "Nauvari",
+    "design_code": "Unknown",
+    "product_title": "Traditional Red Nauvari Saree with Golden Embroidery",
+    "short_description": "Embrace the rich heritage with this exquisite red Nauvari saree, adorned with intricate golden embroidery. Perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Red",
+        "fabric": "Silk Blend",
+        "pattern": "Floral",
+        "occasion": "Wedding"
+    },
+    "tags": [
+        "Nauvari",
+        "Maharashtrian Saree",
+        "Red Saree",
+        "Wedding Saree",
+        "Traditional Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Nauvari/Unknown_1769971613/pose_1.jpg"
+    ]
+}

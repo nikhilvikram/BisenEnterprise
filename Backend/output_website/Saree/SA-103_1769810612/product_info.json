@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA-103",
+    "product_title": "Elegant Green Banarasi Silk Saree with Embroidered Blouse",
+    "short_description": "Exquisite green Banarasi silk saree featuring intricate woven patterns and a beautifully embroidered velvet blouse. Perfect for weddings, festivals, and special occasions.",
+    "attributes": {
+        "color": "Green",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Green Saree",
+        "Wedding Saree",
+        "Festive Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA-103_1769810612/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA-103_1769810612/pose_2.jpg"
+    ]
+}

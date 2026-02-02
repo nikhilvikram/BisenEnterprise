@@ -1,0 +1,26 @@
+{
+    "category": "Saree",
+    "design_code": "SA 129",
+    "product_title": "Elegant Lavender Silk Saree with Green Embroidered Blouse",
+    "short_description": "Elevate your traditional look with this exquisite lavender silk saree featuring delicate gold detailing and a contrasting green embroidered blouse. Perfect for weddings, festivals, and special occasions.",
+    "attributes": {
+        "color": "Lavender, Green",
+        "fabric": "Silk",
+        "pattern": "Floral",
+        "occasion": "Festive, Wedding"
+    },
+    "tags": [
+        "silk saree",
+        "lavender saree",
+        "floral saree",
+        "wedding saree",
+        "festive saree",
+        "traditional wear",
+        "indian fashion"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 129_1769810780/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 129_1769810780/pose_2.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 129_1769810780/pose_3.jpg"
+    ]
+}

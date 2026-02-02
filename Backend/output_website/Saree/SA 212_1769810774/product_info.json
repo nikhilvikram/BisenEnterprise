@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 212",
+    "product_title": "Elegant Light Purple Banarasi Silk Saree with Floral Border",
+    "short_description": "Drape yourself in the timeless beauty of this light purple Banarasi silk saree. Featuring delicate floral borders and a subtle sheen, this saree is perfect for festive occasions and celebrations.",
+    "attributes": {
+        "color": "Light Purple",
+        "fabric": "Banarasi Silk",
+        "pattern": "Floral",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Banarasi",
+        "Silk",
+        "Saree",
+        "Floral",
+        "Festive"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 212_1769810774/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 212_1769810774/pose_2.jpg"
+    ]
+}

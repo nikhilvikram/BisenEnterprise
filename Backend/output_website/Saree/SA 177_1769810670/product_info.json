@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 177",
+    "product_title": "Sindhuri Yellow Banarasi Silk Saree",
+    "short_description": "Elevate your ethnic wardrobe with this exquisite yellow Banarasi silk saree. Perfect for weddings, festivals, and special occasions.",
+    "attributes": {
+        "color": "Yellow",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Yellow Saree",
+        "Banarasi Silk",
+        "Wedding Saree",
+        "Festive Wear",
+        "Traditional Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 177_1769810670/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 177_1769810670/pose_2.jpg"
+    ]
+}

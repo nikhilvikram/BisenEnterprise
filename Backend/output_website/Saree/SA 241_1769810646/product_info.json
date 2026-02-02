@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 241",
+    "product_title": "Elegant Sky Blue Banarasi Silk Saree",
+    "short_description": "A timeless Banarasi silk saree in a beautiful sky blue hue, perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Sky Blue",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Wedding, Festive"
+    },
+    "tags": [
+        "Banarasi",
+        "Silk Saree",
+        "Wedding",
+        "Festive",
+        "Traditional"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 241_1769810646/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 241_1769810646/pose_2.jpg"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 196",
+    "product_title": "Sindhuri Pink Banarasi Silk Saree",
+    "short_description": "Elegant pink Banarasi silk saree with golden zari work, perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Pink",
+        "fabric": "Banarasi Silk",
+        "pattern": "Zari Work",
+        "occasion": "Wedding"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Pink Saree",
+        "Wedding Saree",
+        "Traditional Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 196_1769811101/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 196_1769811101/pose_2.jpg"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 229",
+    "product_title": "Sindhuri Kimora Yellow Banarasi Silk Saree",
+    "short_description": "Elevate your ethnic wardrobe with this exquisite yellow Banarasi silk saree, featuring intricate weaving and a luxurious feel. Perfect for weddings, festivals, and special occasions.",
+    "attributes": {
+        "color": "Yellow",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Yellow Saree",
+        "Indian Wedding",
+        "Festive Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 229_1769811118/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 229_1769811118/pose_2.jpg"
+    ]
+}

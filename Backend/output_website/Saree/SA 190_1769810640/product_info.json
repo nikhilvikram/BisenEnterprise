@@ -1,0 +1,25 @@
+{
+    "category": "Saree",
+    "design_code": "SA 190",
+    "product_title": "Elegant Lilac Banarasi Silk Saree with Golden Weave",
+    "short_description": "Adorn yourself in this exquisite lilac Banarasi silk saree, featuring a beautiful golden weave. Perfect for weddings and special occasions, this saree exudes timeless elegance and charm.",
+    "attributes": {
+        "color": "Lilac",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Wedding, Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Indian Wedding",
+        "Festive Wear",
+        "Lilac Saree",
+        "Traditional Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 190_1769810640/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 190_1769810640/pose_2.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 190_1769810640/pose_3.jpg"
+    ]
+}

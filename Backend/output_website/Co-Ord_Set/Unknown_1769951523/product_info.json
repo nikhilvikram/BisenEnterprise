@@ -1,0 +1,22 @@
+{
+    "category": "Co-ord Set",
+    "design_code": "Unknown",
+    "product_title": "Blue Tie-Dye Co-ord Set",
+    "short_description": "Stay stylish and comfortable in this chic blue tie-dye co-ord set. Perfect for casual outings or lounging at home.",
+    "attributes": {
+        "color": "Blue",
+        "fabric": "Cotton",
+        "pattern": "Tie-Dye",
+        "occasion": "Casual"
+    },
+    "tags": [
+        "Co-ord Set",
+        "Tie-Dye",
+        "Casual Wear",
+        "Loungewear",
+        "Blue"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Co-Ord_Set/Unknown_1769951523/pose_1.jpg"
+    ]
+}

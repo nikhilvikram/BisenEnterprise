@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 192",
+    "product_title": "Sindhuri Banarasi Silk Saree in Lavender and Gold",
+    "short_description": "Embrace the journey with this exquisite Sindhuri Banarasi silk saree. This lavender and gold saree is perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Lavender and Gold",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Wedding, Festive"
+    },
+    "tags": [
+        "Banarasi",
+        "Silk Saree",
+        "Wedding",
+        "Festive",
+        "Traditional"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 192_1769810761/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 192_1769810761/pose_2.jpg"
+    ]
+}

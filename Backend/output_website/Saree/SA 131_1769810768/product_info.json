@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 131",
+    "product_title": "Elegant Lilac and Gold Silk Saree with Embroidered Border",
+    "short_description": "Drape yourself in sophistication with this stunning lilac silk saree. Featuring a rich gold embroidered border and a luxurious feel, it's perfect for weddings and special occasions.",
+    "attributes": {
+        "color": "Lilac",
+        "fabric": "Silk",
+        "pattern": "Embroidered",
+        "occasion": "Wedding"
+    },
+    "tags": [
+        "silk saree",
+        "lilac saree",
+        "embroidered saree",
+        "wedding saree",
+        "indian wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 131_1769810768/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 131_1769810768/pose_2.jpg"
+    ]
+}

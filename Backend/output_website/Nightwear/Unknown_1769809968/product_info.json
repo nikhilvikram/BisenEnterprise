@@ -1,0 +1,22 @@
+{
+    "category": "Nightwear",
+    "design_code": "Unknown",
+    "product_title": "Women's Printed Night Suit",
+    "short_description": "Relax in style with this comfortable and chic night suit. Featuring a cute print and soft fabric, it's perfect for a good night's sleep.",
+    "attributes": {
+        "color": "Black",
+        "fabric": "Cotton",
+        "pattern": "Printed",
+        "occasion": "Nightwear"
+    },
+    "tags": [
+        "nightwear",
+        "night suit",
+        "printed",
+        "cotton",
+        "sleepwear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Nightwear/Unknown_1769809968/pose_1.jpg"
+    ]
+}

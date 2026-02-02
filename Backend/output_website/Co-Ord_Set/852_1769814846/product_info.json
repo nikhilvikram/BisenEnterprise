@@ -1,0 +1,22 @@
+{
+    "category": "Lehenga",
+    "design_code": "852",
+    "product_title": "Embroidered Yellow Palazzo Co-ord Set",
+    "short_description": "Make a statement with this bright yellow embroidered palazzo co-ord set. Perfect for festive occasions and parties.",
+    "attributes": {
+        "color": "Yellow",
+        "fabric": "Georgette",
+        "pattern": "Embroidered",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "co-ord set",
+        "palazzo",
+        "yellow",
+        "embroidered",
+        "festive"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Co-Ord_Set/852_1769814846/pose_1.jpg"
+    ]
+}

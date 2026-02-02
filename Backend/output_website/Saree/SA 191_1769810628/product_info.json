@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 191",
+    "product_title": "Elegant Yellow Banarasi Silk Saree with Green Border",
+    "short_description": "Exquisite yellow Banarasi silk saree featuring intricate weaving and a contrasting green border. Perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Yellow",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Wedding, Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Yellow Saree",
+        "Wedding Saree",
+        "Festive Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 191_1769810628/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 191_1769810628/pose_2.jpg"
+    ]
+}

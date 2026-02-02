@@ -1,0 +1,22 @@
+{
+    "category": "Western",
+    "design_code": "Unknown",
+    "product_title": "Textured Mock Neck Long Sleeve Top",
+    "short_description": "Elevate your everyday style with this chic and comfortable textured top. Featuring a flattering mock neck and long sleeves, this versatile piece is perfect for layering or wearing on its own. The unique texture adds a touch of sophistication to any outfit.",
+    "attributes": {
+        "color": "White",
+        "fabric": "Polyester blend",
+        "pattern": "Textured",
+        "occasion": "Casual"
+    },
+    "tags": [
+        "Top",
+        "Long Sleeve",
+        "Mock Neck",
+        "Textured",
+        "Casual"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Western/Unknown_1769809849/pose_1.jpg"
+    ]
+}

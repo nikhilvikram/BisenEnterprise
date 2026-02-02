@@ -1,0 +1,24 @@
+{
+    "category": "Saree",
+    "design_code": "SA198",
+    "product_title": "Elegant Yellow Banarasi Silk Saree with Intricate Weaving",
+    "short_description": "Drape yourself in the timeless elegance of this yellow Banarasi silk saree. Perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Yellow",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Wedding, Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Yellow Saree",
+        "Wedding Saree",
+        "Festive Wear",
+        "Indian Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA198_1769810791/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA198_1769810791/pose_2.jpg"
+    ]
+}

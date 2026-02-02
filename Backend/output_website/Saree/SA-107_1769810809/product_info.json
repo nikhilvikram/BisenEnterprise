@@ -1,0 +1,22 @@
+{
+    "category": "Saree",
+    "design_code": "SA-107",
+    "product_title": "Elegant Turquoise Floral Saree with Golden Border",
+    "short_description": "Drape yourself in elegance with this beautiful turquoise saree, adorned with intricate golden floral patterns and a sophisticated golden border. Perfect for festive occasions.",
+    "attributes": {
+        "color": "Turquoise",
+        "fabric": "Silk Blend",
+        "pattern": "Floral",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Turquoise Saree",
+        "Floral Saree",
+        "Festive Wear",
+        "Golden Border",
+        "Silk Blend Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA-107_1769810809/pose_1.jpg"
+    ]
+}

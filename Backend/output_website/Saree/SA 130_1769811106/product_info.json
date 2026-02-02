@@ -1,0 +1,24 @@
+{
+    "category": "Saree",
+    "design_code": "SA 130",
+    "product_title": "Elegant Banarasi Silk Saree in Turquoise and Gold",
+    "short_description": "Exquisite turquoise Banarasi silk saree with intricate gold floral motifs and a vibrant yellow blouse, perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Turquoise",
+        "fabric": "Banarasi Silk",
+        "pattern": "Floral",
+        "occasion": "Wedding, Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Turquoise Saree",
+        "Wedding Saree",
+        "Festive Wear",
+        "Indian Fashion"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 130_1769811106/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 130_1769811106/pose_2.jpg"
+    ]
+}

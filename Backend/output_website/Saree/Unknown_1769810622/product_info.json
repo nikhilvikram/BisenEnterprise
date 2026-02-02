@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "Unknown",
+    "product_title": "Sindhuri Pink Banarasi Silk Saree with Gold Zari Work",
+    "short_description": "Exquisite pink Banarasi silk saree featuring intricate gold zari work, perfect for weddings and festive occasions. Make a statement with this timeless piece.",
+    "attributes": {
+        "color": "Pink",
+        "fabric": "Silk",
+        "pattern": "Zari Work",
+        "occasion": "Wedding/Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Pink Saree",
+        "Wedding Saree",
+        "Festive Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/Unknown_1769810622/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/Unknown_1769810622/pose_2.jpg"
+    ]
+}

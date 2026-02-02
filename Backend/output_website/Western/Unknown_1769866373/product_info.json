@@ -1,0 +1,22 @@
+{
+    "category": "Western",
+    "design_code": "Unknown",
+    "product_title": "Maroon Embroidered Bird Tunic Top for Women",
+    "short_description": "Elevate your casual style with this maroon tunic top. Featuring delicate bird embroidery and a comfortable fit, it's perfect for everyday wear. Shop now!",
+    "attributes": {
+        "color": "Maroon",
+        "fabric": "Cotton",
+        "pattern": "Embroidered",
+        "occasion": "Casual"
+    },
+    "tags": [
+        "Tunic Top",
+        "Maroon",
+        "Embroidery",
+        "Casual Wear",
+        "Western"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Western/Unknown_1769866373/pose_1.jpg"
+    ]
+}

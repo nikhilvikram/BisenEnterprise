@@ -1,0 +1,25 @@
+{
+    "category": "Co-ord Set",
+    "design_code": "4631",
+    "product_title": "Plum Purple Embellished Co-ord Set with Jacket",
+    "short_description": "This beautiful plum purple co-ord set features a crop top, palazzo pants, and a long jacket. The ensemble is embellished with intricate silver designs, making it perfect for parties and special occasions.",
+    "attributes": {
+        "color": "Plum Purple",
+        "fabric": "Georgette",
+        "pattern": "Embellished",
+        "occasion": "Party"
+    },
+    "tags": [
+        "Co-ord Set",
+        "Plum Purple",
+        "Embellished",
+        "Party Wear",
+        "Georgette",
+        "Indian Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Co-Ord_Set/4631_1769815249/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Co-Ord_Set/4631_1769815249/pose_2.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Co-Ord_Set/4631_1769815249/pose_3.jpg"
+    ]
+}

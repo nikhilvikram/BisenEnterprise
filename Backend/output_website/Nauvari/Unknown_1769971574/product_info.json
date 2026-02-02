@@ -1,0 +1,22 @@
+{
+    "category": "Nauvari",
+    "design_code": "Unknown",
+    "product_title": "Traditional Maharashtrian Nauvari Saree",
+    "short_description": "Embrace the rich heritage of Maharashtra with this beautifully draped Nauvari saree, perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Orange and Green",
+        "fabric": "Silk",
+        "pattern": "Woven",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Nauvari Saree",
+        "Maharashtrian Saree",
+        "Traditional Wear",
+        "Indian Wedding",
+        "Festive Saree"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Nauvari/Unknown_1769971574/pose_1.jpg"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "category": "Saree",
+    "design_code": "SA 208",
+    "product_title": "Elegant Yellow Floral Print Saree",
+    "short_description": "Drape yourself in elegance with this yellow saree featuring a beautiful floral print and a contrasting border. Perfect for special occasions and festive gatherings.",
+    "attributes": {
+        "color": "Yellow",
+        "fabric": "Silk Blend",
+        "pattern": "Floral Print",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Saree",
+        "Yellow Saree",
+        "Floral Print",
+        "Festive Wear",
+        "Traditional"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 208_1769810726/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 208_1769810726/pose_2.jpg"
+    ]
+}

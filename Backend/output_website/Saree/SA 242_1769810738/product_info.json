@@ -1,0 +1,25 @@
+{
+    "category": "Saree",
+    "design_code": "SA 242",
+    "product_title": "Elegant Red Banarasi Silk Saree with Floral Embroidery",
+    "short_description": "Drape yourself in the timeless beauty of this red Banarasi silk saree. Adorned with intricate floral embroidery and a rich pallu, this saree is perfect for weddings and festive occasions.",
+    "attributes": {
+        "color": "Red",
+        "fabric": "Banarasi Silk",
+        "pattern": "Woven",
+        "occasion": "Festive"
+    },
+    "tags": [
+        "Banarasi Saree",
+        "Silk Saree",
+        "Red Saree",
+        "Wedding Saree",
+        "Festive Wear",
+        "Traditional Saree",
+        "Indian Wear"
+    ],
+    "s3_images": [
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 242_1769810738/pose_1.jpg",
+        "https://bisen-enterprise-assets-v1.s3.ap-south-1.amazonaws.com/Saree/SA 242_1769810738/pose_2.jpg"
+    ]
+}
