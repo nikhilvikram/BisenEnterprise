@@ -11,7 +11,8 @@ from pathlib import Path
 from botocore.exceptions import NoCredentialsError
 
 # --- CONFIGURATION ---
-GEMINI_API_KEY = "AIzaSyBuMoH4JHOdv-kQpQiQPbbIFEFL20g2ato" 
+# Read from environment to avoid leaked keys in source control.
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 INPUT_FOLDER = "inputs"
 OUTPUT_FOLDER = "output_website"
 MODEL_NAME = "gemini-2.0-flash"
@@ -23,7 +24,7 @@ S3_REGION = os.getenv("AWS_REGION", "ap-south-1")
 AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-client = genai.Client(api_key=GEMINI_API_KEY)
+client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 yolo_model = YOLO("yolov8n.pt") 
 s3_client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_KEY, region_name=S3_REGION)
 
@@ -83,6 +84,10 @@ def get_rich_metadata(pil_image):
         "tags": ["String", "String", "String"]
     }
     """
+    if not client:
+        print("    ⚠️ Missing GEMINI_API_KEY/GOOGLE_API_KEY in environment.")
+        return None
+
     for i in range(3):
         try:
             response = client.models.generate_content(
@@ -94,6 +99,8 @@ def get_rich_metadata(pil_image):
                 return json.loads(response.text)
         except Exception as e:
             print(f"    ⚠️ AI Error: {e}")
+            if "API key was reported as leaked" in str(e):
+                return None
             time.sleep(2)
     return None
 
