@@ -965,3 +965,65 @@ body.dark .wishlist-close-btn {
     background: #1a1a1a;
   }
 }
+
+@media (max-width: 576px) {
+  .checkout-page-wrapper {
+    margin-top: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .checkout-header {
+    text-align: left;
+    margin-bottom: 16px;
+  }
+
+  .checkout-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .checkout-section {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .section-header {
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
+
+  .address-form {
+    gap: 12px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .checkout-input {
+    padding: 11px 12px;
+    font-size: 0.9rem;
+  }
+
+  .payment-radio {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .order-summary-card {
+    position: static;
+    top: auto;
+    padding: 18px;
+  }
+
+  .summary-items-list {
+    max-height: none;
+  }
+
+  .place-order-btn {
+    padding: 13px;
+    font-size: 0.95rem;
+  }
+}

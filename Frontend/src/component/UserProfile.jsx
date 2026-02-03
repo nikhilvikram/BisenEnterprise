@@ -25,15 +25,13 @@ const UserProfile = () => {
         .map((n) => n[0])
         .join("")
         .toUpperCase()
-    : "GU";
+    : "LI";
 
   return (
     <div className="user-profile-container">
-      <h2 className="user-profile-heading">My Account</h2>
-
       {/* USER CARD */}
       <div className="user-profile-card">
-        <div className="user-avatar">{initials}</div>
+        {user && <div className="user-avatar">{initials}</div>}
 
         <div className="user-info">
           {user ? (
@@ -43,13 +41,33 @@ const UserProfile = () => {
               <p className="user-phone">{user.phone}</p>
             </>
           ) : (
-            <>
-              <h4 className="user-name">Guest User</h4>
-              <p className="user-email">Please Login</p>
+            <div className="user-guest">
+              <div className="user-guest-text">
+                <h4 className="user-name">Welcome</h4>
+                <p className="user-email">
+                  Login or create an account to continue
+                </p>
+              </div>
+              <div className="user-guest-actions">
+                <button
+                  type="button"
+                  className="user-auth-btn primary"
+                  onClick={() => navigate("/Login")}
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  className="user-auth-btn ghost"
+                  onClick={() => navigate("/register")}
+                >
+                  Sign Up
+                </button>
+              </div>
               <div className="google-login-wrapper">
                 <GoogleLogin />
               </div>
-            </>
+            </div>
           )}
         </div>
 
@@ -102,7 +120,7 @@ const UserProfile = () => {
       </div>
 
       {/* LOGOUT / LOGIN */}
-      {user ? (
+      {user && (
         <button
           className="user-logout-btn"
           onClick={() => {
@@ -111,10 +129,6 @@ const UserProfile = () => {
           }}
         >
           Logout
-        </button>
-      ) : (
-        <button className="user-logout-btn" onClick={() => navigate("/Login")}>
-          Login / Signup
         </button>
       )}
 

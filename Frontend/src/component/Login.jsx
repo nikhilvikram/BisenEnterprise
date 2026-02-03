@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import "../styles/login.css";
 import { AuthContext } from "../store/auth-context"; // ✅ Use the real Auth Context
 import { useNavigate } from "react-router-dom";
+import GoogleLogin from "../components/GoogleLogin";
 
 const Login = () => {
   const { login, register } = useContext(AuthContext);
@@ -100,6 +101,13 @@ const Login = () => {
         <button className="user_login_btn" onClick={handleSubmit}>
           {tab === "login" ? "Login" : "Signup"}
         </button>
+
+        <div className="user_login_divider">
+          <span>or</span>
+        </div>
+        <div className="user_login_google">
+          <GoogleLogin />
+        </div>
 
         {/* TERMS */}
         <p className="user_terms_text">

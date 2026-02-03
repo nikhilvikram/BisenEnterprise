@@ -83,6 +83,68 @@ body.dark .user_login_tabs {
 .user_login_btn:hover {
   transform: translateY(-1px);
 }
+.user_login_divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+.user_login_divider::before,
+.user_login_divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--divider);
+}
+.user_login_google {
+  display: flex;
+  justify-content: center;
+}
+.user_login_google .google-login-button {
+  width: 100%;
+}
+.google-login-button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #ffffff;
+  color: #db4437;
+  border: 1px solid #db4437;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.google-login-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(219, 68, 55, 0.2);
+}
+.google-login-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.google-login-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.google-login-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
 .user_terms_text {
   margin-top: 14px;
   font-size: var(--font-size-xs);
