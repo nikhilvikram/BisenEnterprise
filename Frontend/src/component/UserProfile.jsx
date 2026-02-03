@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "../styles/user-profile.css";
+import GoogleLogin from "../components/GoogleLogin";
 
 const UserProfile = () => {
   const { user, logout } = useContext(AuthContext);
@@ -45,6 +46,9 @@ const UserProfile = () => {
             <>
               <h4 className="user-name">Guest User</h4>
               <p className="user-email">Please Login</p>
+              <div className="google-login-wrapper">
+                <GoogleLogin />
+              </div>
             </>
           )}
         </div>

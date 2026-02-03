@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
-const admin = require("../middleware/admin");
+const adminMiddleware = require("../middleware/admin");
+const { googleSync } = require("../controllers/authController");
 // ROUTE 1: Register User (POST /api/auth/register)
 router.post("/register", async (req, res) => {
   // 1. Destructure "name" (Make sure your frontend sends 'name', not 'username')
@@ -31,19 +32,19 @@ router.post("/register", async (req, res) => {
     // FIX: Use user._id (Mongoose native ID) instead of user.id
     const payload = {
       user: {
-        _id: user._id 
+        _id: user._id
       }
     };
 
     // 7. Sign Token
-jwt.sign(
+    jwt.sign(
       payload,
       process.env.JWT_SECRET,
       { expiresIn: "5 days" },
       (err, token) => {
         if (err) throw err;
         // ✅ FIX: Send User Data AND Token
-        res.json({ 
+        res.json({
           token,
           user: {
             id: user.id,
@@ -81,18 +82,18 @@ router.post("/login", async (req, res) => {
     // FIX: Consistent usage of _id
     const payload = {
       user: {
-        _id: user._id 
+        _id: user._id
       }
     };
 
-  jwt.sign(
+    jwt.sign(
       payload,
       process.env.JWT_SECRET,
       { expiresIn: "5 days" },
       (err, token) => {
         if (err) throw err;
         // ✅ FIX: Send User Data AND Token
-        res.json({ 
+        res.json({
           token,
           user: {
             id: user.id,
@@ -108,6 +109,9 @@ router.post("/login", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+// ROUTE 3: Google Login Sync (POST /api/auth/google-sync)
+router.post("/google-sync", googleSync);
 
 // ROUTE 3: Get Logged In User Data (GET /api/auth/me)
 router.get("/me", auth, async (req, res) => {
@@ -125,7 +129,7 @@ router.get("/me", auth, async (req, res) => {
 // @route   GET /api/auth/users
 // @desc    Get All Users (CRM)
 // @access  Admin/Superadmin
-router.get("/users", [auth, admin], async (req, res) => {
+router.get("/users", [auth, adminMiddleware], async (req, res) => {
   try {
     const users = await User.find().select("-password").sort({ date: -1 });
     res.json(users);
@@ -138,7 +142,7 @@ router.get("/users", [auth, admin], async (req, res) => {
 // @route   PUT /api/auth/promote/:id
 // @desc    Promote User Role
 // @access  Superadmin Only (Ideally)
-router.put("/promote/:id", [auth, admin], async (req, res) => {
+router.put("/promote/:id", [auth, adminMiddleware], async (req, res) => {
   try {
     const { role } = req.body; // e.g. "admin"
     let user = await User.findById(req.params.id);

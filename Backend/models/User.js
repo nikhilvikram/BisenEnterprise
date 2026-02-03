@@ -21,16 +21,18 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, index: true, lowercase: true, trim: true },
   password: { type: String }, // hashed password (bcrypt)
   phone: { type: String, index: true, sparse: true }, // phone login optional
+  photoURL: { type: String },
+  isGoogleAuth: { type: Boolean, default: false },
   addresses: [AddressSchema],
   createdAt: { type: Date, default: Date.now },
 
   // 🆕 ADD THIS FIELD:
-  role: { 
-    type: String, 
-    enum: ["user", "admin", "superadmin"], 
+  role: {
+    type: String,
+    enum: ["client", "user", "admin", "superadmin"],
     default: "user" // Everyone starts as a normal user
   },
-  
+
   date: { type: Date, default: Date.now },
 });
 
