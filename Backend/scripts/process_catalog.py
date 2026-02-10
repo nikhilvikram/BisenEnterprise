@@ -9,6 +9,7 @@ from PIL import Image
 from ultralytics import YOLO
 from pathlib import Path
 from botocore.exceptions import NoCredentialsError
+from pdf2image import convert_from_path
 
 # --- CONFIGURATION ---
 # Read from environment to avoid leaked keys in source control.
@@ -189,18 +190,59 @@ def process_single_page(pil_image, filename):
 def main():
     if not os.path.exists(INPUT_FOLDER): os.makedirs(INPUT_FOLDER)
     files = os.listdir(INPUT_FOLDER)
-    images = [f for f in files if f.lower().endswith(('.jpg', '.jpeg', '.png', '.webp'))]
+    # images = [f for f in files if f.lower().endswith(('.jpg', '.jpeg', '.png', '.webp'))]
+    # 1. Look for Images AND PDFs
+    valid_extensions = ('.jpg', '.jpeg', '.png', '.webp', '.pdf')
+    files_to_process = [f for f in files if f.lower().endswith(valid_extensions)]
     
-    if images:
-        for img_file in images:
-            img_path = os.path.join(INPUT_FOLDER, img_file)
+    # if images:
+    #     for img_file in images:
+    #         img_path = os.path.join(INPUT_FOLDER, img_file)
+    #         try:
+    #             pil_img = Image.open(img_path)
+    #             process_single_page(pil_img, img_file)
+    #             pil_img.close()
+    #             os.remove(img_path) 
+    #             print(f"       🗑️ Cleaned up input: {img_file}")
+    #         except Exception as e: print(f"       ⚠️ Error: {e}")
+    if files_to_process:
+        for filename in files_to_process:
+            file_path = os.path.join(INPUT_FOLDER, filename)
+            
             try:
-                pil_img = Image.open(img_path)
-                process_single_page(pil_img, img_file)
-                pil_img.close()
-                os.remove(img_path) 
-                print(f"       🗑️ Cleaned up input: {img_file}")
-            except Exception as e: print(f"       ⚠️ Error: {e}")
+                # 🟢 CASE A: It's a PDF
+                if filename.lower().endswith('.pdf'):
+                    print(f"    📄 Found PDF: {filename}. Converting pages to images...")
+                    
+                    # Convert PDF pages to PIL Images
+                    # (poppler_path=None assumes it's in PATH. On Windows, you might need to specify it if not in PATH)
+                    try:
+                        pages = convert_from_path(file_path)
+                    except Exception as e:
+                        print(f"    ❌ Poppler Error: {e}. Is poppler-utils installed?")
+                        continue
 
+                    print(f"    📄 PDF has {len(pages)} pages. Processing...")
+
+                    for i, page_img in enumerate(pages):
+                        # Give each page a unique "virtual" filename
+                        page_name = f"{filename}_page_{i+1}.jpg"
+                        print(f"      -- Page {i+1}/{len(pages)} --")
+                        process_single_page(page_img, page_name)
+                    
+                    # Cleanup the PDF after processing all pages
+                    os.remove(file_path)
+                    print(f"      🗑️ Cleaned up PDF: {filename}")
+
+                # 🟢 CASE B: It's a Standard Image
+                else:
+                    pil_img = Image.open(file_path)
+                    process_single_page(pil_img, filename)
+                    pil_img.close()
+                    os.remove(file_path)
+                    print(f"      🗑️ Cleaned up input: {filename}")
+
+            except Exception as e:
+                print(f"      ⚠️ Error processing {filename}: {e}")
 if __name__ == "__main__":
     main()
